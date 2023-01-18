@@ -13,3 +13,6 @@ criterion = "0.4"
 [[bench]]
 name = "benchmarks"
 harness = false
+
+[workspace]
+members = [".", "sisap-data"]
