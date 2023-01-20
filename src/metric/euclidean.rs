@@ -24,21 +24,21 @@ impl<T, O> Deref for Euclidean<T, O> {
 
 // pub fn euclidean_nasa(a: Euclidean<[f64; 20], f64>, b: Euclidean<[f64; 20], f64>) -> f64 {
 //     // assert_eq!(a.len(), b.len());
-//     a.distance(b)
+//     a.distance(&b)
 // }
 
 impl<T, O> Metric<Euclidean<T, O>> for Euclidean<T, O>
 where
-    T: IntoIterator<Item = O>,
+    for<'a> &'a T: IntoIterator<Item = &'a O>,
     O: Real + std::iter::Sum,
 {
     type Output = O;
 
-    fn distance(self, rhs: Euclidean<T, O>) -> Self::Output {
+    fn distance(&self, rhs: &Euclidean<T, O>) -> Self::Output {
         self.0
             .into_iter()
             .zip(rhs.0.into_iter())
-            .map(|(x, y)| (x.sub(y)).powi(2))
+            .map(|(x, y)| (x.sub(*y)).powi(2))
             .sum::<O>()
             .sqrt()
     }
@@ -53,6 +53,6 @@ mod tests {
         let point1: Euclidean<[f64; 2], f64> = Euclidean::new([0.0, 0.0]);
         let point2: Euclidean<[f64; 2], f64> = Euclidean::new([1.0, 1.0]);
 
-        assert_eq!(point1.distance(point2), 2.0.sqrt());
+        assert_eq!(point1.distance(&point2), 2.0.sqrt());
     }
 }
