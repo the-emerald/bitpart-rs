@@ -3,12 +3,23 @@ use std::{marker::PhantomData, ops::Deref};
 
 use super::Metric;
 
+/// Wrapper struct to apply Euclidean distance to an object set.
+/// # Example
+/// ```
+/// # use crate::bitpart::metric::{Metric, euclidean::Euclidean};
+///
+/// let point1: Euclidean<[f64; 2], f64> = Euclidean::new([0.0, 0.0]);
+/// let point2: Euclidean<[f64; 2], f64> = Euclidean::new([1.0, 1.0]);
+///
+/// assert_eq!(point1.distance(&point2), 2.0_f64.sqrt());
+/// ```
 pub struct Euclidean<T, O>(T, PhantomData<O>);
 
 impl<T, O> Euclidean<T, O>
 where
     O: Real,
 {
+    /// Creates a new `Euclidean`.
     pub fn new(t: T) -> Self {
         Self(t, PhantomData)
     }
