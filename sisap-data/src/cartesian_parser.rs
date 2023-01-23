@@ -60,7 +60,7 @@ pub fn parse(input: &str) -> IResult<&str, (FileConfig, Vec<Vec<f64>>)> {
 mod tests {
     use super::*;
 
-    const NASA: &str = include_str!("nasa/nasa.ascii");
+    const NASA: &str = include_str!("nasa.ascii");
 
     #[test]
     fn test_nasa() {
