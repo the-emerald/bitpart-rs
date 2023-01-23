@@ -38,7 +38,7 @@ impl<T, O> Deref for Euclidean<T, O> {
 //     a.distance(&b)
 // }
 
-impl<T, O> Metric<Euclidean<T, O>> for Euclidean<T, O>
+impl<T, O> Metric for Euclidean<T, O>
 where
     for<'a> &'a T: IntoIterator<Item = &'a O>,
     O: Real + std::iter::Sum,

@@ -1,9 +1,10 @@
 use num::traits::real::Real;
 
+pub mod builder;
 pub mod euclidean;
 
 /// Trait for types in metric space.
-pub trait Metric<T> {
+pub trait Metric {
     type Output: Real;
 
     /// Distance between two points.
@@ -16,5 +17,5 @@ pub trait Metric<T> {
     /// ```text
     /// x.distance(y) <= x.distance(y) + y.distance(z)
     /// ```
-    fn distance(&self, rhs: &T) -> Self::Output;
+    fn distance(&self, rhs: &Self) -> Self::Output;
 }
