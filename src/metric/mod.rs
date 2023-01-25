@@ -1,6 +1,5 @@
 use num::traits::real::Real;
 
-pub mod builder;
 pub mod euclidean;
 
 /// Trait for types in metric space.
