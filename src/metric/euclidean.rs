@@ -13,11 +13,12 @@ use super::Metric;
 ///
 /// assert_eq!(point1.distance(&point2), 2.0_f64.sqrt());
 /// ```
+#[derive(Debug, Clone)]
 pub struct Euclidean<T, O>(T, PhantomData<O>);
 
 impl<T, O> Euclidean<T, O>
 where
-    O: Real,
+    O: Real + Clone,
 {
     /// Creates a new `Euclidean`.
     pub fn new(t: T) -> Self {
@@ -41,7 +42,8 @@ impl<T, O> Deref for Euclidean<T, O> {
 impl<T, O> Metric for Euclidean<T, O>
 where
     for<'a> &'a T: IntoIterator<Item = &'a O>,
-    O: Real + std::iter::Sum,
+    O: Real + std::iter::Sum + Clone,
+    T: Clone,
 {
     type Output = O;
 

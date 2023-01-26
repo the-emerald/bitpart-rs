@@ -3,7 +3,7 @@ use num::traits::real::Real;
 pub mod euclidean;
 
 /// Trait for types in metric space.
-pub trait Metric {
+pub trait Metric: Clone {
     type Output: Real;
 
     /// Distance between two points.

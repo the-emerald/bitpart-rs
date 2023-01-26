@@ -1,17 +1,17 @@
-use crate::metric::Metric;
+use crate::{metric::Metric, BitPart};
 
 /// Builder for a BitPart query.
 #[derive(Debug)]
 pub struct BitPartBuilder<T> {
-    dataset: Vec<T>,
+    pub(crate) dataset: Vec<T>,
 
-    radius_increment: f64,
-    mean_distance: f64,
+    pub(crate) radius_increment: f64,
+    pub(crate) mean_distance: f64,
 
-    balanced: bool,
-    four_point: bool,
+    pub(crate) balanced: bool,
+    pub(crate) four_point: bool,
 
-    ref_points: u64,
+    pub(crate) ref_points: u64,
 }
 
 impl<T> BitPartBuilder<T>
@@ -69,7 +69,7 @@ where
     }
 
     /// Build the BitPart.
-    pub fn build(self) -> u64 {
-        todo!()
+    pub fn build(self) -> BitPart<T> {
+        BitPart::setup(self)
     }
 }
