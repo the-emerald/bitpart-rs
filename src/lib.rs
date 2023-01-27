@@ -34,27 +34,11 @@ where
         let mut exclusions = vec![];
 
         for point in ref_points {
-            let mut exclusions_subset = radii
+            let exclusions_subset = radii
                 .into_iter()
                 .map(|r| BallExclusion::new(point.clone(), r))
                 .collect::<Vec<_>>();
 
-            if builder.balanced {
-                // Safety: unwrap is safe because radii is never empty
-                let first = exclusions_subset.get_mut(0).unwrap();
-
-                // TODO: Get witnesses
-                first.set_witnesses(vec![]);
-
-                let mid_radius = first.radius;
-                let mut this_radius =
-                    mid_radius - ((exclusions_subset.len() / 2) as f64 * builder.radius_increment);
-
-                for ball in exclusions_subset.iter_mut() {
-                    ball.radius = this_radius;
-                    this_radius += builder.radius_increment;
-                }
-            }
             exclusions.extend(exclusions_subset);
         }
         exclusions

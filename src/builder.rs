@@ -8,9 +8,7 @@ pub struct BitPartBuilder<T> {
     pub(crate) radius_increment: f64,
     pub(crate) mean_distance: f64,
 
-    pub(crate) balanced: bool,
     pub(crate) four_point: bool,
-
     pub(crate) ref_points: u64,
 }
 
@@ -26,7 +24,6 @@ where
             dataset,
             mean_distance: 1.81,   // TODO: Number was copied from ref impl, why?
             radius_increment: 0.3, // TODO: Number was copied from ref impl, why?
-            balanced: false,       // TODO: What does this do?
             four_point: true,      // TODO: What does this do?
             ref_points: 40,        // TODO: What if there are fewer than 40 points?
         }
@@ -44,13 +41,7 @@ where
         self
     }
 
-    /// Set balanced.
-    pub fn balanced(mut self, balanced: bool) -> Self {
-        self.balanced = balanced;
-        self
-    }
-
-    /// Set four point.
+    /// Set whether to use four-point or three-point method for sheet exclusions.
     pub fn four_point(mut self, four_point: bool) -> Self {
         self.four_point = four_point;
         self
