@@ -13,3 +13,15 @@ where
         Self { point, radius }
     }
 }
+
+// todo: this is only 3p
+pub(crate) struct SheetExclusion<T> {
+    a: T,
+    b: T,
+}
+
+impl<T> SheetExclusion<T> {
+    pub(crate) fn new(a: T, b: T) -> Self {
+        Self { a, b }
+    }
+}
