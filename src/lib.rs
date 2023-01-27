@@ -10,6 +10,7 @@ pub mod metric;
 
 pub struct BitPart<T> {
     dataset: Vec<T>,
+    reference_points: Vec<T>,
     ball_exclusions: Vec<BallExclusion<T>>,
     sheet_exclusions: Vec<SheetExclusion<T>>,
     bitset: Vec<BitVec>,
@@ -19,6 +20,40 @@ impl<T> BitPart<T>
 where
     T: Metric,
 {
+    pub fn range_search(&self, point: T, threshold: f64) -> Vec<(T, f64)> {
+        // let distances = self
+        //     .reference_points
+        //     .iter()
+        //     .map(|rp| rp.distance(&point))
+        //     .collect::<Vec<_>>();
+
+        let mut in_ball = vec![];
+        let mut out_ball = vec![];
+        
+        for ez in self.ball_exclusions.iter() {
+            if ez.must_be_in(&point, threshold) {
+                in_ball.push(ez);
+            }
+            else if ez.must_be_out(&point, threshold) {
+                out_ball.push(ez);
+            }
+        }
+
+        let mut in_sheet = vec![];
+        let mut out_sheet = vec![];
+        
+        for ez in self.sheet_exclusions.iter() {
+            if ez.must_be_in(&point, threshold) {
+                in_sheet.push(ez);
+            }
+            else if ez.must_be_out(&point, threshold) {
+                out_sheet.push(ez);
+            }
+        }
+
+        todo!()
+    }
+
     fn setup(builder: BitPartBuilder<T>) -> Self {
         // TODO: actually randomise this
         let ref_points = &builder.dataset[0..(builder.ref_points as usize)];
@@ -26,6 +61,7 @@ where
         let sheet_exclusions = Self::sheet_exclusions(&builder, ref_points);
         let bitset = Self::make_bitset(&builder, &ball_exclusions, &sheet_exclusions);
         Self {
+            reference_points: ref_points.to_vec(),
             dataset: builder.dataset,
             ball_exclusions,
             sheet_exclusions,

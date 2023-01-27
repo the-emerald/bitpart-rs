@@ -5,6 +5,8 @@ where
     T: Metric,
 {
     fn is_in(&self, point: &T) -> bool;
+    fn must_be_in(&self, point: &T, threshold: f64) -> bool;
+    fn must_be_out(&self, point: &T, threshold: f64) -> bool;
 }
 
 pub(crate) struct BallExclusion<T> {
@@ -27,6 +29,14 @@ where
 {
     fn is_in(&self, point: &T) -> bool {
         self.point.distance(point) < self.radius
+    }
+
+    fn must_be_in(&self, point: &T, threshold: f64) -> bool {
+        self.point.distance(point) < (self.radius - threshold)
+    }
+
+    fn must_be_out(&self, point: &T, threshold: f64) -> bool {
+        self.point.distance(point) >= (self.radius + threshold)
     }
 }
 
@@ -52,5 +62,13 @@ where
 {
     fn is_in(&self, point: &T) -> bool {
         self.a.distance(point) - self.b.distance(point) - self.offset < 0.0
+    }
+
+    fn must_be_in(&self, point: &T, threshold: f64) -> bool {
+        todo!()
+    }
+
+    fn must_be_out(&self, point: &T, threshold: f64) -> bool {
+        todo!()
     }
 }
