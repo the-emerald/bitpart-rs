@@ -1,3 +1,4 @@
+use bitvec::prelude::*;
 use builder::BitPartBuilder;
 use exclusions::{BallExclusion, SheetExclusion};
 use itertools::Itertools;
@@ -11,6 +12,7 @@ pub struct BitPart<T> {
     dataset: Vec<T>,
     ball_exclusions: Vec<BallExclusion<T>>,
     sheet_exclusions: Vec<SheetExclusion<T>>,
+    bitset: Vec<BitVec>,
 }
 
 impl<T> BitPart<T>
@@ -22,10 +24,12 @@ where
         let ref_points = &builder.dataset[0..(builder.ref_points as usize)];
         let ball_exclusions = Self::ball_exclusions(&builder, ref_points);
         let sheet_exclusions = Self::sheet_exclusions(&builder, ref_points);
+        let bitset = Self::make_bitset(&builder, &ball_exclusions, &sheet_exclusions);
         Self {
+            dataset: builder.dataset,
             ball_exclusions,
             sheet_exclusions,
-            dataset: builder.dataset,
+            bitset,
         }
     }
 
@@ -49,7 +53,35 @@ where
         ref_points
             .iter()
             .combinations(2)
-            .map(|x| SheetExclusion::new(x[0].clone(), x[1].clone()))
+            .map(|x| SheetExclusion::new(x[0].clone(), x[1].clone(), 0.0))
             .collect()
+    }
+
+    fn make_bitset(
+        builder: &BitPartBuilder<T>,
+        ball_exclusions: &[BallExclusion<T>],
+        sheet_exclusions: &[SheetExclusion<T>],
+    ) -> Vec<BitVec> {
+        let mut ball_bitvecs = ball_exclusions
+            .iter()
+            .map(|ex| {
+                builder
+                    .dataset
+                    .iter()
+                    .map(|pt| ex.is_in(pt))
+                    .collect::<BitVec>()
+            })
+            .collect::<Vec<_>>();
+
+        let sheet_bitvecs = sheet_exclusions.iter().map(|ex| {
+            builder
+                .dataset
+                .iter()
+                .map(|pt| ex.is_in(pt))
+                .collect::<BitVec>()
+        });
+
+        ball_bitvecs.extend(sheet_bitvecs);
+        ball_bitvecs
     }
 }
