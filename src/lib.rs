@@ -27,10 +27,12 @@ where
             builder.mean_distance - 2.0 * builder.radius_increment,
             builder.mean_distance - builder.radius_increment,
             builder.mean_distance,
-            builder.mean_distance - builder.radius_increment,
-            builder.mean_distance - 2.0 * builder.radius_increment,
+            builder.mean_distance + builder.radius_increment,
+            builder.mean_distance + 2.0 * builder.radius_increment,
         ];
+
         let mut exclusions = vec![];
+
         for point in ref_points {
             let mut exclusions_subset = radii
                 .into_iter()
