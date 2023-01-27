@@ -1,11 +1,7 @@
-use num::traits::real::Real;
-
 pub mod euclidean;
 
 /// Trait for types in metric space.
 pub trait Metric: Clone {
-    type Output: Real;
-
     /// Distance between two points.
     /// # Axioms
     /// For a distance function to be valid, the following axioms must be met:
@@ -16,5 +12,5 @@ pub trait Metric: Clone {
     /// ```text
     /// x.distance(y) <= x.distance(y) + y.distance(z)
     /// ```
-    fn distance(&self, rhs: &Self) -> Self::Output;
+    fn distance(&self, rhs: &Self) -> f64;
 }

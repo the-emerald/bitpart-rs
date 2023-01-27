@@ -21,6 +21,6 @@ where
 
         let half = distances.len() / 2;
         distances.select_nth_unstable_by(half, |a, b| a.partial_cmp(b).unwrap());
-        // self.radius = distances.get(half).unwrap().clone();
+        self.radius = distances.get(half).unwrap().clone();
     }
 }
