@@ -1,6 +1,6 @@
 use bitvec::prelude::*;
 use builder::BitPartBuilder;
-use exclusions::{BallExclusion, SheetExclusion};
+use exclusions::{BallExclusion, Exclusion, SheetExclusion};
 use itertools::Itertools;
 use metric::Metric;
 
