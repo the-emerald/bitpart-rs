@@ -167,7 +167,7 @@ where
         exclusions: &[Box<dyn Exclusion<T> + Send + Sync + 'a>],
     ) -> Vec<BitVec> {
         exclusions
-            .iter()
+            .par_iter()
             .map(|ex| {
                 builder
                     .dataset
