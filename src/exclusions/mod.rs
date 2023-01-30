@@ -1,6 +1,6 @@
 use crate::metric::Metric;
 
-pub(crate) trait Exclusion<T>
+pub trait Exclusion<T>
 where
     T: Metric,
 {

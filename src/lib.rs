@@ -1,31 +1,26 @@
-use bitvec::{prelude::*, vec};
+use bitvec::prelude::*;
 use builder::BitPartBuilder;
 use exclusions::{BallExclusion, Exclusion, SheetExclusion};
 use itertools::Itertools;
 use metric::Metric;
 
 pub mod builder;
-mod exclusions;
+pub mod exclusions;
 pub mod metric;
 
-pub struct BitPart<T> {
+pub struct BitPart<'a, T> {
     dataset: Vec<T>,
     reference_points: Vec<T>,
-    exclusions: Vec<Box<dyn Exclusion<T>>>,
+    exclusions: Vec<Box<dyn Exclusion<T> + 'a>>,
     bitset: Vec<BitVec>,
 }
 
-impl<T> BitPart<T>
+impl<'a, T> BitPart<'a, T>
 where
-    T: Metric + 'static,
+    T: Metric,
+    dyn Exclusion<T>: 'a,
 {
     pub fn range_search(&self, point: T, threshold: f64) -> Vec<(T, f64)> {
-        // let distances = self
-        //     .reference_points
-        //     .iter()
-        //     .map(|rp| rp.distance(&point))
-        //     .collect::<Vec<_>>();
-
         let mut in_zone = vec![];
         let mut out_zone = vec![];
 
@@ -57,7 +52,7 @@ where
     fn ball_exclusions(
         builder: &BitPartBuilder<T>,
         ref_points: &[T],
-    ) -> Vec<Box<dyn Exclusion<T>>> {
+    ) -> Vec<Box<dyn Exclusion<T> + 'a>> {
         let radii = [
             builder.mean_distance - 2.0 * builder.radius_increment,
             builder.mean_distance - builder.radius_increment,
@@ -78,7 +73,7 @@ where
     fn sheet_exclusions(
         _builder: &BitPartBuilder<T>,
         ref_points: &[T],
-    ) -> Vec<Box<dyn Exclusion<T>>> {
+    ) -> Vec<Box<dyn Exclusion<T> + 'a>> {
         ref_points
             .iter()
             .combinations(2)
@@ -91,7 +86,7 @@ where
 
     fn make_bitset(
         builder: &BitPartBuilder<T>,
-        exclusions: &[Box<dyn Exclusion<T>>],
+        exclusions: &[Box<dyn Exclusion<T> + 'a>],
     ) -> Vec<BitVec> {
         exclusions
             .iter()

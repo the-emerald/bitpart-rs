@@ -60,7 +60,7 @@ where
     }
 
     /// Build the BitPart.
-    pub fn build(self) -> BitPart<T> {
+    pub fn build<'a>(self) -> BitPart<'a, T> {
         BitPart::setup(self)
     }
 }
