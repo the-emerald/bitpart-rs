@@ -18,7 +18,7 @@ pub struct BitPart<'a, T> {
 impl<'a, T> BitPart<'a, T>
 where
     T: Metric + Send + Sync,
-    dyn Exclusion<T>: Send + Sync + 'static,
+    dyn Exclusion<T>: Send + Sync + 'a,
 {
     pub fn range_search(&self, point: T, threshold: f64) -> Vec<(T, f64)> {
         let mut ins = vec![];
@@ -133,7 +133,7 @@ where
     fn ball_exclusions(
         builder: &BitPartBuilder<T>,
         ref_points: &[T],
-    ) -> Vec<Box<dyn Exclusion<T> + Send + Sync + 'static>> {
+    ) -> Vec<Box<dyn Exclusion<T> + Send + Sync + 'a>> {
         let radii = [
             builder.mean_distance - 2.0 * builder.radius_increment,
             builder.mean_distance - builder.radius_increment,
@@ -155,7 +155,7 @@ where
     fn sheet_exclusions(
         _builder: &BitPartBuilder<T>,
         ref_points: &[T],
-    ) -> Vec<Box<dyn Exclusion<T> + Send + Sync + 'static>> {
+    ) -> Vec<Box<dyn Exclusion<T> + Send + Sync + 'a>> {
         ref_points
             .iter()
             .combinations(2)
@@ -168,7 +168,7 @@ where
 
     fn make_bitset(
         builder: &BitPartBuilder<T>,
-        exclusions: &[Box<dyn Exclusion<T> + Send + Sync + 'static>],
+        exclusions: &[Box<dyn Exclusion<T> + Send + Sync + 'a>],
     ) -> Vec<BitVec> {
         exclusions
             .iter()

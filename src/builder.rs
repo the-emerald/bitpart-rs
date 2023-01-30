@@ -14,7 +14,7 @@ pub struct BitPartBuilder<T> {
 
 impl<T> BitPartBuilder<T>
 where
-    T: Metric + Send + Sync + 'static,
+    for<'a> T: Metric + Send + Sync + 'a,
     dyn Exclusion<T>: Send + Sync,
 {
     /// Create a new `BitPartBuilder` from a dataset.
