@@ -35,7 +35,7 @@ where
             // No exclusions at all, linear search
             (0, 0) => self
                 .dataset
-                .iter()
+                .par_iter()
                 .cloned()
                 .map(|pt| (pt.clone(), pt.distance(&point)))
                 .filter(|(_, dist)| *dist < threshold)
