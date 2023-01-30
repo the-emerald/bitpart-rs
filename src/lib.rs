@@ -94,7 +94,7 @@ where
         outs.into_par_iter()
             .map(|i| bitset.get(i).unwrap())
             .cloned()
-            .reduce(|| !BitVec::with_capacity(len), |acc, bv| acc | bv)
+            .reduce(|| BitVec::repeat(false, len), |acc, bv| acc | bv)
     }
 
     /// Performs a bitwise-and on all exclusion zone columns that contain the query point.
@@ -106,7 +106,7 @@ where
         ins.into_par_iter()
             .map(|i| bitset.get(i).unwrap())
             .cloned()
-            .reduce(|| BitVec::with_capacity(len), |acc, bv| acc & bv)
+            .reduce(|| BitVec::repeat(true, len), |acc, bv| acc & bv)
     }
 
     fn filter_contenders(&self, threshold: f64, point: T, res: BitVec) -> Vec<(T, f64)> {
