@@ -18,4 +18,4 @@ name = "benchmarks"
 harness = false
 
 [workspace]
-members = [".", "sisap-data"]
+members = [".", "sisap-data", "example"]
