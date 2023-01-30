@@ -25,9 +25,9 @@ where
 
         for (idx, ez) in self.exclusions.iter().enumerate() {
             if ez.must_be_in(&point, threshold) {
-                ins.push((idx, ez));
+                ins.push(idx);
             } else if ez.must_be_out(&point, threshold) {
-                outs.push((idx, ez));
+                outs.push(idx);
             }
         }
 
@@ -42,19 +42,19 @@ where
                 .collect(),
             // nots, flip, filter
             (0, _) => {
-                let nots = self.get_nots(outs.iter().map(|(i, _)| *i));
+                let nots = self.get_nots(outs.into_iter());
                 let nots = !nots; // TODO: is nots always of length self.dataset.len()?
                 self.filter_contenders(threshold, point, nots)
             }
             // filter
             (_, 0) => {
-                let ands = self.get_ands(ins.iter().map(|(i, _)| *i));
+                let ands = self.get_ands(ins.into_iter());
                 self.filter_contenders(threshold, point, ands)
             }
             // nots, flip, and, filter
             (_, _) => {
-                let ands = self.get_ands(ins.iter().map(|(i, _)| *i));
-                let nots = self.get_nots(outs.iter().map(|(i, _)| *i));
+                let ands = self.get_ands(ins.into_iter());
+                let nots = self.get_nots(outs.into_iter());
                 let nots = !nots;
                 let ands = ands & nots;
                 self.filter_contenders(threshold, point, ands)
