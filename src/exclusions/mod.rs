@@ -65,10 +65,10 @@ where
     }
 
     fn must_be_in(&self, point: &T, threshold: f64) -> bool {
-        todo!()
+        point.distance(&self.a) - point.distance(&self.b) - self.offset < (-2.0 * threshold)
     }
 
     fn must_be_out(&self, point: &T, threshold: f64) -> bool {
-        todo!()
+        point.distance(&self.a) - point.distance(&self.b) - self.offset >= (2.0 * threshold)
     }
 }
