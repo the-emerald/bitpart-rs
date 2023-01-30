@@ -32,8 +32,6 @@ where
             }
         }
 
-        let dataset_len = self.dataset.len();
-
         match (ins.len(), outs.len()) {
             // No exclusions at all, linear search
             (0, 0) => self
@@ -45,19 +43,19 @@ where
                 .collect(),
             // nots, flip, filter
             (0, _) => {
-                let nots = Self::get_nots(self.bitset.clone(), dataset_len, outs.into_par_iter());
+                let nots = self.get_nots(outs.into_par_iter());
                 let nots = !nots; // TODO: is nots always of length self.dataset.len()?
                 self.filter_contenders(threshold, point, nots)
             }
             // filter
             (_, 0) => {
-                let ands = Self::get_ands(self.bitset.clone(), dataset_len, ins.into_par_iter());
+                let ands = self.get_ands(ins.into_par_iter());
                 self.filter_contenders(threshold, point, ands)
             }
             // nots, flip, and, filter
             (_, _) => {
-                let ands = Self::get_ands(self.bitset.clone(), dataset_len, ins.into_par_iter());
-                let nots = Self::get_nots(self.bitset.clone(), dataset_len, outs.into_par_iter());
+                let ands = self.get_ands(ins.into_par_iter());
+                let nots = self.get_nots(outs.into_par_iter());
                 let nots = !nots;
                 let ands = ands & nots;
                 self.filter_contenders(threshold, point, ands)
@@ -86,27 +84,25 @@ where
     }
 
     /// Performs a bitwise-or on all exclusion zone columns that do not contain the query point.
-    fn get_nots(
-        bitset: Vec<BitVec>,
-        len: usize,
-        outs: impl IntoParallelIterator<Item = usize>,
-    ) -> BitVec {
+    fn get_nots(&self, outs: impl IntoParallelIterator<Item = usize>) -> BitVec {
         outs.into_par_iter()
-            .map(|i| bitset.get(i).unwrap())
+            .map(|i| self.bitset.get(i).unwrap())
             .cloned()
-            .reduce(|| BitVec::repeat(false, len), |acc, bv| acc | bv)
+            .reduce(
+                || BitVec::repeat(false, self.dataset.len()),
+                |acc, bv| acc | bv,
+            )
     }
 
     /// Performs a bitwise-and on all exclusion zone columns that contain the query point.
-    fn get_ands(
-        bitset: Vec<BitVec>,
-        len: usize,
-        ins: impl IntoParallelIterator<Item = usize>,
-    ) -> BitVec {
+    fn get_ands(&self, ins: impl IntoParallelIterator<Item = usize>) -> BitVec {
         ins.into_par_iter()
-            .map(|i| bitset.get(i).unwrap())
+            .map(|i| self.bitset.get(i).unwrap())
             .cloned()
-            .reduce(|| BitVec::repeat(true, len), |acc, bv| acc & bv)
+            .reduce(
+                || BitVec::repeat(true, self.dataset.len()),
+                |acc, bv| acc & bv,
+            )
     }
 
     fn filter_contenders(&self, threshold: f64, point: T, res: BitVec) -> Vec<(T, f64)> {
