@@ -10,7 +10,6 @@ pub mod metric;
 
 pub struct BitPart<'a, T> {
     dataset: Vec<T>,
-    reference_points: Vec<T>,
     exclusions: Vec<Box<dyn Exclusion<T> + 'a>>,
     bitset: Vec<BitVec>,
 }
@@ -116,7 +115,6 @@ where
         exclusions.extend(Self::sheet_exclusions(&builder, ref_points));
         let bitset = Self::make_bitset(&builder, &exclusions);
         Self {
-            reference_points: ref_points.to_vec(),
             dataset: builder.dataset,
             bitset,
             exclusions,
