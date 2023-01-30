@@ -1,8 +1,8 @@
 use crate::metric::Metric;
 
-pub trait Exclusion<T>
+pub trait Exclusion<T>: Send + Sync
 where
-    T: Metric,
+    T: Metric + Send + Sync,
 {
     fn is_in(&self, point: &T) -> bool;
     fn must_be_in(&self, point: &T, threshold: f64) -> bool;
@@ -25,7 +25,7 @@ where
 
 impl<T> Exclusion<T> for BallExclusion<T>
 where
-    T: Metric,
+    T: Metric + Send + Sync,
 {
     fn is_in(&self, point: &T) -> bool {
         self.point.distance(point) < self.radius
@@ -58,7 +58,7 @@ where
 
 impl<T> Exclusion<T> for SheetExclusion<T>
 where
-    T: Metric,
+    T: Metric + Send + Sync,
 {
     fn is_in(&self, point: &T) -> bool {
         self.a.distance(point) - self.b.distance(point) - self.offset < 0.0

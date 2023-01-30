@@ -1,4 +1,4 @@
-use crate::{metric::Metric, BitPart};
+use crate::{exclusions::Exclusion, metric::Metric, BitPart};
 
 /// Builder for a BitPart query.
 #[derive(Debug)]
@@ -14,7 +14,8 @@ pub struct BitPartBuilder<T> {
 
 impl<T> BitPartBuilder<T>
 where
-    for<'a> T: Metric + Send + Sync + 'a,
+    T: Metric + Send + Sync + 'static,
+    dyn Exclusion<T>: Send + Sync,
 {
     /// Create a new `BitPartBuilder` from a dataset.
     pub fn new(dataset: impl IntoIterator<Item = T>) -> Self {
