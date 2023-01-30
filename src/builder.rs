@@ -14,7 +14,7 @@ pub struct BitPartBuilder<T> {
 
 impl<T> BitPartBuilder<T>
 where
-    T: Metric + 'static,
+    for<'a> T: Metric + 'a,
 {
     /// Create a new `BitPartBuilder` from a dataset.
     pub fn new(dataset: impl IntoIterator<Item = T>) -> Self {
