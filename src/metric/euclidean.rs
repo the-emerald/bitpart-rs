@@ -30,6 +30,30 @@ impl<T> Deref for Euclidean<T> {
     }
 }
 
+impl<T> IntoIterator for Euclidean<T>
+where
+    T: IntoIterator,
+{
+    type Item = <T as IntoIterator>::Item;
+    type IntoIter = <T as IntoIterator>::IntoIter;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.0.into_iter()
+    }
+}
+
+impl<'a, T> IntoIterator for &'a Euclidean<T>
+where
+    &'a T: IntoIterator,
+{
+    type Item = <&'a T as IntoIterator>::Item;
+    type IntoIter = <&'a T as IntoIterator>::IntoIter;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.0.into_iter()
+    }
+}
+
 // pub fn euclidean_nasa(a: Euclidean<[f64; 20], f64>, b: Euclidean<[f64; 20], f64>) -> f64 {
 //     // assert_eq!(a.len(), b.len());
 //     a.distance(&b)
