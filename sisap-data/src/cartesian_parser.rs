@@ -1,5 +1,5 @@
 use nom::{
-    character::complete::{self, newline, space1},
+    character::complete::{self, newline, space0, space1},
     combinator::verify,
     multi::{many1, separated_list0},
     number::complete::double,
@@ -19,6 +19,7 @@ pub struct FileConfig {
 
 fn vector(input: &str) -> IResult<&str, Vec<f64>> {
     let (input, vector) = separated_list0(space1, double)(input)?;
+    let (input, _) = space0(input)?;
     let (input, _) = newline(input)?;
     Ok((input, vector))
 }
@@ -61,6 +62,7 @@ mod tests {
     use super::*;
 
     const NASA: &str = include_str!("nasa.ascii");
+    const COLORS: &str = include_str!("colors.ascii");
 
     #[test]
     fn test_nasa() {
@@ -68,6 +70,18 @@ mod tests {
 
         assert_eq!(config.dimensions, 20);
         assert_eq!(config.lines, 40150);
+        assert!(vectors
+            .iter()
+            .all(|v| v.len() == config.dimensions as usize));
+        assert_eq!(config.lines as usize, vectors.len());
+    }
+
+    #[test]
+    fn test_colors() {
+        let (config, vectors) = parse(COLORS).unwrap().1;
+
+        assert_eq!(config.dimensions, 112);
+        assert_eq!(config.lines, 112682);
         assert!(vectors
             .iter()
             .all(|v| v.len() == config.dimensions as usize));

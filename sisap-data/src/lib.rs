@@ -1,4 +1,5 @@
 pub mod cartesian_parser;
+pub mod colors;
 pub mod nasa;
 
 /// Errors that can be encountered while parsing a dataset.
