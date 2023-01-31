@@ -17,7 +17,7 @@ fn main() {
 
     // Line 319 in nasa.ascii
     let query = Euclidean::new(Colors(QUERY));
-    let threshold = 1.0;
+    let threshold = 0.5;
 
     let res = bitpart.range_search(query.clone(), threshold);
     println!("{} points returned", res.len());

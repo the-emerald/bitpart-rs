@@ -59,7 +59,7 @@ pub fn sisap_nasa(c: &mut Criterion) {
 criterion_group!(benches, sisap_nasa, sisap_colors);
 criterion_main!(benches);
 
-const NASA_THRESHOLD: f64 = 0.5;
+const NASA_THRESHOLD: f64 = 1.0;
 
 const NASA_QUERY: [f64; 20] = [
     0.00722561, 0.0599118, 0.0165916, 0.121793, 0.0404137, 0.297534, 0.979138, -0.792623, 0.242515,
