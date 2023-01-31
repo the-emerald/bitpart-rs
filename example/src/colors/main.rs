@@ -6,6 +6,46 @@ use bitpart::{
 };
 use sisap_data::colors::{parse_colors, Colors};
 
+fn main() {
+    let colors = parse_colors(&fs::read_to_string("../sisap-data/src/colors.ascii").unwrap())
+        .unwrap()
+        .into_iter()
+        .map(Euclidean::new)
+        .collect::<Vec<_>>();
+
+    let bitpart = BitPartBuilder::new(colors.clone()).build();
+
+    // Line 319 in nasa.ascii
+    let query = Euclidean::new(Colors(QUERY));
+    let threshold = 1.0;
+
+    let res = bitpart.range_search(query.clone(), threshold);
+    println!("{} points returned", res.len());
+
+    print!("CHECK: all returned points within threshold... ");
+    if res.iter().all(|(pt, _)| pt.distance(&query) <= threshold) {
+        println!("ok");
+    } else {
+        println!("fail");
+    }
+
+    print!("CHECK: compare against linear search... ");
+    let brute_force = colors
+        .into_iter()
+        .map(|pt| pt.distance(&query))
+        .filter(|d| *d < threshold)
+        .count();
+    if brute_force != res.len() {
+        println!(
+            "fail. brute force search returned {} results, but bitpart returned {}",
+            brute_force,
+            res.len()
+        );
+    } else {
+        println!("ok")
+    }
+}
+
 const QUERY: [f64; 112] = [
     0.057581,
     0.0228588,
@@ -120,43 +160,3 @@ const QUERY: [f64; 112] = [
     0.000651042,
     0.0,
 ];
-
-fn main() {
-    let colors = parse_colors(&fs::read_to_string("../sisap-data/src/colors.ascii").unwrap())
-        .unwrap()
-        .into_iter()
-        .map(Euclidean::new)
-        .collect::<Vec<_>>();
-
-    let bitpart = BitPartBuilder::new(colors.clone()).build();
-
-    // Line 319 in nasa.ascii
-    let query = Euclidean::new(Colors(QUERY));
-    let threshold = 1.0;
-
-    let res = bitpart.range_search(query.clone(), threshold);
-    println!("{} points returned", res.len());
-
-    print!("CHECK: all returned points within threshold... ");
-    if res.iter().all(|(pt, _)| pt.distance(&query) <= threshold) {
-        println!("ok");
-    } else {
-        println!("fail");
-    }
-
-    print!("CHECK: compare against linear search... ");
-    let brute_force = colors
-        .into_iter()
-        .map(|pt| pt.distance(&query))
-        .filter(|d| *d < threshold)
-        .count();
-    if brute_force != res.len() {
-        println!(
-            "fail. brute force search returned {} results, but bitpart returned {}",
-            brute_force,
-            res.len()
-        );
-    } else {
-        println!("ok")
-    }
-}
