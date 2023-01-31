@@ -8,3 +8,11 @@ edition = "2021"
 [dependencies]
 bitpart = { path = "../" }
 sisap-data = { path = "../sisap-data" }
+
+[[bin]]
+name = "nasa"
+path = "src/nasa/main.rs"
+
+[[bin]]
+name = "colors"
+path = "src/colors/main.rs"
