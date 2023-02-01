@@ -1,24 +1,17 @@
+use crate::builder::BitPartBuilder;
+use crate::exclusions::{BallExclusion, Exclusion, SheetExclusion};
+use crate::metric::Metric;
 use bitvec::prelude::*;
-use builder::BitPartBuilder;
-use exclusions::{BallExclusion, Exclusion, SheetExclusion};
 use itertools::Itertools;
-use metric::Metric;
 use rayon::prelude::*;
 
-pub mod builder;
-pub mod exclusions;
-pub mod metric;
-
-#[cfg(feature = "rayon")]
-pub mod parallel;
-
-pub struct BitPart<'a, T> {
+pub struct ParallelBitPart<'a, T> {
     dataset: Vec<T>,
     exclusions: Vec<Box<dyn Exclusion<T> + Send + Sync + 'a>>,
     bitset: Vec<BitVec>,
 }
 
-impl<'a, T> BitPart<'a, T>
+impl<'a, T> ParallelBitPart<'a, T>
 where
     T: Metric + Send + Sync,
     dyn Exclusion<T>: Send + Sync + 'a,
@@ -116,7 +109,7 @@ where
             .collect()
     }
 
-    fn setup(builder: BitPartBuilder<T>) -> Self {
+    pub(crate) fn setup(builder: BitPartBuilder<T>) -> Self {
         // TODO: actually randomise this
         let ref_points = &builder.dataset[0..(builder.ref_points as usize)];
         let mut exclusions = Self::ball_exclusions(&builder, ref_points);
