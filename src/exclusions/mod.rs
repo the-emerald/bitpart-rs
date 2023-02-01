@@ -2,7 +2,7 @@ use crate::metric::Metric;
 
 #[cfg(feature = "rayon")]
 /// Marker trait for exclusions that are also Send and Sync.
-pub trait ExclusionSync<T>: Exclusion<T>
+pub trait ExclusionSync<T>: Exclusion<T> + Send + Sync
 where
     T: Metric + Send + Sync,
 {
