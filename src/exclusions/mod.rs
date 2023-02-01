@@ -1,5 +1,13 @@
 use crate::metric::Metric;
 
+#[cfg(feature = "rayon")]
+/// Marker trait for exclusions that are also Send and Sync.
+pub trait ExclusionSync<T>: Exclusion<T>
+where
+    T: Metric + Send + Sync,
+{
+}
+
 pub trait Exclusion<T>
 where
     T: Metric,
@@ -40,6 +48,9 @@ where
     }
 }
 
+#[cfg(feature = "rayon")]
+impl<T> ExclusionSync<T> for BallExclusion<T> where T: Metric + Send + Sync {}
+
 // todo: this is only 3p
 pub(crate) struct SheetExclusion<T> {
     a: T,
@@ -72,3 +83,6 @@ where
         point.distance(&self.a) - point.distance(&self.b) - self.offset >= (2.0 * threshold)
     }
 }
+
+#[cfg(feature = "rayon")]
+impl<T> ExclusionSync<T> for SheetExclusion<T> where T: Metric + Send + Sync {}

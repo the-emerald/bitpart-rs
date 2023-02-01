@@ -1,5 +1,11 @@
 use crate::{metric::Metric, BitPart};
 
+#[cfg(feature = "rayon")]
+use crate::exclusions::ExclusionSync;
+
+#[cfg(feature = "rayon")]
+use crate::parallel::ParallelBitPart;
+
 /// Builder for a BitPart query.
 #[derive(Debug)]
 pub struct BitPartBuilder<T> {
@@ -62,5 +68,16 @@ where
     /// Build the BitPart.
     pub fn build<'a>(self) -> BitPart<'a, T> {
         BitPart::setup(self)
+    }
+}
+
+#[cfg(feature = "rayon")]
+impl<T> BitPartBuilder<T>
+where
+    for<'a> T: Metric + Send + Sync + 'a,
+    dyn ExclusionSync<T>: Send + Sync,
+{
+    pub fn build_parallel<'a>(self) -> ParallelBitPart<'a, T> {
+        ParallelBitPart::setup(self)
     }
 }
