@@ -9,6 +9,7 @@ pub struct ParallelBitPart<'a, T> {
     dataset: Vec<T>,
     exclusions: Vec<Box<dyn ExclusionSync<T> + Send + Sync + 'a>>,
     bitset: Vec<BitVec>,
+    job_size: Option<usize>,
 }
 
 impl<'a, T> ParallelBitPart<'a, T>
@@ -39,66 +40,62 @@ where
                 .collect(),
             // nots, flip, filter
             (0, _) => {
-                let nots = self.get_nots(outs.into_par_iter());
+                let nots = self.get_nots(&outs);
                 let nots = !nots; // TODO: is nots always of length self.dataset.len()?
                 self.filter_contenders(threshold, point, nots)
             }
             // filter
             (_, 0) => {
-                let ands = self.get_ands(ins.into_par_iter());
+                let ands = self.get_ands(&ins);
                 self.filter_contenders(threshold, point, ands)
             }
             // nots, flip, and, filter
             (_, _) => {
-                let ands = self.get_ands(ins.into_par_iter());
-                let nots = self.get_nots(outs.into_par_iter());
+                let ands = self.get_ands(&ins);
+                let nots = self.get_nots(&outs);
                 let nots = !nots;
                 let ands = ands & nots;
                 self.filter_contenders(threshold, point, ands)
             }
         }
-
-        // if ins not empty:
-        //      ands = get_and()
-        //      if outs not empty:
-        //          nots = get_nots()
-        //          nots flip 0..sz
-        //          and &= nots
-        //          filter_contenders()
-        //      else:
-        //          filter_contenders()
-        // else:
-        //      if outs not empty:
-        //          nots = get_nots()
-        //          nots flip 0..sz
-        //          filter_contenders()
-        //      else:
-        //          for d in data:
-        //              dist = query.distance(d)
-        //              if dist < threshold:
-        //                  res.push(d)
     }
 
     /// Performs a bitwise-or on all exclusion zone columns that do not contain the query point.
-    fn get_nots(&self, outs: impl IntoParallelIterator<Item = usize>) -> BitVec {
-        outs.into_par_iter()
-            .map(|i| self.bitset.get(i).unwrap())
-            .cloned()
-            .reduce(
-                || BitVec::repeat(false, self.dataset.len()),
-                |acc, bv| acc | bv,
-            )
+    fn get_nots(&self, outs: &[usize]) -> BitVec {
+        outs.par_chunks(
+            self.job_size
+                .unwrap_or_else(|| outs.as_parallel_slice().len()),
+        )
+        .map(|ck| {
+            ck.iter()
+                .map(|&i| self.bitset.get(i).unwrap())
+                .cloned()
+                .reduce(|acc, bv| acc | bv)
+                .unwrap()
+        })
+        .reduce(
+            || BitVec::repeat(false, self.dataset.len()),
+            |acc, bv| acc | bv,
+        )
     }
 
     /// Performs a bitwise-and on all exclusion zone columns that contain the query point.
-    fn get_ands(&self, ins: impl IntoParallelIterator<Item = usize>) -> BitVec {
-        ins.into_par_iter()
-            .map(|i| self.bitset.get(i).unwrap())
-            .cloned()
-            .reduce(
-                || BitVec::repeat(true, self.dataset.len()),
-                |acc, bv| acc & bv,
-            )
+    fn get_ands(&self, ins: &[usize]) -> BitVec {
+        ins.par_chunks(
+            self.job_size
+                .unwrap_or_else(|| ins.as_parallel_slice().len()),
+        )
+        .map(|ck| {
+            ck.iter()
+                .map(|&i| self.bitset.get(i).unwrap())
+                .cloned()
+                .reduce(|acc, bv| acc & bv)
+                .unwrap()
+        })
+        .reduce(
+            || BitVec::repeat(true, self.dataset.len()),
+            |acc, bv| acc & bv,
+        )
     }
 
     fn filter_contenders(&self, threshold: f64, point: T, res: BitVec) -> Vec<(T, f64)> {
@@ -109,7 +106,7 @@ where
             .collect()
     }
 
-    pub(crate) fn setup(builder: BitPartBuilder<T>) -> Self {
+    pub(crate) fn setup(builder: BitPartBuilder<T>, job_size: Option<u64>) -> Self {
         // TODO: actually randomise this
         let ref_points = &builder.dataset[0..(builder.ref_points as usize)];
         let mut exclusions = Self::ball_exclusions(&builder, ref_points);
@@ -119,6 +116,7 @@ where
             dataset: builder.dataset,
             bitset,
             exclusions,
+            job_size: job_size.map(|n| n as usize),
         }
     }
 
