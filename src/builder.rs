@@ -1,4 +1,7 @@
-use crate::{exclusions::Exclusion, metric::Metric, BitPart};
+use crate::{metric::Metric, BitPart};
+
+#[cfg(feature = "rayon")]
+use crate::exclusions::ExclusionSync;
 
 #[cfg(feature = "rayon")]
 use crate::parallel::ParallelBitPart;
@@ -17,8 +20,7 @@ pub struct BitPartBuilder<T> {
 
 impl<T> BitPartBuilder<T>
 where
-    for<'a> T: Metric + Send + Sync + 'a,
-    dyn Exclusion<T>: Send + Sync,
+    for<'a> T: Metric + 'a,
 {
     /// Create a new `BitPartBuilder` from a dataset.
     pub fn new(dataset: impl IntoIterator<Item = T>) -> Self {
@@ -67,9 +69,14 @@ where
     pub fn build<'a>(self) -> BitPart<'a, T> {
         BitPart::setup(self)
     }
+}
 
-    #[cfg(feature = "rayon")]
-    /// Build the BitPart with parallelism.
+#[cfg(feature = "rayon")]
+impl<T> BitPartBuilder<T>
+where
+    for<'a> T: Metric + Send + Sync + 'a,
+    dyn ExclusionSync<T>: Send + Sync,
+{
     pub fn build_parallel<'a>(self) -> ParallelBitPart<'a, T> {
         ParallelBitPart::setup(self)
     }

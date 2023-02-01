@@ -3,7 +3,6 @@ use builder::BitPartBuilder;
 use exclusions::{BallExclusion, Exclusion, SheetExclusion};
 use itertools::Itertools;
 use metric::Metric;
-use rayon::prelude::*;
 
 pub mod builder;
 pub mod exclusions;
@@ -14,14 +13,14 @@ pub mod parallel;
 
 pub struct BitPart<'a, T> {
     dataset: Vec<T>,
-    exclusions: Vec<Box<dyn Exclusion<T> + Send + Sync + 'a>>,
+    exclusions: Vec<Box<dyn Exclusion<T> + 'a>>,
     bitset: Vec<BitVec>,
 }
 
 impl<'a, T> BitPart<'a, T>
 where
-    T: Metric + Send + Sync,
-    dyn Exclusion<T>: Send + Sync + 'a,
+    T: Metric,
+    dyn Exclusion<T>: 'a,
 {
     pub fn range_search(&self, point: T, threshold: f64) -> Vec<(T, f64)> {
         let mut ins = vec![];
@@ -39,26 +38,26 @@ where
             // No exclusions at all, linear search
             (0, 0) => self
                 .dataset
-                .par_iter()
+                .iter()
                 .cloned()
                 .map(|pt| (pt.clone(), pt.distance(&point)))
                 .filter(|(_, dist)| *dist < threshold)
                 .collect(),
             // nots, flip, filter
             (0, _) => {
-                let nots = self.get_nots(outs.into_par_iter());
+                let nots = self.get_nots(outs.into_iter());
                 let nots = !nots; // TODO: is nots always of length self.dataset.len()?
                 self.filter_contenders(threshold, point, nots)
             }
             // filter
             (_, 0) => {
-                let ands = self.get_ands(ins.into_par_iter());
+                let ands = self.get_ands(ins.into_iter());
                 self.filter_contenders(threshold, point, ands)
             }
             // nots, flip, and, filter
             (_, _) => {
-                let ands = self.get_ands(ins.into_par_iter());
-                let nots = self.get_nots(outs.into_par_iter());
+                let ands = self.get_ands(ins.into_iter());
+                let nots = self.get_nots(outs.into_iter());
                 let nots = !nots;
                 let ands = ands & nots;
                 self.filter_contenders(threshold, point, ands)
@@ -87,25 +86,21 @@ where
     }
 
     /// Performs a bitwise-or on all exclusion zone columns that do not contain the query point.
-    fn get_nots(&self, outs: impl IntoParallelIterator<Item = usize>) -> BitVec {
-        outs.into_par_iter()
+    fn get_nots(&self, outs: impl IntoIterator<Item = usize>) -> BitVec {
+        outs.into_iter()
             .map(|i| self.bitset.get(i).unwrap())
             .cloned()
-            .reduce(
-                || BitVec::repeat(false, self.dataset.len()),
-                |acc, bv| acc | bv,
-            )
+            .reduce(|acc, bv| acc | bv)
+            .unwrap()
     }
 
     /// Performs a bitwise-and on all exclusion zone columns that contain the query point.
-    fn get_ands(&self, ins: impl IntoParallelIterator<Item = usize>) -> BitVec {
-        ins.into_par_iter()
+    fn get_ands(&self, ins: impl IntoIterator<Item = usize>) -> BitVec {
+        ins.into_iter()
             .map(|i| self.bitset.get(i).unwrap())
             .cloned()
-            .reduce(
-                || BitVec::repeat(true, self.dataset.len()),
-                |acc, bv| acc & bv,
-            )
+            .reduce(|acc, bv| acc & bv)
+            .unwrap()
     }
 
     fn filter_contenders(&self, threshold: f64, point: T, res: BitVec) -> Vec<(T, f64)> {
@@ -132,7 +127,7 @@ where
     fn ball_exclusions(
         builder: &BitPartBuilder<T>,
         ref_points: &[T],
-    ) -> Vec<Box<dyn Exclusion<T> + Send + Sync + 'a>> {
+    ) -> Vec<Box<dyn Exclusion<T> + 'a>> {
         let radii = [
             builder.mean_distance - 2.0 * builder.radius_increment,
             builder.mean_distance - builder.radius_increment,
@@ -145,8 +140,7 @@ where
             .iter()
             .cartesian_product(radii.into_iter())
             .map(|(point, radius)| {
-                Box::new(BallExclusion::new(point.clone(), radius))
-                    as Box<dyn Exclusion<T> + Send + Sync>
+                Box::new(BallExclusion::new(point.clone(), radius)) as Box<dyn Exclusion<T>>
             })
             .collect()
     }
@@ -154,23 +148,23 @@ where
     fn sheet_exclusions(
         _builder: &BitPartBuilder<T>,
         ref_points: &[T],
-    ) -> Vec<Box<dyn Exclusion<T> + Send + Sync + 'a>> {
+    ) -> Vec<Box<dyn Exclusion<T> + 'a>> {
         ref_points
             .iter()
             .combinations(2)
             .map(|x| {
                 Box::new(SheetExclusion::new(x[0].clone(), x[1].clone(), 0.0))
-                    as Box<dyn Exclusion<T> + Send + Sync>
+                    as Box<dyn Exclusion<T>>
             })
             .collect()
     }
 
     fn make_bitset(
         builder: &BitPartBuilder<T>,
-        exclusions: &[Box<dyn Exclusion<T> + Send + Sync + 'a>],
+        exclusions: &[Box<dyn Exclusion<T> + 'a>],
     ) -> Vec<BitVec> {
         exclusions
-            .par_iter()
+            .iter()
             .map(|ex| {
                 builder
                     .dataset

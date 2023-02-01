@@ -1,5 +1,5 @@
 use crate::builder::BitPartBuilder;
-use crate::exclusions::{BallExclusion, Exclusion, SheetExclusion};
+use crate::exclusions::{BallExclusion, ExclusionSync, SheetExclusion};
 use crate::metric::Metric;
 use bitvec::prelude::*;
 use itertools::Itertools;
@@ -7,14 +7,14 @@ use rayon::prelude::*;
 
 pub struct ParallelBitPart<'a, T> {
     dataset: Vec<T>,
-    exclusions: Vec<Box<dyn Exclusion<T> + Send + Sync + 'a>>,
+    exclusions: Vec<Box<dyn ExclusionSync<T> + Send + Sync + 'a>>,
     bitset: Vec<BitVec>,
 }
 
 impl<'a, T> ParallelBitPart<'a, T>
 where
     T: Metric + Send + Sync,
-    dyn Exclusion<T>: Send + Sync + 'a,
+    dyn ExclusionSync<T>: Send + Sync + 'a,
 {
     pub fn range_search(&self, point: T, threshold: f64) -> Vec<(T, f64)> {
         let mut ins = vec![];
@@ -125,7 +125,7 @@ where
     fn ball_exclusions(
         builder: &BitPartBuilder<T>,
         ref_points: &[T],
-    ) -> Vec<Box<dyn Exclusion<T> + Send + Sync + 'a>> {
+    ) -> Vec<Box<dyn ExclusionSync<T> + Send + Sync + 'a>> {
         let radii = [
             builder.mean_distance - 2.0 * builder.radius_increment,
             builder.mean_distance - builder.radius_increment,
@@ -139,7 +139,7 @@ where
             .cartesian_product(radii.into_iter())
             .map(|(point, radius)| {
                 Box::new(BallExclusion::new(point.clone(), radius))
-                    as Box<dyn Exclusion<T> + Send + Sync>
+                    as Box<dyn ExclusionSync<T> + Send + Sync>
             })
             .collect()
     }
@@ -147,20 +147,20 @@ where
     fn sheet_exclusions(
         _builder: &BitPartBuilder<T>,
         ref_points: &[T],
-    ) -> Vec<Box<dyn Exclusion<T> + Send + Sync + 'a>> {
+    ) -> Vec<Box<dyn ExclusionSync<T> + Send + Sync + 'a>> {
         ref_points
             .iter()
             .combinations(2)
             .map(|x| {
                 Box::new(SheetExclusion::new(x[0].clone(), x[1].clone(), 0.0))
-                    as Box<dyn Exclusion<T> + Send + Sync>
+                    as Box<dyn ExclusionSync<T> + Send + Sync>
             })
             .collect()
     }
 
     fn make_bitset(
         builder: &BitPartBuilder<T>,
-        exclusions: &[Box<dyn Exclusion<T> + Send + Sync + 'a>],
+        exclusions: &[Box<dyn ExclusionSync<T> + Send + Sync + 'a>],
     ) -> Vec<BitVec> {
         exclusions
             .par_iter()
