@@ -45,19 +45,19 @@ where
                 .collect(),
             // nots, flip, filter
             (0, _) => {
-                let nots = self.get_nots(outs.into_iter());
+                let nots = self.get_nots(&outs);
                 let nots = !nots; // TODO: is nots always of length self.dataset.len()?
                 self.filter_contenders(threshold, point, nots)
             }
             // filter
             (_, 0) => {
-                let ands = self.get_ands(ins.into_iter());
+                let ands = self.get_ands(&ins);
                 self.filter_contenders(threshold, point, ands)
             }
             // nots, flip, and, filter
             (_, _) => {
-                let ands = self.get_ands(ins.into_iter());
-                let nots = self.get_nots(outs.into_iter());
+                let ands = self.get_ands(&ins);
+                let nots = self.get_nots(&outs);
                 let nots = !nots;
                 let ands = ands & nots;
                 self.filter_contenders(threshold, point, ands)
@@ -86,18 +86,18 @@ where
     }
 
     /// Performs a bitwise-or on all exclusion zone columns that do not contain the query point.
-    fn get_nots(&self, outs: impl IntoIterator<Item = usize>) -> BitVec {
-        outs.into_iter()
-            .map(|i| self.bitset.get(i).unwrap())
+    fn get_nots(&self, outs: &[usize]) -> BitVec {
+        outs.iter()
+            .map(|&i| self.bitset.get(i).unwrap())
             .cloned()
             .reduce(|acc, bv| acc | bv)
             .unwrap()
     }
 
     /// Performs a bitwise-and on all exclusion zone columns that contain the query point.
-    fn get_ands(&self, ins: impl IntoIterator<Item = usize>) -> BitVec {
-        ins.into_iter()
-            .map(|i| self.bitset.get(i).unwrap())
+    fn get_ands(&self, ins: &[usize]) -> BitVec {
+        ins.iter()
+            .map(|&i| self.bitset.get(i).unwrap())
             .cloned()
             .reduce(|acc, bv| acc & bv)
             .unwrap()
