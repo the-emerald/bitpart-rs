@@ -6,7 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-bitpart = { path = "../" }
+bitpart = { path = "../", features = ["rayon"] }
 sisap-data = { path = "../sisap-data" }
 
 [[bin]]
@@ -16,3 +16,7 @@ path = "src/nasa/main.rs"
 [[bin]]
 name = "colors"
 path = "src/colors/main.rs"
+
+[[bin]]
+name = "synthetic"
+path = "src/synthetic/main.rs"
