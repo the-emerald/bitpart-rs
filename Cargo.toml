@@ -19,7 +19,7 @@ name = "benchmarks"
 harness = false
 
 [workspace]
-members = [".", "sisap-data", "example"]
+members = [".", "sisap-data", "example", "generators"]
 
 [features]
 rayon = ["dep:rayon"]
