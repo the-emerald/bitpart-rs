@@ -1,4 +1,7 @@
-use bitpart::{builder::BitPartBuilder, metric::euclidean::Euclidean};
+use bitpart::{
+    builder::BitPartBuilder,
+    metric::{euclidean::Euclidean, Metric},
+};
 use criterion::{criterion_group, criterion_main, BatchSize, BenchmarkId, Criterion};
 use sisap_data::{
     colors::{parse_colors, Colors},
@@ -51,6 +54,20 @@ pub fn sisap_colors_query(c: &mut Criterion) {
 
     let mut group = c.benchmark_group("sisap_colors_query");
 
+    // Benchmark a brute force search
+    group.bench_function("bruteforce", |bn| {
+        bn.iter_batched(
+            || colors.clone(),
+            |data| {
+                data.into_iter()
+                    .map(|pt| (pt.clone(), pt.distance(&query)))
+                    .filter(|d| d.1 <= COLORS_THRESHOLD)
+                    .collect::<Vec<_>>()
+            },
+            BatchSize::SmallInput,
+        )
+    });
+
     // Benchmark query (sequential)
     let bitpart = BitPartBuilder::new(colors.clone()).build();
     group.bench_function("seq", |bn| {
@@ -101,6 +118,20 @@ pub fn sisap_nasa_query(c: &mut Criterion) {
 
     let mut group = c.benchmark_group("sisap_nasa_query");
 
+    // Benchmark a brute force search
+    group.bench_function("bruteforce", |bn| {
+        bn.iter_batched(
+            || nasa.clone(),
+            |data| {
+                data.into_iter()
+                    .map(|pt| (pt.clone(), pt.distance(&query)))
+                    .filter(|d| d.1 <= NASA_THRESHOLD)
+                    .collect::<Vec<_>>()
+            },
+            BatchSize::SmallInput,
+        )
+    });
+
     // Benchmark query (sequential)
     let bitpart = BitPartBuilder::new(nasa.clone()).build();
     group.bench_function("seq", |bn| {
@@ -125,8 +156,8 @@ pub fn sisap_nasa_query(c: &mut Criterion) {
 // criterion_group!(benches, sisap_nasa, sisap_colors);
 criterion_group! {
     name = benches;
-    config = Criterion::default().measurement_time(Duration::new(10, 0));
-    targets = sisap_nasa_setup, sisap_nasa_query, sisap_colors_query
+    config = Criterion::default().measurement_time(Duration::new(15, 0));
+    targets = sisap_nasa_query, sisap_colors_query
 }
 criterion_main!(benches);
 
