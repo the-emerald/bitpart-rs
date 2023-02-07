@@ -1,11 +1,10 @@
+use itertools::Itertools;
+use rand::{rngs::StdRng, SeedableRng};
+use rand_distr::{Distribution, Normal};
 use std::{
     fs::File,
     io::{BufWriter, Write},
 };
-
-use itertools::Itertools;
-use rand::thread_rng;
-use rand_distr::{Distribution, Normal};
 
 const DIMENSIONS: usize = 2;
 const POINTS: usize = 100_000_000;
@@ -14,9 +13,10 @@ const MEAN: f64 = 0.0;
 const STD_DEV: f64 = 1.0;
 
 const OUTPUT: &str = "output.ascii";
+const SEED: u64 = 0xBAB5_5EED;
 
 fn main() {
-    let mut rng = thread_rng();
+    let mut rng = StdRng::seed_from_u64(SEED);
     let dist = Normal::new(MEAN, STD_DEV).unwrap();
     println!(
         "Generating {} {}-dimensional points with N({}, {})",
