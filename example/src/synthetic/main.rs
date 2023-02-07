@@ -1,7 +1,8 @@
 use std::fs;
 
 use bitpart::{
-    builder::BitPartBuilder, metric::{euclidean::Euclidean, Metric},
+    builder::BitPartBuilder,
+    metric::{euclidean::Euclidean, Metric},
 };
 use sisap_data::cartesian_parser::parse;
 
@@ -9,7 +10,7 @@ fn main() {
     let points = parse(&fs::read_to_string("../generators/output.ascii").unwrap())
         .unwrap()
         .1
-        .1
+         .1
         .into_iter()
         .map(|v| v.try_into().unwrap())
         .map(Euclidean::new)
