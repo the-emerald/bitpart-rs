@@ -35,7 +35,7 @@ pub fn synthetic_query(c: &mut Criterion) {
         .map(|v| v.try_into().unwrap())
         .map(Euclidean::new)
         .collect::<Vec<Euclidean<[f64; 2]>>>();
-    let query = Euclidean::new([1.0, 1.0]);
+    let query = Euclidean::new([-0.8417198087956067, 0.07661925656050937]);
     let threshold = 1.0;
 
     let mut group = c.benchmark_group("synthetic_query");

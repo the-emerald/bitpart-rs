@@ -19,7 +19,7 @@ fn main() {
 
     let bitpart = BitPartBuilder::new(points.clone()).build_parallel(Some(1));
 
-    let query = Euclidean::new([1.0, 1.0]);
+    let query = Euclidean::new([-0.8417198087956067, 0.07661925656050937]);
     let threshold = 1.0;
 
     let res = bitpart.range_search(query.clone(), threshold);
