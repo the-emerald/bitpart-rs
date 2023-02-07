@@ -4,6 +4,7 @@ use bitpart::{
 };
 use criterion::{criterion_group, criterion_main, BatchSize, BenchmarkId, Criterion};
 use sisap_data::{
+    cartesian_parser::parse,
     colors::{parse_colors, Colors},
     nasa::{parse_nasa, Nasa},
 };
@@ -23,6 +24,35 @@ fn get_nasa() -> Vec<Euclidean<Nasa>> {
         .into_iter()
         .map(Euclidean::new)
         .collect::<Vec<_>>()
+}
+
+pub fn synthetic_query(c: &mut Criterion) {
+    let points = parse(&fs::read_to_string("generators/output.ascii").unwrap())
+        .unwrap()
+        .1
+         .1
+        .into_iter()
+        .map(|v| v.try_into().unwrap())
+        .map(Euclidean::new)
+        .collect::<Vec<Euclidean<[f64; 2]>>>();
+    let query = Euclidean::new([1.0, 1.0]);
+    let threshold = 1.0;
+
+    let mut group = c.benchmark_group("synthetic_query");
+
+    // Benchmark query (parallel), but disable parallel queries... this lets us measure any performance lost by library overhead
+    let bitpart_parallel = BitPartBuilder::new(points.clone()).build_parallel(None);
+    group.bench_function("par_seq", |bn| {
+        bn.iter(|| bitpart_parallel.range_search(query.clone(), threshold));
+    });
+
+    // Now benchmark query (parallel) using job sizes from 1 to 2^10.
+    for sz in (0..=10).map(|x| 2_u64.pow(x)) {
+        let bitpart_parallel = BitPartBuilder::new(points.clone()).build_parallel(Some(sz));
+        group.bench_with_input(BenchmarkId::new("par", sz), &bitpart_parallel, |bn, x| {
+            bn.iter(|| x.range_search(query.clone(), threshold));
+        });
+    }
 }
 
 pub fn sisap_colors_setup(c: &mut Criterion) {
@@ -157,7 +187,7 @@ pub fn sisap_nasa_query(c: &mut Criterion) {
 criterion_group! {
     name = benches;
     config = Criterion::default().measurement_time(Duration::new(15, 0));
-    targets = sisap_nasa_query, sisap_colors_query
+    targets = sisap_nasa_query, sisap_colors_query, synthetic_query
 }
 criterion_main!(benches);
 
