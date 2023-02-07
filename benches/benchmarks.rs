@@ -40,6 +40,20 @@ pub fn synthetic_query(c: &mut Criterion) {
 
     let mut group = c.benchmark_group("synthetic_query");
 
+    // Benchmark a brute force search
+    group.bench_function("bruteforce", |bn| {
+        bn.iter_batched(
+            || points.clone(),
+            |data| {
+                data.into_iter()
+                    .map(|pt| (pt.clone(), pt.distance(&query)))
+                    .filter(|d| d.1 <= threshold)
+                    .collect::<Vec<_>>()
+            },
+            BatchSize::SmallInput,
+        )
+    });
+
     // Benchmark query (parallel), but disable parallel queries... this lets us measure any performance lost by library overhead
     let bitpart_parallel = BitPartBuilder::new(points.clone()).build_parallel(None);
     group.bench_function("par_seq", |bn| {
