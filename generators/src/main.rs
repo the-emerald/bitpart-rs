@@ -6,8 +6,8 @@ use std::{
     io::{BufWriter, Write},
 };
 
-const DIMENSIONS: usize = 2;
-const POINTS: usize = 100_000_000;
+const DIMENSIONS: usize = 20;
+const POINTS: usize = 1_000_000;
 
 const MEAN: f64 = 0.0;
 const STD_DEV: f64 = 1.0;

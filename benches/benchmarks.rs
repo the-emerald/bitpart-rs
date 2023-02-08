@@ -34,8 +34,29 @@ pub fn synthetic_query(c: &mut Criterion) {
         .into_iter()
         .map(|v| v.try_into().unwrap())
         .map(Euclidean::new)
-        .collect::<Vec<Euclidean<[f64; 2]>>>();
-    let query = Euclidean::new([-0.8417198087956067, 0.07661925656050937]);
+        .collect::<Vec<Euclidean<[f64; 20]>>>();
+    let query = Euclidean::new([
+        -1.087991147654979,
+        0.4045582471357857,
+        -0.9259290219334685,
+        1.5862709369979888,
+        1.6644108467594723,
+        -0.7515492023423321,
+        -1.31650770460433,
+        1.222645925453442,
+        -0.2379306470307699,
+        1.380453153401442,
+        -0.6375512992790882,
+        -0.0625774616217966,
+        -0.34047167632557473,
+        -0.23828855469139995,
+        -1.1329267432810688,
+        0.015545842628269484,
+        -0.39737937291629055,
+        0.3352322337712804,
+        -0.6905092989551525,
+        1.6185724453054442,
+    ]);
     let threshold = 1.0;
 
     let mut group = c.benchmark_group("synthetic_query");
@@ -200,7 +221,7 @@ pub fn sisap_nasa_query(c: &mut Criterion) {
 // criterion_group!(benches, sisap_nasa, sisap_colors);
 criterion_group! {
     name = benches;
-    config = Criterion::default().measurement_time(Duration::new(15, 0));
+    config = Criterion::default().measurement_time(Duration::new(30, 0));
     targets = sisap_nasa_query, sisap_colors_query, synthetic_query
 }
 criterion_main!(benches);
