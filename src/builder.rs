@@ -7,7 +7,7 @@ use crate::exclusions::ExclusionSync;
 use crate::parallel::ParallelBitPart;
 
 /// Builder for a BitPart query.
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct BitPartBuilder<T> {
     pub(crate) dataset: Vec<T>,
 
