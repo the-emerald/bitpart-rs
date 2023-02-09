@@ -214,7 +214,7 @@ pub fn sisap_nasa_query(c: &mut Criterion) {
     let builder = BitPartBuilder::new(nasa.clone()).ref_points(20);
     query_with(
         c,
-        "sisap_colors_query_20".to_owned(),
+        "sisap_nasa_query_20".to_owned(),
         nasa,
         builder,
         query,
