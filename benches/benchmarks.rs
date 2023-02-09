@@ -10,6 +10,80 @@ use sisap_data::{
 };
 use std::{fs, time::Duration};
 
+/// Benchmark setup times for a particular dataset.
+fn setup_with<T>(c: &mut Criterion, group_name: String, builder: BitPartBuilder<T>)
+where
+    for<'a> T: Metric + Send + Sync + 'a,
+{
+    let mut group = c.benchmark_group(group_name);
+
+    // Benchmark setup time (sequential)
+    group.bench_function("seq", |bn| {
+        bn.iter_batched(
+            || builder.clone(),
+            |data| data.build(),
+            BatchSize::SmallInput,
+        )
+    });
+
+    // Benchmark setup time (with parallelism)
+    group.bench_function("par", |bn| {
+        bn.iter_batched(
+            || builder.clone(),
+            |data| data.build_parallel(None),
+            BatchSize::SmallInput,
+        )
+    });
+}
+
+/// Benchmark query times for a particular dataset, with query and threshold.
+fn query_with<T>(
+    c: &mut Criterion,
+    group_name: String,
+    dataset: Vec<T>,
+    builder: BitPartBuilder<T>,
+    query: T,
+    threshold: f64,
+) where
+    for<'a> T: Metric + Send + Sync + 'a,
+{
+    let mut group = c.benchmark_group(group_name);
+
+    // Benchmark a brute force search
+    group.bench_function("bruteforce", |bn| {
+        bn.iter_batched(
+            || dataset.clone(),
+            |data| {
+                data.into_iter()
+                    .map(|pt| (pt.clone(), pt.distance(&query)))
+                    .filter(|d| d.1 <= COLORS_THRESHOLD)
+                    .collect::<Vec<_>>()
+            },
+            BatchSize::SmallInput,
+        )
+    });
+
+    // Benchmark query (sequential)
+    let bitpart = builder.clone().build();
+    group.bench_function("seq", |bn| {
+        bn.iter(|| bitpart.range_search(query.clone(), threshold));
+    });
+
+    // Benchmark query (parallel), but disable parallel queries... this lets us measure any performance lost by library overhead
+    let bitpart_parallel = builder.clone().build_parallel(None);
+    group.bench_function("par_seq", |bn| {
+        bn.iter(|| bitpart_parallel.range_search(query.clone(), threshold));
+    });
+
+    // Now benchmark query (parallel) using job sizes from 1 to 2^10.
+    for sz in (0..=10).map(|x| 2_u64.pow(x)) {
+        let bitpart_parallel = builder.clone().build_parallel(Some(sz));
+        group.bench_with_input(BenchmarkId::new("par", sz), &bitpart_parallel, |bn, x| {
+            bn.iter(|| x.range_search(query.clone(), threshold));
+        });
+    }
+}
+
 fn get_colors() -> Vec<Euclidean<Colors>> {
     parse_colors(&fs::read_to_string("sisap-data/src/colors.ascii").unwrap())
         .unwrap()
@@ -35,6 +109,7 @@ pub fn synthetic_query(c: &mut Criterion) {
         .map(|v| v.try_into().unwrap())
         .map(Euclidean::new)
         .collect::<Vec<Euclidean<[f64; 20]>>>();
+
     let query = Euclidean::new([
         -1.087991147654979,
         0.4045582471357857,
@@ -59,169 +134,98 @@ pub fn synthetic_query(c: &mut Criterion) {
     ]);
     let threshold = 1.0;
 
-    let mut group = c.benchmark_group("synthetic_query");
+    let builder = BitPartBuilder::new(points.clone());
 
-    // Benchmark a brute force search
-    group.bench_function("bruteforce", |bn| {
-        bn.iter_batched(
-            || points.clone(),
-            |data| {
-                data.into_iter()
-                    .map(|pt| (pt.clone(), pt.distance(&query)))
-                    .filter(|d| d.1 <= threshold)
-                    .collect::<Vec<_>>()
-            },
-            BatchSize::SmallInput,
-        )
-    });
+    query_with(
+        c,
+        "synthetic_query".to_owned(),
+        points.clone(),
+        builder,
+        query.clone(),
+        threshold,
+    );
 
-    // Benchmark query (parallel), but disable parallel queries... this lets us measure any performance lost by library overhead
-    let bitpart_parallel = BitPartBuilder::new(points.clone()).build_parallel(None);
-    group.bench_function("par_seq", |bn| {
-        bn.iter(|| bitpart_parallel.range_search(query.clone(), threshold));
-    });
-
-    // Now benchmark query (parallel) using job sizes from 1 to 2^10.
-    for sz in (0..=10).map(|x| 2_u64.pow(x)) {
-        let bitpart_parallel = BitPartBuilder::new(points.clone()).build_parallel(Some(sz));
-        group.bench_with_input(BenchmarkId::new("par", sz), &bitpart_parallel, |bn, x| {
-            bn.iter(|| x.range_search(query.clone(), threshold));
-        });
-    }
+    let builder = BitPartBuilder::new(points.clone()).ref_points(20);
+    query_with(
+        c,
+        "synthetic_query_20".to_owned(),
+        points.clone(),
+        builder,
+        query,
+        threshold,
+    );
 }
 
 pub fn sisap_colors_setup(c: &mut Criterion) {
     let colors = get_colors();
-    let mut group = c.benchmark_group("sisap_colors_setup");
+    let builder = BitPartBuilder::new(colors);
 
-    // Benchmark setup time (sequential)
-    group.bench_function("seq", |bn| {
-        bn.iter_batched(
-            || BitPartBuilder::new(colors.clone()),
-            |data| data.build(),
-            BatchSize::SmallInput,
-        )
-    });
-
-    // Benchmark setup time (with parallelism)
-    group.bench_function("par", |bn| {
-        bn.iter_batched(
-            || BitPartBuilder::new(colors.clone()),
-            |data| data.build_parallel(None),
-            BatchSize::SmallInput,
-        )
-    });
+    setup_with(c, "sisap_colors_setup".to_owned(), builder);
 }
 
 pub fn sisap_colors_query(c: &mut Criterion) {
     let colors = get_colors();
     let query = Euclidean::new(Colors(COLORS_QUERY));
 
-    let mut group = c.benchmark_group("sisap_colors_query");
+    let builder = BitPartBuilder::new(colors.clone());
 
-    // Benchmark a brute force search
-    group.bench_function("bruteforce", |bn| {
-        bn.iter_batched(
-            || colors.clone(),
-            |data| {
-                data.into_iter()
-                    .map(|pt| (pt.clone(), pt.distance(&query)))
-                    .filter(|d| d.1 <= COLORS_THRESHOLD)
-                    .collect::<Vec<_>>()
-            },
-            BatchSize::SmallInput,
-        )
-    });
+    query_with(
+        c,
+        "sisap_colors_query".to_owned(),
+        colors.clone(),
+        builder,
+        query.clone(),
+        COLORS_THRESHOLD,
+    );
 
-    // Benchmark query (sequential)
-    let bitpart = BitPartBuilder::new(colors.clone()).build();
-    group.bench_function("seq", |bn| {
-        bn.iter(|| bitpart.range_search(query.clone(), COLORS_THRESHOLD));
-    });
-
-    // Benchmark query (parallel), but disable parallel queries... this lets us measure any performance lost by library overhead
-    let bitpart_parallel = BitPartBuilder::new(colors.clone()).build_parallel(None);
-    group.bench_function("par_seq", |bn| {
-        bn.iter(|| bitpart_parallel.range_search(query.clone(), COLORS_THRESHOLD));
-    });
-
-    // Now benchmark query (parallel) using job sizes from 1 to 2^10.
-    for sz in (0..=10).map(|x| 2_u64.pow(x)) {
-        let bitpart_parallel = BitPartBuilder::new(colors.clone()).build_parallel(Some(sz));
-        group.bench_with_input(BenchmarkId::new("par", sz), &bitpart_parallel, |bn, x| {
-            bn.iter(|| x.range_search(query.clone(), COLORS_THRESHOLD));
-        });
-    }
+    let builder = BitPartBuilder::new(colors.clone()).ref_points(20);
+    query_with(
+        c,
+        "sisap_colors_query_20".to_owned(),
+        colors,
+        builder,
+        query,
+        COLORS_THRESHOLD,
+    );
 }
 
 pub fn sisap_nasa_setup(c: &mut Criterion) {
     let nasa = get_nasa();
-    let mut group = c.benchmark_group("sisap_nasa_setup");
+    let builder = BitPartBuilder::new(nasa);
 
-    // Benchmark setup time (sequential)
-    group.bench_function("seq", |bn| {
-        bn.iter_batched(
-            || BitPartBuilder::new(nasa.clone()),
-            |data| data.build(),
-            BatchSize::SmallInput,
-        )
-    });
-
-    // Benchmark setup time (with parallelism)
-    group.bench_function("par", |bn| {
-        bn.iter_batched(
-            || BitPartBuilder::new(nasa.clone()),
-            |data| data.build_parallel(None),
-            BatchSize::SmallInput,
-        )
-    });
+    setup_with(c, "sisap_colors_setup".to_owned(), builder);
 }
 
 pub fn sisap_nasa_query(c: &mut Criterion) {
     let nasa = get_nasa();
     let query = Euclidean::new(Nasa(NASA_QUERY));
 
-    let mut group = c.benchmark_group("sisap_nasa_query");
+    let builder = BitPartBuilder::new(nasa.clone());
 
-    // Benchmark a brute force search
-    group.bench_function("bruteforce", |bn| {
-        bn.iter_batched(
-            || nasa.clone(),
-            |data| {
-                data.into_iter()
-                    .map(|pt| (pt.clone(), pt.distance(&query)))
-                    .filter(|d| d.1 <= NASA_THRESHOLD)
-                    .collect::<Vec<_>>()
-            },
-            BatchSize::SmallInput,
-        )
-    });
+    query_with(
+        c,
+        "sisap_nasa_query".to_owned(),
+        nasa.clone(),
+        builder,
+        query.clone(),
+        NASA_THRESHOLD,
+    );
 
-    // Benchmark query (sequential)
-    let bitpart = BitPartBuilder::new(nasa.clone()).build();
-    group.bench_function("seq", |bn| {
-        bn.iter(|| bitpart.range_search(query.clone(), NASA_THRESHOLD));
-    });
-
-    // Benchmark query (parallel), but disable parallel queries... this lets us measure any performance lost by library overhead
-    let bitpart_parallel = BitPartBuilder::new(nasa.clone()).build_parallel(None);
-    group.bench_function("par_seq", |bn| {
-        bn.iter(|| bitpart_parallel.range_search(query.clone(), NASA_THRESHOLD));
-    });
-
-    // Now benchmark query (parallel) using job sizes from 1 to 2^10.
-    for sz in (0..=10).map(|x| 2_u64.pow(x)) {
-        let bitpart_parallel = BitPartBuilder::new(nasa.clone()).build_parallel(Some(sz));
-        group.bench_with_input(BenchmarkId::new("par", sz), &bitpart_parallel, |bn, x| {
-            bn.iter(|| x.range_search(query.clone(), COLORS_THRESHOLD));
-        });
-    }
+    let builder = BitPartBuilder::new(nasa.clone()).ref_points(20);
+    query_with(
+        c,
+        "sisap_colors_query_20".to_owned(),
+        nasa,
+        builder,
+        query,
+        NASA_THRESHOLD,
+    );
 }
 
 // criterion_group!(benches, sisap_nasa, sisap_colors);
 criterion_group! {
     name = benches;
-    config = Criterion::default().measurement_time(Duration::new(30, 0));
+    config = Criterion::default().measurement_time(Duration::new(60, 0));
     targets = sisap_nasa_query, sisap_colors_query, synthetic_query
 }
 criterion_main!(benches);
