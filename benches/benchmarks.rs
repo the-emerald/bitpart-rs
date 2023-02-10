@@ -2,7 +2,7 @@ use bitpart::{
     builder::BitPartBuilder,
     metric::{euclidean::Euclidean, Metric},
 };
-use criterion::{criterion_group, criterion_main, BatchSize, BenchmarkId, Criterion};
+use criterion::{criterion_group, criterion_main, BatchSize, Criterion};
 use sisap_data::{
     cartesian_parser::parse,
     colors::{parse_colors, Colors},
@@ -30,7 +30,7 @@ where
     group.bench_function("par", |bn| {
         bn.iter_batched(
             || builder.clone(),
-            |data| data.build_parallel(None),
+            |data| data.build_parallel(),
             BatchSize::SmallInput,
         )
     });
@@ -69,19 +69,11 @@ fn query_with<T>(
         bn.iter(|| bitpart.range_search(query.clone(), threshold));
     });
 
-    // Benchmark query (parallel), but disable parallel queries... this lets us measure any performance lost by library overhead
-    let bitpart_parallel = builder.clone().build_parallel(None);
-    group.bench_function("par_seq", |bn| {
+    // Benchmark query (parallel)
+    let bitpart_parallel = builder.clone().build_parallel();
+    group.bench_function("par", |bn| {
         bn.iter(|| bitpart_parallel.range_search(query.clone(), threshold));
     });
-
-    // Now benchmark query (parallel) using job sizes from 1 to 2^10.
-    for sz in (0..=10).map(|x| 2_u64.pow(x)) {
-        let bitpart_parallel = builder.clone().build_parallel(Some(sz));
-        group.bench_with_input(BenchmarkId::new("par", sz), &bitpart_parallel, |bn, x| {
-            bn.iter(|| x.range_search(query.clone(), threshold));
-        });
-    }
 }
 
 fn get_colors() -> Vec<Euclidean<Colors>> {
@@ -132,7 +124,7 @@ pub fn synthetic_query(c: &mut Criterion) {
         -0.6905092989551525,
         1.6185724453054442,
     ]);
-    let threshold = 1.0;
+    let threshold = 3.0;
 
     let builder = BitPartBuilder::new(points.clone());
 

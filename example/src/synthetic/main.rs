@@ -14,13 +14,34 @@ fn main() {
         .into_iter()
         .map(|v| v.try_into().unwrap())
         .map(Euclidean::new)
-        .collect::<Vec<Euclidean<[f64; 2]>>>();
+        .collect::<Vec<Euclidean<[f64; 20]>>>();
     println!("read ok");
 
-    let bitpart = BitPartBuilder::new(points.clone()).build_parallel(Some(1));
+    let bitpart = BitPartBuilder::new(points.clone()).build_parallel();
 
-    let query = Euclidean::new([-0.8417198087956067, 0.07661925656050937]);
-    let threshold = 1.0;
+    let query = Euclidean::new([
+        -1.087991147654979,
+        0.4045582471357857,
+        -0.9259290219334685,
+        1.5862709369979888,
+        1.6644108467594723,
+        -0.7515492023423321,
+        -1.31650770460433,
+        1.222645925453442,
+        -0.2379306470307699,
+        1.380453153401442,
+        -0.6375512992790882,
+        -0.0625774616217966,
+        -0.34047167632557473,
+        -0.23828855469139995,
+        -1.1329267432810688,
+        0.015545842628269484,
+        -0.39737937291629055,
+        0.3352322337712804,
+        -0.6905092989551525,
+        1.6185724453054442,
+    ]);
+    let threshold = 3.0;
 
     let res = bitpart.range_search(query.clone(), threshold);
     println!("{} points returned", res.len());

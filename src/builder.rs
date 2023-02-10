@@ -84,7 +84,7 @@ where
     /// to parallelise the bitset creation.
     ///
     /// `job_size` is related to the concept of "coarseness"; the higher `job_size` is, the more coarse the parallelism is.
-    pub fn build_parallel<'a>(self, job_size: Option<u64>) -> ParallelBitPart<'a, T> {
-        ParallelBitPart::setup(self, job_size)
+    pub fn build_parallel<'a>(self) -> ParallelBitPart<'a, T> {
+        ParallelBitPart::setup(self)
     }
 }
