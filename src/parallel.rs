@@ -2,7 +2,7 @@ use crate::builder::BitPartBuilder;
 use crate::exclusions::{BallExclusion, ExclusionSync, SheetExclusion};
 use crate::metric::Metric;
 use bitvec::prelude::*;
-use itertools::Itertools;
+use itertools::{Either, Itertools};
 use rayon::prelude::*;
 
 pub struct ParallelBitPart<'a, T> {
@@ -17,16 +17,20 @@ where
     dyn ExclusionSync<T>: Send + Sync + 'a,
 {
     pub fn range_search(&self, point: T, threshold: f64) -> Vec<(T, f64)> {
-        let mut ins = vec![];
-        let mut outs = vec![];
-
-        for (idx, ez) in self.exclusions.iter().enumerate() {
-            if ez.must_be_in(&point, threshold) {
-                ins.push(idx);
-            } else if ez.must_be_out(&point, threshold) {
-                outs.push(idx);
-            }
-        }
+        let (ins, outs): (Vec<usize>, Vec<usize>) = self
+            .exclusions
+            .par_iter()
+            .enumerate()
+            .filter_map(|(idx, ez)| {
+                if ez.must_be_in(&point, threshold) {
+                    Some(Either::Left(idx))
+                } else if ez.must_be_out(&point, threshold) {
+                    Some(Either::Right(idx))
+                } else {
+                    None
+                }
+            })
+            .partition_map(|x| x);
 
         self.bitset
             .par_iter()
