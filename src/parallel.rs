@@ -9,7 +9,6 @@ pub struct ParallelBitPart<'a, T> {
     dataset: Vec<T>,
     exclusions: Vec<Box<dyn ExclusionSync<T> + Send + Sync + 'a>>,
     bitset: Vec<BitVec>,
-    job_size: Option<usize>,
 }
 
 impl<'a, T> ParallelBitPart<'a, T>
@@ -45,7 +44,7 @@ where
             .collect::<Vec<_>>()
     }
 
-    pub(crate) fn setup(builder: BitPartBuilder<T>, job_size: Option<u64>) -> Self {
+    pub(crate) fn setup(builder: BitPartBuilder<T>) -> Self {
         // TODO: actually randomise this
         let ref_points = &builder.dataset[0..(builder.ref_points as usize)];
         let mut exclusions = Self::ball_exclusions(&builder, ref_points);
@@ -55,7 +54,6 @@ where
             dataset: builder.dataset,
             bitset,
             exclusions,
-            job_size: job_size.map(|n| n as usize),
         }
     }
 
