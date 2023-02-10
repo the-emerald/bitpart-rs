@@ -23,3 +23,6 @@ members = [".", "sisap-data", "example", "generators"]
 
 [features]
 rayon = ["dep:rayon"]
+
+[profile.test]
+opt-level = 3

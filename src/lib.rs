@@ -175,3 +175,65 @@ where
             .collect::<Vec<_>>()
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::metric::euclidean::Euclidean;
+    use sisap_data::{colors::parse_colors, nasa::parse_nasa};
+
+    use super::*;
+
+    pub(crate) const NASA: &str = include_str!("../sisap-data/src/nasa.ascii");
+    pub(crate) const COLORS: &str = include_str!("../sisap-data/src/colors.ascii");
+
+    fn test<T>(dataset: Vec<T>, bitpart: BitPart<T>, query: T, threshold: f64)
+    where
+        for<'a> T: Metric + 'a,
+    {
+        let res = bitpart.range_search(query.clone(), threshold);
+
+        // Check all points within threshold
+        assert!(res
+            .iter()
+            .all(|(point, _)| point.distance(&query) <= threshold));
+
+        // Check results match up with linear search
+        let brute_force = dataset
+            .into_iter()
+            .map(|pt| pt.distance(&query))
+            .filter(|d| *d < threshold)
+            .count();
+
+        assert_eq!(res.len(), brute_force);
+    }
+
+    #[test]
+    fn sisap_nasa() {
+        let nasa = parse_nasa(NASA)
+            .unwrap()
+            .into_iter()
+            .map(Euclidean::new)
+            .collect::<Vec<_>>();
+
+        let bitpart = BitPartBuilder::new(nasa.clone()).build();
+        let query = nasa[317].clone();
+        let threshold = 1.0;
+
+        test(nasa, bitpart, query, threshold);
+    }
+
+    #[test]
+    fn sisap_colors() {
+        let colors = parse_colors(COLORS)
+            .unwrap()
+            .into_iter()
+            .map(Euclidean::new)
+            .collect::<Vec<_>>();
+
+        let bitpart = BitPartBuilder::new(colors.clone()).build();
+        let query = colors[70446].clone();
+        let threshold = 0.5;
+
+        test(colors, bitpart, query, threshold);
+    }
+}
