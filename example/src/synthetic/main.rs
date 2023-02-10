@@ -41,7 +41,7 @@ fn main() {
         -0.6905092989551525,
         1.6185724453054442,
     ]);
-    let threshold = 10.0;
+    let threshold = 3.0;
 
     let res = bitpart.range_search(query.clone(), threshold);
     println!("{} points returned", res.len());

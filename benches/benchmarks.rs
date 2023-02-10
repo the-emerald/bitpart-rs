@@ -124,7 +124,7 @@ pub fn synthetic_query(c: &mut Criterion) {
         -0.6905092989551525,
         1.6185724453054442,
     ]);
-    let threshold = 1.0;
+    let threshold = 3.0;
 
     let builder = BitPartBuilder::new(points.clone());
 
