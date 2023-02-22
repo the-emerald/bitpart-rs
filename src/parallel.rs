@@ -36,21 +36,22 @@ where
             .par_iter()
             .enumerate()
             .flat_map(|(block_idx, bitvecs)| {
+                let len = bitvecs[0].len();
+
                 let ands = ins
                     .iter()
                     .map(|idx| bitvecs.get(*idx).unwrap())
-                    .fold(BitVec::repeat(true, 512), |acc, v| acc & v); // TODO: fold or reduce?
+                    .fold(BitVec::repeat(true, len), |acc, v| acc & v); // TODO: fold or reduce?
 
                 let nots = !outs
                     .iter()
                     .map(|idx| bitvecs.get(*idx).unwrap())
-                    .fold(BitVec::repeat(false, 512), |acc, v| acc | v);
+                    .fold(BitVec::repeat(false, len), |acc, v| acc | v);
 
                 let res = ands & nots;
 
                 res.iter_ones()
-                    .map(|internal_idx| (block_idx * 512) + internal_idx)
-                    .map(|x| self.dataset.get(x).unwrap())
+                    .map(|internal_idx| self.dataset.get((block_idx * 512) + internal_idx).unwrap())
                     .collect::<Vec<_>>()
             })
             .map(|pt| (pt.clone(), point.distance(pt)))
