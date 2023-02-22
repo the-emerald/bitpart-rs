@@ -36,6 +36,8 @@ where
             .par_iter()
             .enumerate()
             .flat_map(|(block_idx, bitvecs)| {
+                assert!(bitvecs.iter().map(|x| x.len()).all_equal());
+
                 let len = bitvecs[0].len();
 
                 let ands = ins
