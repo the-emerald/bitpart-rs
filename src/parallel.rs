@@ -8,7 +8,7 @@ use rayon::prelude::*;
 pub struct ParallelBitPart<'a, T> {
     dataset: Vec<T>,
     exclusions: Vec<Box<dyn ExclusionSync<T> + Send + Sync + 'a>>,
-    bitset: Vec<BitVec>,
+    bitset: Vec<Vec<BitVec>>,
 }
 
 impl<'a, T> ParallelBitPart<'a, T>
@@ -35,14 +35,24 @@ where
         self.bitset
             .par_iter()
             .enumerate()
-            .filter(|(_, bv)| {
-                // If a point is in all `ins`...
-                let all_ins = ins.iter().all(|&idx| *bv.get(idx).unwrap());
-                // ...and does not show up in any `out`, it is a candidate.
-                let never_outs = !outs.iter().any(|&idx| *bv.get(idx).unwrap());
-                all_ins & never_outs
+            .flat_map(|(block_idx, bitvecs)| {
+                let ands = ins
+                    .iter()
+                    .map(|idx| bitvecs.get(*idx).unwrap())
+                    .fold(BitVec::repeat(true, 512), |acc, v| acc & v); // TODO: fold or reduce?
+
+                let nots = !outs
+                    .iter()
+                    .map(|idx| bitvecs.get(*idx).unwrap())
+                    .fold(BitVec::repeat(false, 512), |acc, v| acc | v);
+
+                let res = ands & nots;
+
+                res.iter_ones()
+                    .map(|internal_idx| (block_idx * 512) + internal_idx)
+                    .map(|x| self.dataset.get(x).unwrap())
+                    .collect::<Vec<_>>()
             })
-            .map(|(idx, _)| self.dataset.get(idx).unwrap())
             .map(|pt| (pt.clone(), point.distance(pt)))
             .filter(|(_, d)| *d <= threshold)
             .collect::<Vec<_>>()
@@ -100,13 +110,18 @@ where
     fn make_bitset(
         builder: &BitPartBuilder<T>,
         exclusions: &[Box<dyn ExclusionSync<T> + Send + Sync + 'a>],
-    ) -> Vec<BitVec> {
-        // Index by row first
+    ) -> Vec<Vec<BitVec>> {
         builder
             .dataset
-            .par_iter()
-            .map(|pt| exclusions.iter().map(|ez| ez.is_in(pt)).collect::<BitVec>())
-            .collect::<Vec<_>>()
+            .par_chunks(512)
+            .map(|points| {
+                // Each block is mapped to a vector of bitvecs indexed by [ez_idx][point]
+                exclusions
+                    .iter()
+                    .map(|ez| points.iter().map(|pt| ez.is_in(pt)).collect::<BitVec>())
+                    .collect::<Vec<_>>()
+            })
+            .collect::<Vec<Vec<_>>>()
     }
 }
 
