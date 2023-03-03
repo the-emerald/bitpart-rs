@@ -1,7 +1,7 @@
 use clap::{Parser, Subcommand};
 use itertools::Itertools;
 use rand::{rngs::StdRng, RngCore, SeedableRng};
-use rand_distr::{Distribution, Normal};
+use rand_distr::{Distribution, Normal, Uniform};
 use std::{
     fs::File,
     io::{BufWriter, Write},
@@ -45,19 +45,31 @@ enum Command {
         std_dev: f64,
     },
     /// TODO: Flat distribution
-    Flat,
+    Flat {
+        /// Lower bound
+        #[arg(short, long)]
+        low: f64,
+
+        /// Upper bound
+        #[arg(short, long)]
+        high: f64,
+    },
 }
 
 fn main() {
     let args = Args::parse();
 
     let mut rng = StdRng::seed_from_u64(args.seed.unwrap_or_else(rand::random::<u64>));
-    let dist = match args.distribution {
-        Command::Normal { mean, std_dev } => Normal::new(mean, std_dev).unwrap(),
-        Command::Flat => todo!(),
+    let points = match args.distribution {
+        Command::Normal { mean, std_dev } => {
+            let dist = Normal::new(mean, std_dev).unwrap();
+            generate_points(args.dimensions, args.points, dist, &mut rng)
+        }
+        Command::Flat { low, high } => {
+            let dist = Uniform::new(low, high);
+            generate_points(args.dimensions, args.points, dist, &mut rng)
+        }
     };
-
-    let points = generate_points(args.dimensions, args.points, dist, &mut rng);
 
     let mut writer = BufWriter::new(File::create(args.output).unwrap());
 
