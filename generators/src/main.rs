@@ -47,11 +47,11 @@ enum Command {
     /// TODO: Flat distribution
     Flat {
         /// Lower bound
-        #[arg(short, long)]
+        #[arg(short, long, allow_negative_numbers = true)]
         low: f64,
 
         /// Upper bound
-        #[arg(short, long)]
+        #[arg(short, long, allow_negative_numbers = true)]
         high: f64,
     },
 }
