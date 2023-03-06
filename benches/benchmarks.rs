@@ -30,7 +30,7 @@ where
     group.bench_function("par", |bn| {
         bn.iter_batched(
             || builder.clone(),
-            |data| data.build_parallel(),
+            |data| data.build_parallel(Some(512)),
             BatchSize::SmallInput,
         )
     });
@@ -70,7 +70,7 @@ fn query_with<T>(
     });
 
     // Benchmark query (parallel)
-    let bitpart_parallel = builder.clone().build_parallel();
+    let bitpart_parallel = builder.clone().build_parallel(Some(512));
     group.bench_function("par", |bn| {
         bn.iter(|| bitpart_parallel.range_search(query.clone(), threshold));
     });

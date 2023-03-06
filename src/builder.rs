@@ -77,14 +77,15 @@ where
     for<'a> T: Metric + Send + Sync + 'a,
     dyn ExclusionSync<T>: Send + Sync,
 {
-    /// Build the ParallelBitPart.
-    /// `job_size` sets the size of each job when performing a range query. For example, `Some(N)` means that
-    /// each task will perform `N` bitvector operations sequentially before returning the results.
-    /// `None` will disable parallelism during queries altogether - this is useful for small datasets where you only wish
+    /// Build the `ParallelBitPart`.
+    /// `block_size` sets the size of each block when performing a range query. For example, `Some(N)` means that
+    /// each block will consist of `N` rows.
+    /// `None` will disable parallelism during queries - this is useful for small datasets where you only wish
     /// to parallelise the bitset creation.
     ///
-    /// `job_size` is related to the concept of "coarseness"; the higher `job_size` is, the more coarse the parallelism is.
-    pub fn build_parallel<'a>(self) -> ParallelBitPart<'a, T> {
-        ParallelBitPart::setup(self)
+    /// `block_size` is related to the concept of parallelisation coarseness: the higher the size, the more coarse the parallelism is.
+    /// Nevertheless, it is recommended that you set a value such as `Some(512)` depending on the SIMD width of your processor.
+    pub fn build_parallel<'a>(self, block_size: Option<usize>) -> ParallelBitPart<'a, T> {
+        ParallelBitPart::setup(self, block_size)
     }
 }

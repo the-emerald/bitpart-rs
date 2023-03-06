@@ -9,6 +9,7 @@ pub struct ParallelBitPart<'a, T> {
     dataset: Vec<T>,
     exclusions: Vec<Box<dyn ExclusionSync<T> + Send + Sync + 'a>>,
     bitset: Vec<Vec<BitVec>>,
+    block_size: usize,
 }
 
 impl<'a, T> ParallelBitPart<'a, T>
@@ -53,7 +54,11 @@ where
                 let res = ands & nots;
 
                 res.iter_ones()
-                    .map(|internal_idx| self.dataset.get((block_idx * 512) + internal_idx).unwrap())
+                    .map(|internal_idx| {
+                        self.dataset
+                            .get((block_idx * self.block_size) + internal_idx)
+                            .unwrap()
+                    })
                     .collect::<Vec<_>>()
             })
             .map(|pt| (pt.clone(), point.distance(pt)))
@@ -61,16 +66,18 @@ where
             .collect::<Vec<_>>()
     }
 
-    pub(crate) fn setup(builder: BitPartBuilder<T>) -> Self {
+    pub(crate) fn setup(builder: BitPartBuilder<T>, block_size: Option<usize>) -> Self {
+        let block_size = block_size.unwrap_or(builder.dataset.len());
         // TODO: actually randomise this
         let ref_points = &builder.dataset[0..(builder.ref_points as usize)];
         let mut exclusions = Self::ball_exclusions(&builder, ref_points);
         exclusions.extend(Self::sheet_exclusions(&builder, ref_points));
-        let bitset = Self::make_bitset(&builder, &exclusions);
+        let bitset = Self::make_bitset(block_size, &builder, &exclusions);
         Self {
             dataset: builder.dataset,
             bitset,
             exclusions,
+            block_size,
         }
     }
 
@@ -111,12 +118,13 @@ where
     }
 
     fn make_bitset(
+        block_size: usize,
         builder: &BitPartBuilder<T>,
         exclusions: &[Box<dyn ExclusionSync<T> + Send + Sync + 'a>],
     ) -> Vec<Vec<BitVec>> {
         builder
             .dataset
-            .par_chunks(512)
+            .par_chunks(block_size)
             .map(|points| {
                 // Each block is mapped to a vector of bitvecs indexed by [ez_idx][point]
                 exclusions
@@ -167,7 +175,7 @@ mod tests {
             .map(Euclidean::new)
             .collect::<Vec<_>>();
 
-        let bitpart = BitPartBuilder::new(nasa.clone()).build_parallel();
+        let bitpart = BitPartBuilder::new(nasa.clone()).build_parallel(Some(512));
         let query = nasa[317].clone();
         let threshold = 1.0;
 
@@ -182,7 +190,7 @@ mod tests {
             .map(Euclidean::new)
             .collect::<Vec<_>>();
 
-        let bitpart = BitPartBuilder::new(colors.clone()).build_parallel();
+        let bitpart = BitPartBuilder::new(colors.clone()).build_parallel(Some(512));
         let query = colors[70446].clone();
         let threshold = 0.5;
 

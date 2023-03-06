@@ -17,7 +17,7 @@ fn main() {
         .collect::<Vec<Euclidean<[f64; 20]>>>();
     println!("read ok");
 
-    let bitpart = BitPartBuilder::new(points.clone()).build_parallel();
+    let bitpart = BitPartBuilder::new(points.clone()).build_parallel(Some(512));
 
     let query = Euclidean::new([
         -1.087991147654979,
