@@ -1,13 +1,15 @@
+use bitpart::metric::{euclidean::Euclidean, Metric};
+use clap::Parser;
+use indicatif::{ParallelProgressIterator, ProgressStyle};
+use rayon::prelude::*;
+use sisap_data::cartesian_parser::parse;
 use std::{
     fs::{self, File},
     io::{BufWriter, Write},
     path::PathBuf,
 };
 
-use bitpart::metric::{euclidean::Euclidean, Metric};
-use clap::Parser;
-use rayon::prelude::*;
-use sisap_data::cartesian_parser::parse;
+const PBAR_TEMPLATE: &str = "[{elapsed_precise}] [{wide_bar}] {pos}/{len} ({eta_precise})";
 
 /// Program to calculate the Nth nearest-neighbours for each point in the dataset.
 #[derive(Parser, Debug)]
@@ -35,8 +37,13 @@ fn main() {
         .map(Euclidean::new)
         .collect::<Vec<_>>();
 
+    let bar = ProgressStyle::default_bar()
+        .template(PBAR_TEMPLATE)
+        .unwrap();
+
     let closest = points
         .par_iter()
+        .progress_with_style(bar)
         .map(|pt| {
             let mut points = points
                 .par_iter()
