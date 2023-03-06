@@ -1,4 +1,5 @@
 use clap::{Parser, Subcommand};
+use indicatif::{ProgressIterator, ProgressStyle};
 use itertools::Itertools;
 use rand::{rngs::StdRng, RngCore, SeedableRng};
 use rand_distr::{Distribution, Normal, Uniform};
@@ -7,6 +8,8 @@ use std::{
     io::{BufWriter, Write},
     path::PathBuf,
 };
+
+const PBAR_TEMPLATE: &str = "[{elapsed_precise}] [{wide_bar}] {pos}/{len} ({eta_precise})";
 
 /// Program to generate randomly sampled points and save them in .ascii format.
 #[derive(Parser, Debug)]
@@ -92,6 +95,11 @@ where
     R: RngCore,
 {
     (0..points)
+        .progress_with_style(
+            ProgressStyle::default_bar()
+                .template(PBAR_TEMPLATE)
+                .unwrap(),
+        )
         .map(|_| {
             (0..dimensions)
                 .map(|_| distribution.sample(rng))
