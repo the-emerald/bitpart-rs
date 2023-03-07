@@ -59,7 +59,7 @@ enum Command {
     },
 }
 
-fn main() {
+fn main() -> anyhow::Result<()> {
     let args = Args::parse();
 
     let mut rng = StdRng::seed_from_u64(args.seed.unwrap_or_else(rand::random::<u64>));
@@ -72,16 +72,18 @@ fn main() {
             let dist = Uniform::new(low, high);
             generate_points(args.dimensions, args.points, dist, &mut rng)
         }
-    };
+    }?;
 
-    let mut writer = BufWriter::new(File::create(args.output).unwrap());
+    let mut writer = BufWriter::new(File::create(args.output)?);
 
     let first_line = format!("{} {} {}", args.dimensions, args.points, 2);
-    writeln!(writer, "{}", first_line).unwrap();
+    writeln!(writer, "{}", first_line)?;
     for line in points {
         let line = line.into_iter().join(" ");
-        writeln!(writer, "{}", line).unwrap();
+        writeln!(writer, "{}", line)?;
     }
+
+    Ok(())
 }
 
 fn generate_points<D, R>(
@@ -89,21 +91,17 @@ fn generate_points<D, R>(
     points: usize,
     distribution: D,
     rng: &mut R,
-) -> Vec<Vec<f64>>
+) -> anyhow::Result<Vec<Vec<f64>>>
 where
     D: Distribution<f64>,
     R: RngCore,
 {
-    (0..points)
-        .progress_with_style(
-            ProgressStyle::default_bar()
-                .template(PBAR_TEMPLATE)
-                .unwrap(),
-        )
+    Ok((0..points)
+        .progress_with_style(ProgressStyle::default_bar().template(PBAR_TEMPLATE)?)
         .map(|_| {
             (0..dimensions)
                 .map(|_| distribution.sample(rng))
                 .collect::<Vec<_>>()
         })
-        .collect::<Vec<_>>()
+        .collect::<Vec<_>>())
 }
