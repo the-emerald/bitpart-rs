@@ -1,3 +1,4 @@
+use anyhow::anyhow;
 use bitpart::metric::{euclidean::Euclidean, Metric};
 use clap::Parser;
 use indicatif::{ParallelProgressIterator, ProgressStyle};
@@ -27,19 +28,17 @@ struct Args {
     output: PathBuf,
 }
 
-fn main() {
+fn main() -> anyhow::Result<()> {
     let args = Args::parse();
-    let points = parse(&fs::read_to_string(args.input).unwrap())
-        .unwrap()
+    let points = parse(&fs::read_to_string(args.input)?)
+        .map_err(|e| anyhow!(e.to_string()))?
         .1
          .1
         .into_iter()
         .map(Euclidean::new)
         .collect::<Vec<_>>();
 
-    let bar = ProgressStyle::default_bar()
-        .template(PBAR_TEMPLATE)
-        .unwrap();
+    let bar = ProgressStyle::default_bar().template(PBAR_TEMPLATE)?;
 
     let closest = points
         .par_iter()
@@ -57,8 +56,10 @@ fn main() {
         })
         .collect::<Vec<_>>();
 
-    let file = File::create(args.output).unwrap();
+    let file = File::create(args.output)?;
     let mut writer = BufWriter::new(file);
-    serde_json::to_writer_pretty(&mut writer, &closest).unwrap();
-    writer.flush().unwrap();
+    serde_json::to_writer_pretty(&mut writer, &closest)?;
+    writer.flush()?;
+
+    Ok(())
 }

@@ -12,3 +12,4 @@ bitpart = { path = "../" }
 rayon = "1.7.0"
 serde_json = "1.0.94"
 indicatif = { version = "0.17.3", features = ["rayon"] }
+anyhow = "1.0.69"
