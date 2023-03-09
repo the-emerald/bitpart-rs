@@ -192,13 +192,86 @@ pub fn sisap_nasa_query(c: &mut Criterion) {
     );
 }
 
+const NN_QUERIES: usize = 1000;
+
+pub fn nn_query(c: &mut Criterion) {
+    let points = parse(&fs::read_to_string("generators/100k_flat.ascii").unwrap())
+        .unwrap()
+        .1
+         .1
+        .into_iter()
+        .map(Euclidean::new)
+        .collect::<Vec<_>>();
+
+    let nns: Vec<Vec<(usize, f64)>> =
+        serde_json::from_str(&fs::read_to_string("nearest-neighbours/100k_flat.json").unwrap())
+            .unwrap();
+
+    let queries = points
+        .iter()
+        .cloned()
+        .zip(nns.into_iter())
+        .map(|(pt, nn)| (pt, nn.last().unwrap().1))
+        .take(NN_QUERIES)
+        .collect::<Vec<_>>();
+
+    let builder = BitPartBuilder::new(points.clone());
+
+    let mut group = c.benchmark_group("nn_100k_flat");
+
+    // Benchmark a brute force search
+    group.bench_function("bruteforce", |bn| {
+        bn.iter_batched(
+            || (points.clone(), queries.clone()),
+            |(data, queries)| {
+                for (query, threshold) in queries {
+                    let _ = data
+                        .iter()
+                        .map(|pt| (pt.clone(), pt.distance(&query)))
+                        .filter(|d| d.1 <= threshold)
+                        .collect::<Vec<_>>();
+                }
+            },
+            BatchSize::SmallInput,
+        )
+    });
+
+    // Benchmark query (sequential)
+    let bitpart = builder.clone().build();
+    group.bench_function("seq", |bn| {
+        bn.iter(|| {
+            for (query, threshold) in &queries {
+                bitpart.range_search(query.clone(), *threshold);
+            }
+        });
+    });
+
+    // Benchmark query (parallel)
+    let bitpart_parallel = builder.clone().build_parallel(Some(512));
+    group.bench_function("par", |bn| {
+        bn.iter(|| {
+            for (query, threshold) in &queries {
+                bitpart_parallel.range_search(query.clone(), *threshold);
+            }
+        });
+    });
+}
+
 // criterion_group!(benches, sisap_nasa, sisap_colors);
 criterion_group! {
     name = benches;
     config = Criterion::default().measurement_time(Duration::new(60, 0));
     targets = sisap_nasa_query, sisap_colors_query, synthetic_query
 }
-criterion_main!(benches);
+
+criterion_group! {
+    name = nn_benches;
+    config = Criterion::default().measurement_time(Duration::new(240, 0));
+    targets = nn_query
+}
+
+// criterion_main!(benches, nn_benches);
+criterion_main!(nn_benches);
 
 const NASA_THRESHOLD: f64 = 1.0;
 
