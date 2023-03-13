@@ -7,7 +7,7 @@ use bitpart::{
 use sisap_data::cartesian_parser::parse;
 
 fn main() {
-    let points = parse(&fs::read_to_string("../generators/output.ascii").unwrap())
+    let points = parse(&fs::read_to_string("data/output.ascii").unwrap())
         .unwrap()
         .1
          .1

@@ -93,7 +93,7 @@ fn get_nasa() -> Vec<Euclidean<Nasa>> {
 }
 
 pub fn synthetic_query(c: &mut Criterion) {
-    let points = parse(&fs::read_to_string("generators/output.ascii").unwrap())
+    let points = parse(&fs::read_to_string("data/output.ascii").unwrap())
         .unwrap()
         .1
          .1
@@ -195,7 +195,7 @@ pub fn sisap_nasa_query(c: &mut Criterion) {
 const NN_QUERIES: usize = 1000;
 
 pub fn nn_query(c: &mut Criterion) {
-    let points = parse(&fs::read_to_string("generators/100k_flat.ascii").unwrap())
+    let points = parse(&fs::read_to_string("data/100k_flat.ascii").unwrap())
         .unwrap()
         .1
          .1
@@ -204,8 +204,7 @@ pub fn nn_query(c: &mut Criterion) {
         .collect::<Vec<_>>();
 
     let nns: Vec<Vec<(usize, f64)>> =
-        serde_json::from_str(&fs::read_to_string("nearest-neighbours/100k_flat.json").unwrap())
-            .unwrap();
+        serde_json::from_str(&fs::read_to_string("data/100k_flat.json").unwrap()).unwrap();
 
     let queries = points
         .iter()
