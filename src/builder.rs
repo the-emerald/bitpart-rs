@@ -6,6 +6,9 @@ use crate::exclusions::ExclusionSync;
 #[cfg(feature = "rayon")]
 use crate::parallel::ParallelBitPart;
 
+#[cfg(feature = "on_disk")]
+use crate::on_disk::DiskBitPart;
+
 /// Builder for a BitPart query.
 #[derive(Debug, Clone)]
 pub struct BitPartBuilder<T> {
@@ -87,5 +90,24 @@ where
     /// Nevertheless, it is recommended that you set a value such as `Some(512)` depending on the SIMD width of your processor.
     pub fn build_parallel<'a>(self, block_size: Option<usize>) -> ParallelBitPart<'a, T> {
         ParallelBitPart::setup(self, block_size)
+    }
+}
+
+#[cfg(feature = "on_disk")]
+impl<T> BitPartBuilder<T>
+where
+    for<'a> T: Metric + Send + Sync + 'a,
+    dyn ExclusionSync<T>: Send + Sync,
+{
+    pub fn build_on_disk<'a, P>(self, path: P, block_size: Option<usize>) -> DiskBitPart<'a, T>
+    where
+        P: AsRef<std::path::Path> + 'a,
+    {
+        std::fs::create_dir(&path).unwrap();
+        // if !path.as_ref().is_dir() {
+        //     panic!("not a dir");
+        // }
+
+        DiskBitPart::setup(self, path, block_size)
     }
 }

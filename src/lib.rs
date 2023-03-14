@@ -7,3 +7,6 @@ pub use sequential::*;
 
 #[cfg(feature = "rayon")]
 pub mod parallel;
+
+#[cfg(feature = "on_disk")]
+pub mod on_disk;
