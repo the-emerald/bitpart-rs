@@ -63,26 +63,6 @@ where
                 self.filter_contenders(threshold, point, ands)
             }
         }
-
-        // if ins not empty:
-        //      ands = get_and()
-        //      if outs not empty:
-        //          nots = get_nots()
-        //          nots flip 0..sz
-        //          and &= nots
-        //          filter_contenders()
-        //      else:
-        //          filter_contenders()
-        // else:
-        //      if outs not empty:
-        //          nots = get_nots()
-        //          nots flip 0..sz
-        //          filter_contenders()
-        //      else:
-        //          for d in data:
-        //              dist = query.distance(d)
-        //              if dist < threshold:
-        //                  res.push(d)
     }
 
     /// Performs a bitwise-or on all exclusion zone columns that do not contain the query point.
