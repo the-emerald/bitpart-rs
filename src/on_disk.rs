@@ -5,6 +5,7 @@ use bitvec::prelude::*;
 use itertools::{Either, Itertools};
 use rayon::prelude::*;
 use std::fs::File;
+use std::io::Seek;
 use std::path::{Path, PathBuf};
 
 pub struct DiskBitPart<'a, T> {
@@ -38,11 +39,10 @@ where
         self.bitset
             .par_iter()
             .enumerate()
-            .map(|(block_idx, buf)| {
-                (
-                    block_idx,
-                    bincode::deserialize_from::<&File, Vec<BitVec>>(buf).unwrap(),
-                )
+            .map(|(block_idx, mut buf)| {
+                let v = bincode::deserialize_from::<&File, Vec<BitVec>>(buf).unwrap();
+                buf.rewind().unwrap();
+                (block_idx, v)
             })
             .flat_map(|(block_idx, bitvecs)| {
                 assert!(bitvecs.iter().map(|x| x.len()).all_equal());
@@ -181,6 +181,7 @@ mod tests {
         for<'a> T: Metric + Send + Sync + 'a,
     {
         let res = bitpart.range_search(query.clone(), threshold);
+        bitpart.range_search(query.clone(), threshold);
 
         // Check all points within threshold
         assert!(res
