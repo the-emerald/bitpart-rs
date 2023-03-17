@@ -5,13 +5,12 @@ use bitvec::prelude::*;
 use itertools::{Either, Itertools};
 use rayon::prelude::*;
 use std::fs::File;
-use std::io::Seek;
 use std::path::{Path, PathBuf};
 
 pub struct DiskBitPart<'a, T> {
     dataset: Vec<T>,
     exclusions: Vec<Box<dyn ExclusionSync<T> + Send + Sync + 'a>>,
-    bitset: Vec<File>,
+    bitset: Vec<memmap2::Mmap>,
     block_size: usize,
 }
 
@@ -39,11 +38,7 @@ where
         self.bitset
             .par_iter()
             .enumerate()
-            .map(|(block_idx, mut buf)| {
-                let v = bincode::deserialize_from::<&File, Vec<BitVec>>(buf).unwrap();
-                buf.rewind().unwrap();
-                (block_idx, v)
-            })
+            .map(|(block_idx, buf)| (block_idx, bincode::deserialize::<Vec<BitVec>>(buf).unwrap()))
             .flat_map(|(block_idx, bitvecs)| {
                 assert!(bitvecs.iter().map(|x| x.len()).all_equal());
 
@@ -134,7 +129,7 @@ where
         builder: &BitPartBuilder<T>,
         path: PathBuf,
         exclusions: &[Box<dyn ExclusionSync<T> + Send + Sync + 'a>],
-    ) -> Vec<File> {
+    ) -> Vec<memmap2::Mmap> {
         builder
             .dataset
             .par_chunks(block_size)
@@ -161,7 +156,7 @@ where
                 bincode::serialize_into(file, &v).unwrap();
                 path
             })
-            .map(|path| File::open(path).unwrap())
+            .map(|path| unsafe { memmap2::Mmap::map(&File::open(path).unwrap()).unwrap() })
             .collect::<Vec<_>>()
     }
 }
