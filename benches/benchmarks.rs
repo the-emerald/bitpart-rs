@@ -309,7 +309,7 @@ pub fn nn_query_disk(c: &mut Criterion) {
 
     std::fs::remove_dir_all("/tmp/benchmark/").ok();
     // Benchmark query (parallel)
-    let bitpart_parallel = builder.clone().build_on_disk("/tmp/benchmark/", Some(512));
+    let bitpart_parallel = builder.clone().build_on_disk("/tmp/benchmark/", Some(8192));
     group.bench_function("par", |bn| {
         bn.iter(|| {
             for (query, threshold) in &queries {
