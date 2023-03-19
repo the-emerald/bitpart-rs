@@ -55,7 +55,7 @@ where
                 let blk_ins = ins.iter().map(|bv| &bv[from..to]).collect::<Vec<_>>();
                 let blk_outs = outs.iter().map(|bv| &bv[from..to]).collect::<Vec<_>>();
 
-                let len = blk_ins[0].len();
+                let len = points.len();
 
                 let ands = blk_ins
                     .iter()
