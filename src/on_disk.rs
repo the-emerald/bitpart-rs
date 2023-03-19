@@ -10,7 +10,7 @@ use std::path::{Path, PathBuf};
 pub struct DiskBitPart<'a, T> {
     dataset: Vec<T>,
     exclusions: Vec<Box<dyn ExclusionSync<T> + Send + Sync + 'a>>,
-    bitset: Vec<memmap2::Mmap>,
+    bitset: Vec<Vec<memmap2::Mmap>>,
     block_size: usize,
 }
 
@@ -38,20 +38,19 @@ where
         self.bitset
             .par_iter()
             .enumerate()
-            .map(|(block_idx, buf)| (block_idx, bincode::deserialize::<Vec<BitVec>>(buf).unwrap()))
             .flat_map(|(block_idx, bitvecs)| {
                 assert!(bitvecs.iter().map(|x| x.len()).all_equal());
 
-                let len = bitvecs[0].len();
+                let len = bincode::deserialize::<BitVec>(&bitvecs[0]).unwrap().len();
 
                 let ands = ins
                     .iter()
-                    .map(|idx| bitvecs.get(*idx).unwrap())
+                    .map(|idx| bincode::deserialize::<BitVec>(bitvecs.get(*idx).unwrap()).unwrap())
                     .fold(BitVec::repeat(true, len), |acc, v| acc & v); // TODO: fold or reduce?
 
                 let nots = !outs
                     .iter()
-                    .map(|idx| bitvecs.get(*idx).unwrap())
+                    .map(|idx| bincode::deserialize::<BitVec>(bitvecs.get(*idx).unwrap()).unwrap())
                     .fold(BitVec::repeat(false, len), |acc, v| acc | v);
 
                 let res = ands & nots;
@@ -129,34 +128,29 @@ where
         builder: &BitPartBuilder<T>,
         path: PathBuf,
         exclusions: &[Box<dyn ExclusionSync<T> + Send + Sync + 'a>],
-    ) -> Vec<memmap2::Mmap> {
+    ) -> Vec<Vec<memmap2::Mmap>> {
         builder
             .dataset
             .par_chunks(block_size)
             .enumerate()
-            .map(|(idx, points)| {
+            .map(|(bk_idx, points)| {
                 // Each block is mapped to a vector of bitvecs indexed by [ez_idx][point]
-                (
-                    idx,
-                    exclusions
-                        .iter()
-                        .map(|ez| points.iter().map(|pt| ez.is_in(pt)).collect::<BitVec>())
-                        .collect::<Vec<_>>(),
-                )
+                exclusions
+                    .iter()
+                    .enumerate()
+                    .map(|(ez_idx, ez)| {
+                        let value = points.iter().map(|pt| ez.is_in(pt)).collect::<BitVec>();
+                        let path = {
+                            let mut p = path.clone();
+                            p.push(format!("{}_{}.bincode", bk_idx, ez_idx));
+                            p
+                        };
+                        let file = File::create(&path).unwrap();
+                        bincode::serialize_into(file, &value).unwrap();
+                        unsafe { memmap2::Mmap::map(&File::open(path).unwrap()).unwrap() }
+                    })
+                    .collect::<Vec<_>>()
             })
-            .map(|(idx, v)| {
-                let path = {
-                    let mut p = path.clone();
-                    p.push(format!("{}.bincode", idx));
-                    p
-                };
-
-                let file = File::create(&path).unwrap();
-
-                bincode::serialize_into(file, &v).unwrap();
-                path
-            })
-            .map(|path| unsafe { memmap2::Mmap::map(&File::open(path).unwrap()).unwrap() })
             .collect::<Vec<_>>()
     }
 }
@@ -203,7 +197,7 @@ mod tests {
             .collect::<Vec<_>>();
 
         let bitpart =
-            BitPartBuilder::new(nasa.clone()).build_on_disk("/tmp/sisap_nasa_par/", Some(512));
+            BitPartBuilder::new(nasa.clone()).build_on_disk("/tmp/sisap_nasa_par/", Some(8192));
         let query = nasa[317].clone();
         let threshold = 1.0;
 
@@ -221,7 +215,7 @@ mod tests {
             .collect::<Vec<_>>();
 
         let bitpart =
-            BitPartBuilder::new(colors.clone()).build_on_disk("/tmp/sisap_colors_par/", Some(512));
+            BitPartBuilder::new(colors.clone()).build_on_disk("/tmp/sisap_colors_par/", Some(8192));
         let query = colors[70446].clone();
         let threshold = 0.5;
 
