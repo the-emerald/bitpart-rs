@@ -186,14 +186,15 @@ where
 #[cfg(test)]
 mod tests {
     use crate::metric::euclidean::Euclidean;
-    use sisap_data::{colors::parse_colors, nasa::parse_nasa};
+    use sisap_data::{cartesian_parser::parse, colors::parse_colors, nasa::parse_nasa};
+    use std::fs;
 
     use super::*;
 
     pub(crate) const NASA: &str = include_str!("../sisap-data/src/nasa.ascii");
     pub(crate) const COLORS: &str = include_str!("../sisap-data/src/colors.ascii");
 
-    fn test<T>(dataset: Vec<T>, bitpart: DiskBitPart<T>, query: T, threshold: f64)
+    fn test<T>(dataset: &Vec<T>, bitpart: &DiskBitPart<T>, query: T, threshold: f64)
     where
         for<'a> T: Metric + Send + Sync + 'a,
     {
@@ -229,7 +230,7 @@ mod tests {
         let query = nasa[317].clone();
         let threshold = 1.0;
 
-        test(nasa, bitpart, query, threshold);
+        test(&nasa, &bitpart, query, threshold);
         std::fs::remove_dir_all("/tmp/sisap_nasa_par/").unwrap();
     }
 
@@ -247,7 +248,39 @@ mod tests {
         let query = colors[70446].clone();
         let threshold = 0.5;
 
-        test(colors, bitpart, query, threshold);
+        test(&colors, &bitpart, query, threshold);
         std::fs::remove_dir_all("/tmp/sisap_colors_par/").unwrap();
+    }
+
+    #[test]
+    fn nearest_neighbour() {
+        std::fs::remove_dir_all("/tmp/nn/").ok();
+
+        let points = parse(&fs::read_to_string("data/100k_flat.ascii").unwrap())
+            .unwrap()
+            .1
+             .1
+            .into_iter()
+            .map(Euclidean::new)
+            .collect::<Vec<_>>();
+
+        let nns: Vec<Vec<(usize, f64)>> =
+            serde_json::from_str(&fs::read_to_string("data/100k_flat.json").unwrap()).unwrap();
+
+        let queries = points
+            .iter()
+            .cloned()
+            .zip(nns.into_iter())
+            .map(|(pt, nn)| (pt, nn.last().unwrap().1))
+            .take(1000)
+            .collect::<Vec<_>>();
+
+        let bitpart = BitPartBuilder::new(points.clone()).build_on_disk("/tmp/nn/", Some(8192));
+
+        for (query, threshold) in queries {
+            test(&points, &bitpart, query, threshold);
+        }
+
+        std::fs::remove_dir_all("/tmp/nn/").unwrap();
     }
 }
