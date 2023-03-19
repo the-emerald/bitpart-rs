@@ -10,7 +10,7 @@ use std::path::{Path, PathBuf};
 pub struct DiskBitPart<'a, T> {
     dataset: Vec<T>,
     exclusions: Vec<Box<dyn ExclusionSync<T> + Send + Sync + 'a>>,
-    bitset: Vec<Vec<memmap2::Mmap>>,
+    bitset: Vec<memmap2::Mmap>,
     block_size: usize,
 }
 
@@ -35,33 +35,41 @@ where
             })
             .partition_map(|x| x);
 
-        self.bitset
-            .par_iter()
+        let ins = ins
+            .into_par_iter()
+            .map(|idx| bincode::deserialize::<BitVec>(self.bitset.get(idx).unwrap()).unwrap())
+            .collect::<Vec<_>>();
+
+        let outs = outs
+            .into_par_iter()
+            .map(|idx| bincode::deserialize::<BitVec>(self.bitset.get(idx).unwrap()).unwrap())
+            .collect::<Vec<_>>();
+
+        self.dataset
+            .par_chunks(self.block_size)
             .enumerate()
-            .flat_map(|(block_idx, bitvecs)| {
-                assert!(bitvecs.iter().map(|x| x.len()).all_equal());
+            .flat_map(|(blk_idx, points)| {
+                let from = blk_idx * self.block_size;
+                let to = (blk_idx * self.block_size) + points.len();
 
-                let len = bincode::deserialize::<BitVec>(&bitvecs[0]).unwrap().len();
+                let blk_ins = ins.iter().map(|bv| &bv[from..to]).collect::<Vec<_>>();
+                let blk_outs = outs.iter().map(|bv| &bv[from..to]).collect::<Vec<_>>();
 
-                let ands = ins
+                let len = blk_ins[0].len();
+
+                let ands = blk_ins
                     .iter()
-                    .map(|idx| bincode::deserialize::<BitVec>(bitvecs.get(*idx).unwrap()).unwrap())
-                    .fold(BitVec::repeat(true, len), |acc, v| acc & v); // TODO: fold or reduce?
+                    .cloned()
+                    .fold(BitVec::repeat(true, len), |acc: BitVec, v| acc & v);
 
-                let nots = !outs
+                let nots = !blk_outs
                     .iter()
-                    .map(|idx| bincode::deserialize::<BitVec>(bitvecs.get(*idx).unwrap()).unwrap())
-                    .fold(BitVec::repeat(false, len), |acc, v| acc | v);
+                    .cloned()
+                    .fold(BitVec::repeat(false, len), |acc: BitVec, v| acc | v);
 
                 let res = ands & nots;
 
-                res.iter_ones()
-                    .map(|internal_idx| {
-                        self.dataset
-                            .get((block_idx * self.block_size) + internal_idx)
-                            .unwrap()
-                    })
-                    .collect::<Vec<_>>()
+                res.iter_ones().map(|idx| &points[idx]).collect::<Vec<_>>()
             })
             .map(|pt| (pt.clone(), point.distance(pt)))
             .filter(|(_, d)| *d <= threshold)
@@ -124,34 +132,54 @@ where
     }
 
     fn make_bitset(
-        block_size: usize,
+        _block_size: usize,
         builder: &BitPartBuilder<T>,
         path: PathBuf,
         exclusions: &[Box<dyn ExclusionSync<T> + Send + Sync + 'a>],
-    ) -> Vec<Vec<memmap2::Mmap>> {
-        builder
-            .dataset
-            .par_chunks(block_size)
+    ) -> Vec<memmap2::Mmap> {
+        exclusions
+            .par_iter()
             .enumerate()
-            .map(|(bk_idx, points)| {
-                // Each block is mapped to a vector of bitvecs indexed by [ez_idx][point]
-                exclusions
-                    .iter()
-                    .enumerate()
-                    .map(|(ez_idx, ez)| {
-                        let value = points.iter().map(|pt| ez.is_in(pt)).collect::<BitVec>();
-                        let path = {
-                            let mut p = path.clone();
-                            p.push(format!("{}_{}.bincode", bk_idx, ez_idx));
-                            p
-                        };
-                        let file = File::create(&path).unwrap();
-                        bincode::serialize_into(file, &value).unwrap();
-                        unsafe { memmap2::Mmap::map(&File::open(path).unwrap()).unwrap() }
-                    })
-                    .collect::<Vec<_>>()
-            })
+            .map(|(idx, ez)| Self::make_mmap(&builder.dataset, path.clone(), idx, ez.as_ref()))
             .collect::<Vec<_>>()
+        // builder
+        //     .dataset
+        //     .par_chunks(block_size)
+        //     .enumerate()
+        //     .map(|(bk_idx, points)| {
+        //         // Each block is mapped to a vector of bitvecs indexed by [ez_idx][point]
+        //         exclusions
+        //             .iter()
+        //             .enumerate()
+        //             .map(|(ez_idx, ez)| {
+        //                 let value = points.iter().map(|pt| ez.is_in(pt)).collect::<BitVec>();
+        //                 let path = {
+        //                     let mut p = path.clone();
+        //                     p.push(format!("{}_{}.bincode", bk_idx, ez_idx));
+        //                     p
+        //                 };
+        //                 let file = File::create(&path).unwrap();
+        //                 bincode::serialize_into(file, &value).unwrap();
+        //                 unsafe { memmap2::Mmap::map(&File::open(path).unwrap()).unwrap() }
+        //             })
+        //             .collect::<Vec<_>>()
+        //     })
+        //     .collect::<Vec<_>>()
+    }
+
+    fn make_mmap(
+        dataset: &[T],
+        mut path: PathBuf,
+        index: usize,
+        ez: &(dyn ExclusionSync<T> + Send + Sync + 'a),
+    ) -> memmap2::Mmap {
+        let bv = dataset.iter().map(|pt| ez.is_in(pt)).collect::<BitVec>();
+
+        path.push(format!("{}.bincode", index));
+        let file = File::create(&path).unwrap();
+        bincode::serialize_into(file, &bv).unwrap();
+
+        unsafe { memmap2::Mmap::map(&File::open(path).unwrap()).unwrap() }
     }
 }
 
