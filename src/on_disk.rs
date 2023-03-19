@@ -210,7 +210,7 @@ mod tests {
         let brute_force = dataset
             .into_iter()
             .map(|pt| pt.distance(&query))
-            .filter(|d| *d < threshold)
+            .filter(|d| *d <= threshold)
             .count();
 
         assert_eq!(res.len(), brute_force);
