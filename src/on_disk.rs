@@ -58,13 +58,11 @@ where
                 let len = points.len();
 
                 let ands = blk_ins
-                    .iter()
-                    .cloned()
+                    .into_iter()
                     .fold(BitVec::repeat(true, len), |acc: BitVec, v| acc & v);
 
                 let nots = !blk_outs
-                    .iter()
-                    .cloned()
+                    .into_iter()
                     .fold(BitVec::repeat(false, len), |acc: BitVec, v| acc | v);
 
                 let res = ands & nots;
