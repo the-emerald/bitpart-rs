@@ -140,29 +140,6 @@ where
             .enumerate()
             .map(|(idx, ez)| Self::make_mmap(&builder.dataset, path.clone(), idx, ez.as_ref()))
             .collect::<Vec<_>>()
-        // builder
-        //     .dataset
-        //     .par_chunks(block_size)
-        //     .enumerate()
-        //     .map(|(bk_idx, points)| {
-        //         // Each block is mapped to a vector of bitvecs indexed by [ez_idx][point]
-        //         exclusions
-        //             .iter()
-        //             .enumerate()
-        //             .map(|(ez_idx, ez)| {
-        //                 let value = points.iter().map(|pt| ez.is_in(pt)).collect::<BitVec>();
-        //                 let path = {
-        //                     let mut p = path.clone();
-        //                     p.push(format!("{}_{}.bincode", bk_idx, ez_idx));
-        //                     p
-        //                 };
-        //                 let file = File::create(&path).unwrap();
-        //                 bincode::serialize_into(file, &value).unwrap();
-        //                 unsafe { memmap2::Mmap::map(&File::open(path).unwrap()).unwrap() }
-        //             })
-        //             .collect::<Vec<_>>()
-        //     })
-        //     .collect::<Vec<_>>()
     }
 
     fn make_mmap(
