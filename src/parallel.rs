@@ -8,7 +8,7 @@ use rayon::prelude::*;
 pub struct ParallelBitPart<'a, T> {
     dataset: Vec<T>,
     exclusions: Vec<Box<dyn ExclusionSync<T> + Send + Sync + 'a>>,
-    bitset: Vec<Vec<BitVec>>,
+    bitset: Vec<BitVec>,
     block_size: usize,
 }
 
@@ -33,37 +33,31 @@ where
             })
             .partition_map(|x| x);
 
-        self.bitset
-            .par_iter()
+        self.dataset
+            .par_chunks(self.block_size)
             .enumerate()
-            .flat_map(|(block_idx, bitvecs)| {
-                assert!(bitvecs.iter().map(|x| x.len()).all_equal());
-
-                let len = bitvecs[0].len();
+            .flat_map(|(blk_idx, points)| {
+                let from = blk_idx * self.block_size;
+                let to = (blk_idx * self.block_size) + points.len();
+                let len = points.len();
 
                 let ands = ins
                     .iter()
-                    .map(|idx| bitvecs.get(*idx).unwrap())
-                    .fold(BitVec::repeat(true, len), |acc, v| acc & v); // TODO: fold or reduce?
+                    .map(|idx| &self.bitset.get(*idx).unwrap()[from..to])
+                    .fold(BitVec::repeat(true, len), |acc: BitVec, v| acc & v);
 
                 let nots = !outs
                     .iter()
-                    .map(|idx| bitvecs.get(*idx).unwrap())
-                    .fold(BitVec::repeat(false, len), |acc, v| acc | v);
+                    .map(|idx| &self.bitset.get(*idx).unwrap()[from..to])
+                    .fold(BitVec::repeat(false, len), |acc: BitVec, v| acc | v);
 
                 let res = ands & nots;
 
-                res.iter_ones()
-                    .map(|internal_idx| {
-                        self.dataset
-                            .get((block_idx * self.block_size) + internal_idx)
-                            .unwrap()
-                    })
-                    .collect::<Vec<_>>()
+                res.iter_ones().map(|idx| &points[idx]).collect::<Vec<_>>()
             })
             .map(|pt| (pt.clone(), point.distance(pt)))
             .filter(|(_, d)| *d <= threshold)
-            .collect::<Vec<_>>()
+            .collect()
     }
 
     pub(crate) fn setup(builder: BitPartBuilder<T>, block_size: Option<usize>) -> Self {
@@ -118,21 +112,20 @@ where
     }
 
     fn make_bitset(
-        block_size: usize,
+        _block_size: usize,
         builder: &BitPartBuilder<T>,
         exclusions: &[Box<dyn ExclusionSync<T> + Send + Sync + 'a>],
-    ) -> Vec<Vec<BitVec>> {
-        builder
-            .dataset
-            .par_chunks(block_size)
-            .map(|points| {
-                // Each block is mapped to a vector of bitvecs indexed by [ez_idx][point]
-                exclusions
+    ) -> Vec<BitVec> {
+        exclusions
+            .par_iter()
+            .map(|ez| {
+                builder
+                    .dataset
                     .iter()
-                    .map(|ez| points.iter().map(|pt| ez.is_in(pt)).collect::<BitVec>())
-                    .collect::<Vec<_>>()
+                    .map(|pt| ez.is_in(pt))
+                    .collect::<BitVec>()
             })
-            .collect::<Vec<Vec<_>>>()
+            .collect::<Vec<_>>()
     }
 }
 
