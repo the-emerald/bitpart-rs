@@ -13,7 +13,7 @@ fn main() {
         .map(Euclidean::new)
         .collect::<Vec<_>>();
 
-    let bitpart = BitPartBuilder::new(nasa.clone()).build();
+    let bitpart = BitPartBuilder::new(nasa.clone(), 40).build();
 
     // Line 319 in nasa.ascii
     let query = Euclidean::new(Nasa([

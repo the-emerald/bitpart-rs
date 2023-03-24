@@ -104,7 +104,7 @@ pub fn synthetic_query(c: &mut Criterion) {
 
     let query = Euclidean::new(SYNTHETIC_QUERY);
 
-    let builder = BitPartBuilder::new(points.clone());
+    let builder = BitPartBuilder::new(points.clone(), 40);
 
     query_with(
         c,
@@ -115,7 +115,7 @@ pub fn synthetic_query(c: &mut Criterion) {
         SYNTHETIC_THRESHOLD,
     );
 
-    let builder = BitPartBuilder::new(points.clone()).ref_points(20);
+    let builder = BitPartBuilder::new(points.clone(), 20);
     query_with(
         c,
         "synthetic_query_20".to_owned(),
@@ -128,7 +128,7 @@ pub fn synthetic_query(c: &mut Criterion) {
 
 pub fn sisap_colors_setup(c: &mut Criterion) {
     let colors = get_colors();
-    let builder = BitPartBuilder::new(colors);
+    let builder = BitPartBuilder::new(colors, 40);
 
     setup_with(c, "sisap_colors_setup".to_owned(), builder);
 }
@@ -137,7 +137,7 @@ pub fn sisap_colors_query(c: &mut Criterion) {
     let colors = get_colors();
     let query = Euclidean::new(Colors(COLORS_QUERY));
 
-    let builder = BitPartBuilder::new(colors.clone());
+    let builder = BitPartBuilder::new(colors.clone(), 40);
 
     query_with(
         c,
@@ -148,7 +148,7 @@ pub fn sisap_colors_query(c: &mut Criterion) {
         COLORS_THRESHOLD,
     );
 
-    let builder = BitPartBuilder::new(colors.clone()).ref_points(20);
+    let builder = BitPartBuilder::new(colors.clone(), 20);
     query_with(
         c,
         "sisap_colors_query_20".to_owned(),
@@ -161,7 +161,7 @@ pub fn sisap_colors_query(c: &mut Criterion) {
 
 pub fn sisap_nasa_setup(c: &mut Criterion) {
     let nasa = get_nasa();
-    let builder = BitPartBuilder::new(nasa);
+    let builder = BitPartBuilder::new(nasa, 40);
 
     setup_with(c, "sisap_colors_setup".to_owned(), builder);
 }
@@ -170,7 +170,7 @@ pub fn sisap_nasa_query(c: &mut Criterion) {
     let nasa = get_nasa();
     let query = Euclidean::new(Nasa(NASA_QUERY));
 
-    let builder = BitPartBuilder::new(nasa.clone());
+    let builder = BitPartBuilder::new(nasa.clone(), 40);
 
     query_with(
         c,
@@ -181,7 +181,7 @@ pub fn sisap_nasa_query(c: &mut Criterion) {
         NASA_THRESHOLD,
     );
 
-    let builder = BitPartBuilder::new(nasa.clone()).ref_points(20);
+    let builder = BitPartBuilder::new(nasa.clone(), 20);
     query_with(
         c,
         "sisap_nasa_query_20".to_owned(),
@@ -214,7 +214,7 @@ pub fn nn_query(c: &mut Criterion) {
         .take(NN_QUERIES)
         .collect::<Vec<_>>();
 
-    let builder = BitPartBuilder::new(points.clone());
+    let builder = BitPartBuilder::new(points.clone(), 40);
 
     let mut group = c.benchmark_group("nn_100k_flat");
 
@@ -276,7 +276,7 @@ pub fn nn_query_disk(c: &mut Criterion) {
         .take(NN_QUERIES)
         .collect::<Vec<_>>();
 
-    let builder = BitPartBuilder::new(points.clone());
+    let builder = BitPartBuilder::new(points.clone(), 40);
 
     let mut group = c.benchmark_group("nn_100k_flat_disk");
 

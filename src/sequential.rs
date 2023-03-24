@@ -188,7 +188,7 @@ mod tests {
             .map(Euclidean::new)
             .collect::<Vec<_>>();
 
-        let bitpart = BitPartBuilder::new(nasa.clone()).build();
+        let bitpart = BitPartBuilder::new(nasa.clone(), 40).build();
         let query = nasa[317].clone();
         let threshold = 1.0;
 
@@ -203,7 +203,7 @@ mod tests {
             .map(Euclidean::new)
             .collect::<Vec<_>>();
 
-        let bitpart = BitPartBuilder::new(colors.clone()).build();
+        let bitpart = BitPartBuilder::new(colors.clone(), 40).build();
         let query = colors[70446].clone();
         let threshold = 0.5;
 

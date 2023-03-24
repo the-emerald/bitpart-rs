@@ -169,7 +169,7 @@ mod tests {
             .map(Euclidean::new)
             .collect::<Vec<_>>();
 
-        let bitpart = BitPartBuilder::new(nasa.clone()).build_parallel(Some(512));
+        let bitpart = BitPartBuilder::new(nasa.clone(), 40).build_parallel(Some(512));
         let query = nasa[317].clone();
         let threshold = 1.0;
 
@@ -184,7 +184,7 @@ mod tests {
             .map(Euclidean::new)
             .collect::<Vec<_>>();
 
-        let bitpart = BitPartBuilder::new(colors.clone()).build_parallel(Some(512));
+        let bitpart = BitPartBuilder::new(colors.clone(), 40).build_parallel(Some(512));
         let query = colors[70446].clone();
         let threshold = 0.5;
 
@@ -212,7 +212,7 @@ mod tests {
             .take(1000)
             .collect::<Vec<_>>();
 
-        let bitpart = BitPartBuilder::new(points.clone()).build_parallel(Some(8192));
+        let bitpart = BitPartBuilder::new(points.clone(), 40).build_parallel(Some(8192));
 
         for (query, threshold) in queries {
             test(&points, &bitpart, query, threshold);
