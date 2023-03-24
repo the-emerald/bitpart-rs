@@ -3,6 +3,7 @@ use bitpart::{
     metric::{euclidean::Euclidean, Metric},
 };
 use criterion::{criterion_group, criterion_main, BatchSize, Criterion};
+use rayon::prelude::*;
 use sisap_data::{
     cartesian_parser::parse,
     colors::{parse_colors, Colors},
@@ -235,6 +236,23 @@ pub fn nn_query(c: &mut Criterion) {
         )
     });
 
+    // Benchmark a brute force search
+    group.bench_function("bruteforce_par", |bn| {
+        bn.iter_batched(
+            || (points.clone(), queries.clone()),
+            |(data, queries)| {
+                for (query, threshold) in queries {
+                    let _ = data
+                        .par_iter()
+                        .map(|pt| (pt.clone(), pt.distance(&query)))
+                        .filter(|d| d.1 <= threshold)
+                        .collect::<Vec<_>>();
+                }
+            },
+            BatchSize::SmallInput,
+        )
+    });
+
     // Benchmark query (sequential)
     let bitpart = builder.clone().build();
     group.bench_function("seq", |bn| {
@@ -288,6 +306,23 @@ pub fn nn_query_disk(c: &mut Criterion) {
                 for (query, threshold) in queries {
                     let _ = data
                         .iter()
+                        .map(|pt| (pt.clone(), pt.distance(&query)))
+                        .filter(|d| d.1 <= threshold)
+                        .collect::<Vec<_>>();
+                }
+            },
+            BatchSize::SmallInput,
+        )
+    });
+
+    // Benchmark a brute force search
+    group.bench_function("bruteforce_par", |bn| {
+        bn.iter_batched(
+            || (points.clone(), queries.clone()),
+            |(data, queries)| {
+                for (query, threshold) in queries {
+                    let _ = data
+                        .par_iter()
                         .map(|pt| (pt.clone(), pt.distance(&query)))
                         .filter(|d| d.1 <= threshold)
                         .collect::<Vec<_>>();
