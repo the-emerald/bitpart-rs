@@ -20,3 +20,7 @@ path = "src/colors/main.rs"
 [[bin]]
 name = "synthetic"
 path = "src/synthetic/main.rs"
+
+[[bin]]
+name = "bruteforce"
+path = "src/bruteforce/main.rs"
