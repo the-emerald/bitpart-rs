@@ -15,11 +15,13 @@ fn main() {
     let query = &points[0];
     let threshold = 1.9188728695060282;
 
-    let _ = points
-        .iter()
-        .map(|pt| (pt.clone(), pt.distance(query)))
-        .filter(|d| d.1 <= threshold)
-        .collect::<Vec<_>>();
+    for _ in 0..1000 {
+        let _ = points
+            .iter()
+            .map(|pt| (pt.clone(), pt.distance(query)))
+            .filter(|d| d.1 <= threshold)
+            .collect::<Vec<_>>();
+    }
 }
 
 #[derive(Clone, Debug)]
