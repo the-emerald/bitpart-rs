@@ -1,5 +1,4 @@
 use bitpart::metric::Metric;
-use itertools::Itertools;
 use sisap_data::cartesian_parser::parse;
 use std::fs;
 
@@ -30,11 +29,13 @@ pub struct Point(pub Vec<f64>);
 impl Metric for Point {
     #[inline(never)]
     fn distance(&self, rhs: &Self) -> f64 {
-        self.0
-            .iter()
-            .zip(rhs.0.iter())
-            .map(|(x, y)| (x - y).powi(2))
-            .sum::<f64>()
-            .sqrt()
+        assert_eq!(self.0.len(), rhs.0.len());
+
+        let mut acc = 0.0;
+        for (x, y) in self.0.iter().zip(rhs.0.iter()) {
+            acc += (x - y).powi(2);
+        }
+
+        acc.sqrt()
     }
 }
