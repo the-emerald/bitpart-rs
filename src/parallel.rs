@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use crate::builder::BitPartBuilder;
 use crate::exclusions::{BallExclusion, ExclusionSync, SheetExclusion};
 use crate::metric::Metric;
@@ -127,6 +129,36 @@ where
             })
             .collect::<Vec<_>>()
     }
+
+    pub fn cull(&mut self) {
+        let threshold = 0.95;
+        let mut to_cull = HashSet::new();
+
+        for (idx, bv) in self.bitset.iter().enumerate() {
+            if bv.all() || bv.not_any() {
+                to_cull.insert(idx);
+            }
+            for (idx2, bv2) in self.bitset.iter().enumerate() {
+                if to_cull.contains(&idx2) {
+                    continue;
+                }
+                let ones = (bv.clone() ^ bv2).count_ones();
+                if (ones as f64 / bv2.len() as f64) > threshold {
+                    to_cull.insert(idx2);
+                }
+            }
+        }
+
+        let keep = (0..self.exclusions.len())
+            .map(|idx| !to_cull.contains(&idx))
+            .collect::<Vec<_>>();
+
+        let mut iter = keep.iter();
+        self.bitset.retain(|_| *iter.next().unwrap());
+
+        let mut iter = keep.iter();
+        self.exclusions.retain(|_| *iter.next().unwrap());
+    }
 }
 
 #[cfg(test)]
@@ -173,6 +205,22 @@ mod tests {
         let query = nasa[317].clone();
         let threshold = 1.0;
 
+        test(&nasa, &bitpart, query.clone(), threshold);
+    }
+
+    #[test]
+    fn sisap_nasa_par_cull() {
+        let nasa = parse_nasa(NASA)
+            .unwrap()
+            .into_iter()
+            .map(Euclidean::new)
+            .collect::<Vec<_>>();
+
+        let mut bitpart = BitPartBuilder::new(nasa.clone(), 40).build_parallel(Some(512));
+        let query = nasa[317].clone();
+        let threshold = 1.0;
+
+        bitpart.cull();
         test(&nasa, &bitpart, query, threshold);
     }
 
@@ -188,6 +236,22 @@ mod tests {
         let query = colors[70446].clone();
         let threshold = 0.5;
 
+        test(&colors, &bitpart, query.clone(), threshold);
+    }
+
+    #[test]
+    fn sisap_colors_par_cull() {
+        let colors = parse_colors(COLORS)
+            .unwrap()
+            .into_iter()
+            .map(Euclidean::new)
+            .collect::<Vec<_>>();
+
+        let mut bitpart = BitPartBuilder::new(colors.clone(), 40).build_parallel(Some(512));
+        let query = colors[70446].clone();
+        let threshold = 0.5;
+
+        bitpart.cull();
         test(&colors, &bitpart, query, threshold);
     }
 
