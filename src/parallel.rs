@@ -130,8 +130,7 @@ where
             .collect::<Vec<_>>()
     }
 
-    pub fn cull(&mut self) {
-        let threshold = 0.95;
+    pub fn cull(&mut self, similarity_threshold: f64) {
         let mut to_cull = HashSet::new();
 
         for (idx, bv) in self.bitset.iter().enumerate() {
@@ -143,7 +142,7 @@ where
                     continue;
                 }
                 let ones = (bv.clone() ^ bv2).count_ones();
-                if (ones as f64 / bv2.len() as f64) > threshold {
+                if (ones as f64 / bv2.len() as f64) > similarity_threshold {
                     to_cull.insert(idx2);
                 }
             }
@@ -220,7 +219,7 @@ mod tests {
         let query = nasa[317].clone();
         let threshold = 1.0;
 
-        bitpart.cull();
+        bitpart.cull(0.95);
         test(&nasa, &bitpart, query, threshold);
     }
 
@@ -251,7 +250,7 @@ mod tests {
         let query = colors[70446].clone();
         let threshold = 0.5;
 
-        bitpart.cull();
+        bitpart.cull(0.95);
         test(&colors, &bitpart, query, threshold);
     }
 
