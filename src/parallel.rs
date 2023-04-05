@@ -281,4 +281,33 @@ mod tests {
             test(&points, &bitpart, query, threshold);
         }
     }
+
+    #[test]
+    fn nearest_neighbour_cull() {
+        let points = parse(&fs::read_to_string("data/100k_flat.ascii").unwrap())
+            .unwrap()
+            .1
+             .1
+            .into_iter()
+            .map(Euclidean::new)
+            .collect::<Vec<_>>();
+
+        let nns: Vec<Vec<(usize, f64)>> =
+            serde_json::from_str(&fs::read_to_string("data/100k_flat.json").unwrap()).unwrap();
+
+        let queries = points
+            .iter()
+            .cloned()
+            .zip(nns.into_iter())
+            .map(|(pt, nn)| (pt, nn.last().unwrap().1))
+            .take(1000)
+            .collect::<Vec<_>>();
+
+        let mut bitpart = BitPartBuilder::new(points.clone(), 40).build_parallel(Some(8192));
+
+        bitpart.cull(0.95);
+        for (query, threshold) in queries {
+            test(&points, &bitpart, query, threshold);
+        }
+    }
 }
