@@ -276,7 +276,7 @@ pub fn nn_query(c: &mut Criterion) {
     // Query cull
     let mut bitpart_cull = builder.clone().build_parallel(Some(512));
     bitpart_cull.cull(0.95, 0.95);
-    group.bench_function("par", |bn| {
+    group.bench_function("par_cull", |bn| {
         bn.iter(|| {
             for (query, threshold) in &queries {
                 bitpart_parallel.range_search(query.clone(), *threshold);
