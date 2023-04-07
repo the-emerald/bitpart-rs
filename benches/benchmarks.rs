@@ -193,39 +193,29 @@ pub fn sisap_nasa_query(c: &mut Criterion) {
     );
 }
 
-const NN_QUERIES: usize = 1000;
-
-pub fn nn_query(c: &mut Criterion) {
-    let points = parse(&fs::read_to_string("data/100k_flat.ascii").unwrap())
-        .unwrap()
-        .1
-         .1
-        .into_iter()
-        .map(Euclidean::new)
-        .collect::<Vec<_>>();
-
-    let nns: Vec<Vec<(usize, f64)>> =
-        serde_json::from_str(&fs::read_to_string("data/100k_flat.json").unwrap()).unwrap();
-
-    let queries = points
-        .iter()
-        .cloned()
-        .zip(nns.into_iter())
-        .map(|(pt, nn)| (pt, nn.last().unwrap().1))
-        .take(NN_QUERIES)
-        .collect::<Vec<_>>();
-
-    let builder = BitPartBuilder::new(points.clone(), 40);
-
-    let mut group = c.benchmark_group("nn_100k_flat");
+pub fn nn_query_inner<T>(
+    c: &mut Criterion,
+    group_name: String,
+    n: usize,
+    builder: BitPartBuilder<T>,
+    points: Vec<T>,
+    thresholds: Vec<f64>,
+) where
+    for<'a> T: Metric + Send + Sync + 'a,
+{
+    let mut group = c.benchmark_group(group_name);
 
     // Benchmark a brute force search
     group.bench_function("bruteforce", |bn| {
         bn.iter_batched(
-            || (points.clone(), queries.clone()),
-            |(data, queries)| {
-                for (query, threshold) in queries {
-                    let _ = data
+            || (points.clone(), thresholds.clone()),
+            |(points_inner, thresholds_inner)| {
+                for (query, threshold) in points_inner
+                    .into_iter()
+                    .zip(thresholds_inner.into_iter())
+                    .take(n)
+                {
+                    let _ = points
                         .iter()
                         .map(|pt| (pt.clone(), pt.distance(&query)))
                         .filter(|d| d.1 <= threshold)
@@ -236,13 +226,17 @@ pub fn nn_query(c: &mut Criterion) {
         )
     });
 
-    // Benchmark a brute force search
+    // Benchmark a parallel brute force search
     group.bench_function("bruteforce_par", |bn| {
         bn.iter_batched(
-            || (points.clone(), queries.clone()),
-            |(data, queries)| {
-                for (query, threshold) in queries {
-                    let _ = data
+            || (points.clone(), thresholds.clone()),
+            |(points_inner, thresholds_inner)| {
+                for (query, threshold) in points_inner
+                    .into_iter()
+                    .zip(thresholds_inner.into_iter())
+                    .take(n)
+                {
+                    let _ = points
                         .par_iter()
                         .map(|pt| (pt.clone(), pt.distance(&query)))
                         .filter(|d| d.1 <= threshold)
@@ -253,21 +247,11 @@ pub fn nn_query(c: &mut Criterion) {
         )
     });
 
-    // Benchmark query (sequential)
-    let bitpart = builder.clone().build();
-    group.bench_function("seq", |bn| {
-        bn.iter(|| {
-            for (query, threshold) in &queries {
-                bitpart.range_search(query.clone(), *threshold);
-            }
-        });
-    });
-
     // Benchmark query (parallel)
     let bitpart_parallel = builder.clone().build_parallel(Some(512));
     group.bench_function("par", |bn| {
         bn.iter(|| {
-            for (query, threshold) in &queries {
+            for (query, threshold) in points.iter().zip(thresholds.iter()).take(n) {
                 bitpart_parallel.range_search(query.clone(), *threshold);
             }
         });
@@ -278,14 +262,26 @@ pub fn nn_query(c: &mut Criterion) {
     bitpart_cull.cull(0.95, 0.95);
     group.bench_function("par_cull", |bn| {
         bn.iter(|| {
-            for (query, threshold) in &queries {
+            for (query, threshold) in points.iter().zip(thresholds.iter()).take(n) {
                 bitpart_parallel.range_search(query.clone(), *threshold);
             }
         });
     });
+
+    std::fs::remove_dir_all("/tmp/benchmark/").ok();
+    // Benchmark query (parallel)
+    let bitpart_parallel = builder.clone().build_on_disk("/tmp/benchmark/", Some(8192));
+    group.bench_function("par_disk", |bn| {
+        bn.iter(|| {
+            for (query, threshold) in points.iter().zip(thresholds.iter()).take(n) {
+                bitpart_parallel.range_search(query.clone(), *threshold);
+            }
+        });
+    });
+    std::fs::remove_dir_all("/tmp/benchmark/").ok();
 }
 
-pub fn nn_query_disk(c: &mut Criterion) {
+pub fn nn_query(c: &mut Criterion) {
     let points = parse(&fs::read_to_string("data/100k_flat.ascii").unwrap())
         .unwrap()
         .1
@@ -294,76 +290,24 @@ pub fn nn_query_disk(c: &mut Criterion) {
         .map(Euclidean::new)
         .collect::<Vec<_>>();
 
-    let nns: Vec<Vec<(usize, f64)>> =
-        serde_json::from_str(&fs::read_to_string("data/100k_flat.json").unwrap()).unwrap();
-
-    let queries = points
-        .iter()
-        .cloned()
-        .zip(nns.into_iter())
-        .map(|(pt, nn)| (pt, nn.last().unwrap().1))
-        .take(NN_QUERIES)
-        .collect::<Vec<_>>();
+    let thresholds = serde_json::from_str::<Vec<Vec<(usize, f64)>>>(
+        &fs::read_to_string("data/100k_flat.json").unwrap(),
+    )
+    .unwrap()
+    .into_iter()
+    .map(|nn| nn.last().unwrap().1)
+    .collect::<Vec<_>>();
 
     let builder = BitPartBuilder::new(points.clone(), 40);
 
-    let mut group = c.benchmark_group("nn_100k_flat_disk");
-
-    // Benchmark a brute force search
-    group.bench_function("bruteforce", |bn| {
-        bn.iter_batched(
-            || (points.clone(), queries.clone()),
-            |(data, queries)| {
-                for (query, threshold) in queries {
-                    let _ = data
-                        .iter()
-                        .map(|pt| (pt.clone(), pt.distance(&query)))
-                        .filter(|d| d.1 <= threshold)
-                        .collect::<Vec<_>>();
-                }
-            },
-            BatchSize::SmallInput,
-        )
-    });
-
-    // Benchmark a brute force search
-    group.bench_function("bruteforce_par", |bn| {
-        bn.iter_batched(
-            || (points.clone(), queries.clone()),
-            |(data, queries)| {
-                for (query, threshold) in queries {
-                    let _ = data
-                        .par_iter()
-                        .map(|pt| (pt.clone(), pt.distance(&query)))
-                        .filter(|d| d.1 <= threshold)
-                        .collect::<Vec<_>>();
-                }
-            },
-            BatchSize::SmallInput,
-        )
-    });
-
-    // Benchmark query (sequential)
-    let bitpart = builder.clone().build();
-    group.bench_function("seq", |bn| {
-        bn.iter(|| {
-            for (query, threshold) in &queries {
-                bitpart.range_search(query.clone(), *threshold);
-            }
-        });
-    });
-
-    std::fs::remove_dir_all("/tmp/benchmark/").ok();
-    // Benchmark query (parallel)
-    let bitpart_parallel = builder.clone().build_on_disk("/tmp/benchmark/", Some(8192));
-    group.bench_function("par", |bn| {
-        bn.iter(|| {
-            for (query, threshold) in &queries {
-                bitpart_parallel.range_search(query.clone(), *threshold);
-            }
-        });
-    });
-    std::fs::remove_dir_all("/tmp/benchmark/").ok();
+    nn_query_inner(
+        c,
+        "100k_flat".to_string(),
+        1000,
+        builder,
+        points,
+        thresholds,
+    );
 }
 
 // criterion_group!(benches, sisap_nasa, sisap_colors);
@@ -376,7 +320,7 @@ criterion_group! {
 criterion_group! {
     name = nn_benches;
     config = Criterion::default().measurement_time(Duration::new(240, 0));
-    targets = nn_query, nn_query_disk
+    targets = nn_query
 }
 
 // criterion_main!(benches, nn_benches);
