@@ -23,6 +23,10 @@ struct Args {
     #[arg(short, long)]
     n: usize,
 
+    /// Number of points to find nearest neighbour for
+    #[arg(short, long)]
+    points: Option<usize>,
+
     /// Output file location
     #[arg(short, long)]
     output: PathBuf,
@@ -42,6 +46,7 @@ fn main() -> anyhow::Result<()> {
 
     let closest = points
         .par_iter()
+        .take(args.points.unwrap_or(points.len()))
         .progress_with_style(bar)
         .map(|pt| {
             let mut points = points
