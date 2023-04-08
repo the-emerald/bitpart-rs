@@ -1,5 +1,5 @@
 /target
 /Cargo.lock
 
-data/*.json
-data/*.ascii
+data/**/*.json
+data/**/*.ascii
