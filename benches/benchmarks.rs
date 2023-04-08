@@ -261,7 +261,7 @@ pub fn nn_query_inner<T>(
         // Query cull
         let mut bitpart_cull = builder.clone().build_parallel(Some(512));
         bitpart_cull.cull(cull_threshold, cull_threshold);
-        group.bench_function(BenchmarkId::new("par_cull", cull_threshold), |bn| {
+        group.bench_function(BenchmarkId::new("cull", cull_threshold), |bn| {
             bn.iter(|| {
                 for (query, threshold) in points.iter().zip(thresholds.iter()).take(n) {
                     bitpart_parallel.range_search(query.clone(), *threshold);
@@ -273,7 +273,7 @@ pub fn nn_query_inner<T>(
     std::fs::remove_dir_all("/tmp/benchmark/").ok();
     // Benchmark on-disk
     let bitpart_parallel = builder.clone().build_on_disk("/tmp/benchmark/", Some(8192));
-    group.bench_function("par_disk", |bn| {
+    group.bench_function("disk", |bn| {
         bn.iter(|| {
             for (query, threshold) in points.iter().zip(thresholds.iter()).take(n) {
                 bitpart_parallel.range_search(query.clone(), *threshold);
@@ -284,7 +284,7 @@ pub fn nn_query_inner<T>(
 }
 
 pub fn nn_query(c: &mut Criterion) {
-    for dims in 10..=20 {
+    for dims in (10..=30).step_by(2) {
         let points = parse(&fs::read_to_string(format!("data/100k_d{dims}_flat.ascii")).unwrap())
             .unwrap()
             .1
@@ -306,7 +306,7 @@ pub fn nn_query(c: &mut Criterion) {
         nn_query_inner(
             c,
             format!("100k_d{dims}_flat"),
-            1000,
+            500,
             builder,
             points,
             thresholds,
@@ -323,7 +323,7 @@ criterion_group! {
 
 criterion_group! {
     name = nn_benches;
-    config = Criterion::default().measurement_time(Duration::new(240, 0));
+    config = Criterion::default().measurement_time(Duration::new(120, 0));
     targets = nn_query
 }
 

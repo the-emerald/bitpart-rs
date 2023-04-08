@@ -8,7 +8,7 @@ echo "synthetic"
 cargo run -q --release -p generators -- -d 20 -p 1000000 -s ${SEED} -o "data/output.ascii" normal --mean 0 --std-dev 1.0
 
 # 100k, differing dimensions
-for DIMS in {10..20}
+for ((DIMS=10; DIMS<=30; DIMS+=2));
 do
     echo "100k, d${DIMS}"
     # Make 100k flat
