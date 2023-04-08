@@ -2,7 +2,7 @@ use bitpart::{
     builder::BitPartBuilder,
     metric::{euclidean::Euclidean, Metric},
 };
-use criterion::{criterion_group, criterion_main, BatchSize, Criterion};
+use criterion::{criterion_group, criterion_main, BatchSize, BenchmarkId, Criterion};
 use rayon::prelude::*;
 use sisap_data::{
     cartesian_parser::parse,
@@ -257,19 +257,21 @@ pub fn nn_query_inner<T>(
         });
     });
 
-    // Query cull
-    let mut bitpart_cull = builder.clone().build_parallel(Some(512));
-    bitpart_cull.cull(0.95, 0.95);
-    group.bench_function("par_cull", |bn| {
-        bn.iter(|| {
-            for (query, threshold) in points.iter().zip(thresholds.iter()).take(n) {
-                bitpart_parallel.range_search(query.clone(), *threshold);
-            }
+    for cull_threshold in [0.9, 0.8, 0.7] {
+        // Query cull
+        let mut bitpart_cull = builder.clone().build_parallel(Some(512));
+        bitpart_cull.cull(cull_threshold, cull_threshold);
+        group.bench_function(BenchmarkId::new("par_cull", cull_threshold), |bn| {
+            bn.iter(|| {
+                for (query, threshold) in points.iter().zip(thresholds.iter()).take(n) {
+                    bitpart_parallel.range_search(query.clone(), *threshold);
+                }
+            });
         });
-    });
+    }
 
     std::fs::remove_dir_all("/tmp/benchmark/").ok();
-    // Benchmark query (parallel)
+    // Benchmark on-disk
     let bitpart_parallel = builder.clone().build_on_disk("/tmp/benchmark/", Some(8192));
     group.bench_function("par_disk", |bn| {
         bn.iter(|| {
