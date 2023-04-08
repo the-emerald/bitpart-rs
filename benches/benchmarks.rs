@@ -284,7 +284,7 @@ pub fn nn_query_inner<T>(
 }
 
 pub fn nn_query(c: &mut Criterion) {
-    let points = parse(&fs::read_to_string("data/100k_flat.ascii").unwrap())
+    let points = parse(&fs::read_to_string("data/100k_d20_flat.ascii").unwrap())
         .unwrap()
         .1
          .1
@@ -293,7 +293,7 @@ pub fn nn_query(c: &mut Criterion) {
         .collect::<Vec<_>>();
 
     let thresholds = serde_json::from_str::<Vec<Vec<(usize, f64)>>>(
-        &fs::read_to_string("data/100k_flat.json").unwrap(),
+        &fs::read_to_string("data/100k_d20_flat.json").unwrap(),
     )
     .unwrap()
     .into_iter()
@@ -304,7 +304,7 @@ pub fn nn_query(c: &mut Criterion) {
 
     nn_query_inner(
         c,
-        "100k_flat".to_string(),
+        "100k_d20_flat".to_string(),
         1000,
         builder,
         points,
