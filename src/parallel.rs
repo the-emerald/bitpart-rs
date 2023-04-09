@@ -261,7 +261,7 @@ mod tests {
 
     #[test]
     fn nearest_neighbour() {
-        let points = parse(&fs::read_to_string("data/100k_flat.ascii").unwrap())
+        let points = parse(&fs::read_to_string("data/100k_d20_flat.ascii").unwrap())
             .unwrap()
             .1
              .1
@@ -270,7 +270,7 @@ mod tests {
             .collect::<Vec<_>>();
 
         let nns: Vec<Vec<(usize, f64)>> =
-            serde_json::from_str(&fs::read_to_string("data/100k_flat.json").unwrap()).unwrap();
+            serde_json::from_str(&fs::read_to_string("data/100k_d20_flat.json").unwrap()).unwrap();
 
         let queries = points
             .iter()
@@ -289,7 +289,7 @@ mod tests {
 
     #[test]
     fn nearest_neighbour_cull() {
-        let points = parse(&fs::read_to_string("data/100k_flat.ascii").unwrap())
+        let points = parse(&fs::read_to_string("data/100k_d20_flat.ascii").unwrap())
             .unwrap()
             .1
              .1
@@ -298,7 +298,7 @@ mod tests {
             .collect::<Vec<_>>();
 
         let nns: Vec<Vec<(usize, f64)>> =
-            serde_json::from_str(&fs::read_to_string("data/100k_flat.json").unwrap()).unwrap();
+            serde_json::from_str(&fs::read_to_string("data/100k_d20_flat.json").unwrap()).unwrap();
 
         let queries = points
             .iter()
