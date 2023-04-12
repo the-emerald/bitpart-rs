@@ -57,11 +57,6 @@ where
     }
 }
 
-// pub fn euclidean_nasa(a: Euclidean<[f64; 20], f64>, b: Euclidean<[f64; 20], f64>) -> f64 {
-//     // assert_eq!(a.len(), b.len());
-//     a.distance(&b)
-// }
-
 impl<T> Metric for Euclidean<T>
 where
     for<'a> &'a T: IntoIterator<Item = &'a f64>,

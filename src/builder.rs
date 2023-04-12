@@ -9,7 +9,7 @@ use crate::parallel::ParallelBitPart;
 #[cfg(feature = "on_disk")]
 use crate::on_disk::DiskBitPart;
 
-/// Builder for a BitPart query.
+/// Builder for the BitPart data structure.
 #[derive(Debug, Clone)]
 pub struct BitPartBuilder<T> {
     pub(crate) dataset: Vec<T>,
