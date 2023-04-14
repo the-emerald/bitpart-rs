@@ -5,6 +5,7 @@
 //! # use bitpart::metric::euclidean::Euclidean;
 //! # use bitpart::builder::BitPartBuilder;
 //! # use bitpart::metric::Metric;
+//! #
 //! let points: Vec<Euclidean<Vec<f64>>> = (0..1000)
 //!     .map(|_| (0..20).map(|_| rand::random()).collect())
 //!     .map(Euclidean::new)
@@ -28,6 +29,8 @@
 //!     .count();
 //! assert_eq!(res.len(), linear);
 //! ```
+//! TODO: Talk about how the algorithm works here
+//!
 //! TODO: Talk about features here
 //!
 //! TODO: Talk about bitpart-fast-math and vectorisation
@@ -41,10 +44,12 @@ pub mod metric;
 mod sequential;
 pub use sequential::*;
 
-/// Parallel BitPart
 #[cfg(feature = "rayon")]
-pub mod parallel;
+mod parallel;
+#[cfg(feature = "rayon")]
+pub use parallel::*;
 
-/// On-disk BitPart
 #[cfg(feature = "on_disk")]
-pub mod on_disk;
+mod on_disk;
+#[cfg(feature = "on_disk")]
+pub use on_disk::*;

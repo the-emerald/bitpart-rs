@@ -7,6 +7,24 @@ use rayon::prelude::*;
 use std::fs::File;
 use std::path::{Path, PathBuf};
 
+/// On-disk BitPart.
+///
+/// BitPart variant which stores partitioning data on disk. Instead of holding a vector of bitsets in memory, this struct
+/// holds a vector of [`Mmap`](memmap2::Mmap)s and only deserializes the relevant columns into memory at query-time.
+///
+/// The BitPart data structure consists of three components: the dataset itself, information about exclusion zones, and a
+/// vector of bitsets which represent the partitioning data for each point and exclusion zone. Note that for a given query,
+/// not every partition matters - exclusion zones are only considered if the
+/// query point [must be in](crate::exclusions::Exclusion::must_be_in) or [must be out](crate::exclusions::Exclusion::must_be_out).
+/// Therefore, we can reduce the amount of memory used by BitPart by only loading columns useful to a particular query.
+///
+/// As a benchmark figure, on the default setting of 40 reference points, `40 * 5 = 200` balls and `40c2 = 780` plane exclusions are made.
+/// At 20 dimensions, each point requires `20 * 64 = 1280` bits of storage plus `200 + 780 = 980` bits of partitioning data.
+///
+/// Because the bitsets are memory-mapped to files, the kernel may decide to cache reads into memory. This has the consequence that
+/// if `DiskBitPart` is used when volatile memory can fully hold the partitioning data, queries are almost as fast as [`BitPart`](crate::BitPart) (with a ~10% performance penalty).
+///
+/// `DiskBitPart` is parallelised. See [`ParallelBitPart`](crate::ParallelBitPart) for an explanation of the mechanics.
 pub struct DiskBitPart<'a, T> {
     dataset: Vec<T>,
     exclusions: Vec<Box<dyn ExclusionSync<T> + Send + Sync + 'a>>,

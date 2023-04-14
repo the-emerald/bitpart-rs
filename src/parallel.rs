@@ -7,6 +7,19 @@ use bitvec::prelude::*;
 use itertools::{Either, Itertools};
 use rayon::prelude::*;
 
+/// Parallel BitPart.
+///
+/// The BitPart algorithm (and its data structures) are designed to be highly parallelisable.
+/// `ParallelBitPart` takes advantage of this by using [`rayon`](rayon) to parallelise both
+/// the initial construction of the data structure and subsequent queries.
+///
+/// Jobs are distributed across threads by work-stealing. By default `rayon` will create as many threads
+/// as there are logical cores.
+///
+/// In general, it is not possible to change the "size" of each job as `rayon`'s work-stealing strategy works well to eliminate
+/// overhead no matter the job size. The one and only exception is when filtering candidate points based on partitioning data; points
+/// are explicitly processed in chunks to enable instruction-level parallelism when comparing bitsets.
+/// See [`build_parallel`](crate::builder::BitPartBuilder::build_parallel) for configuration.
 pub struct ParallelBitPart<'a, T> {
     dataset: Vec<T>,
     exclusions: Vec<Box<dyn ExclusionSync<T> + Send + Sync + 'a>>,

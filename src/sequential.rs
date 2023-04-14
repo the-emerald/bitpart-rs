@@ -4,6 +4,13 @@ use crate::metric::Metric;
 use bitvec::prelude::*;
 use itertools::Itertools;
 
+/// Sequential BitPart.
+///
+/// This is essentially a Rust port of the [reference library](https://github.com/aldearle/BitPart) written in Java.
+///
+/// # Construction
+///
+/// # Query
 pub struct BitPart<'a, T> {
     dataset: Vec<T>,
     exclusions: Vec<Box<dyn Exclusion<T> + 'a>>,

@@ -9,7 +9,7 @@ use super::Metric;
 /// # Example
 /// ```
 /// # use crate::bitpart::metric::{Metric, euclidean::Euclidean};
-///
+/// #
 /// let point1: Euclidean<[f64; 2]> = Euclidean::new([0.0, 0.0]);
 /// let point2: Euclidean<[f64; 2]> = Euclidean::new([1.0, 1.0]);
 ///
