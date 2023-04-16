@@ -1,5 +1,5 @@
 use anyhow::anyhow;
-use bitpart::metric::{euclidean::Euclidean, Metric};
+use bitpart::metric::{Euclidean, Metric};
 use clap::Parser;
 use indicatif::{ParallelProgressIterator, ProgressStyle};
 use rayon::prelude::*;

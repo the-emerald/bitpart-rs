@@ -1,6 +1,6 @@
 use bitpart::{
     builder::BitPartBuilder,
-    metric::{euclidean::Euclidean, Metric},
+    metric::{Euclidean, Metric},
 };
 use criterion::{criterion_group, criterion_main, BatchSize, BenchmarkId, Criterion};
 use rayon::prelude::*;

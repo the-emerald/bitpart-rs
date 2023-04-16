@@ -8,7 +8,7 @@ use super::Metric;
 /// Wrapper struct to apply Euclidean distance to an object set.
 /// # Example
 /// ```
-/// # use crate::bitpart::metric::{Metric, euclidean::Euclidean};
+/// # use bitpart::metric::{Euclidean, Metric};
 /// #
 /// let point1: Euclidean<[f64; 2]> = Euclidean::new([0.0, 0.0]);
 /// let point2: Euclidean<[f64; 2]> = Euclidean::new([1.0, 1.0]);

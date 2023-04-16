@@ -2,7 +2,7 @@ use std::fs;
 
 use bitpart::{
     builder::BitPartBuilder,
-    metric::{euclidean::Euclidean, Metric},
+    metric::{Euclidean, Metric},
 };
 use sisap_data::cartesian_parser::parse;
 

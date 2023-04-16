@@ -1,4 +1,7 @@
-pub mod euclidean;
+//! Metric space definitions
+
+mod euclidean;
+pub use euclidean::*;
 
 /// Trait for types in metric space.
 pub trait Metric: Clone {

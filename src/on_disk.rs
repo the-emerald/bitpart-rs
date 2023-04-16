@@ -178,7 +178,7 @@ where
 
 #[cfg(test)]
 mod tests {
-    use crate::metric::euclidean::Euclidean;
+    use crate::metric::Euclidean;
     use sisap_data::{cartesian_parser::parse, colors::parse_colors, nasa::parse_nasa};
     use std::fs;
 

@@ -2,9 +2,8 @@
 //! # Example
 //! ```
 //! # use rand::prelude::*;
-//! # use bitpart::metric::euclidean::Euclidean;
+//! # use bitpart::metric::{Euclidean, Metric};
 //! # use bitpart::builder::BitPartBuilder;
-//! # use bitpart::metric::Metric;
 //! #
 //! let points: Vec<Euclidean<Vec<f64>>> = (0..1000)
 //!     .map(|_| (0..20).map(|_| rand::random()).collect())
@@ -38,7 +37,6 @@
 /// Builder struct for the data structure
 pub mod builder;
 pub mod exclusions;
-/// Metric trait definitions
 pub mod metric;
 
 mod sequential;

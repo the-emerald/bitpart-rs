@@ -1,4 +1,4 @@
-//! Exclusion zone definitions.
+//! Exclusion zone definitions
 //!
 //! The BitPart algorithm defines exclusion zones which partition the entire metric space in two (referred to as "in" or "out").
 //!
