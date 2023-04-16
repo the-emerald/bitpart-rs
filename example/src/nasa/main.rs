@@ -1,8 +1,8 @@
 use std::fs;
 
 use bitpart::{
-    builder::BitPartBuilder,
     metric::{Euclidean, Metric},
+    BitPartBuilder,
 };
 use sisap_data::nasa::{parse_nasa, Nasa};
 

@@ -3,7 +3,7 @@
 //! ```
 //! # use rand::prelude::*;
 //! # use bitpart::metric::{Euclidean, Metric};
-//! # use bitpart::builder::BitPartBuilder;
+//! # use bitpart::BitPartBuilder;
 //! #
 //! let points: Vec<Euclidean<Vec<f64>>> = (0..1000)
 //!     .map(|_| (0..20).map(|_| rand::random()).collect())
@@ -34,8 +34,9 @@
 //!
 //! TODO: Talk about bitpart-fast-math and vectorisation
 
-/// Builder struct for the data structure
-pub mod builder;
+mod builder;
+pub use builder::*;
+
 pub mod exclusions;
 pub mod metric;
 
