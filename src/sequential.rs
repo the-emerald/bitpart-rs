@@ -11,13 +11,13 @@ use itertools::Itertools;
 /// # Construction
 ///
 /// # Query
-pub struct BitPart<'a, T> {
+pub struct Sequential<'a, T> {
     dataset: Vec<T>,
     exclusions: Vec<Box<dyn Exclusion<T> + 'a>>,
     bitset: Vec<BitVec>,
 }
 
-impl<'a, T> BitPart<'a, T>
+impl<'a, T> Sequential<'a, T>
 where
     T: Metric,
     dyn Exclusion<T>: 'a,
@@ -166,7 +166,7 @@ mod tests {
     pub(crate) const NASA: &str = include_str!("../sisap-data/src/nasa.ascii");
     pub(crate) const COLORS: &str = include_str!("../sisap-data/src/colors.ascii");
 
-    fn test<T>(dataset: Vec<T>, bitpart: BitPart<T>, query: T, threshold: f64)
+    fn test<T>(dataset: Vec<T>, bitpart: Sequential<T>, query: T, threshold: f64)
     where
         for<'a> T: Metric + 'a,
     {

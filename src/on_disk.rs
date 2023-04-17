@@ -22,17 +22,17 @@ use std::path::{Path, PathBuf};
 /// At 20 dimensions, each point requires `20 * 64 = 1280` bits of storage plus `200 + 780 = 980` bits of partitioning data.
 ///
 /// Because the bitsets are memory-mapped to files, the kernel may decide to cache reads into memory. This has the consequence that
-/// if `DiskBitPart` is used when volatile memory can fully hold the partitioning data, queries are almost as fast as [`BitPart`](crate::BitPart) (with a ~10% performance penalty).
+/// if `Disk` is used when volatile memory can fully hold the partitioning data, queries are almost native speed (with a ~10% performance penalty).
 ///
-/// `DiskBitPart` is parallelised. See [`ParallelBitPart`](crate::ParallelBitPart) for an explanation of the mechanics.
-pub struct DiskBitPart<'a, T> {
+/// `Disk` is parallelised. See [`Parallel`](crate::Parallel) for an explanation of the mechanics.
+pub struct Disk<'a, T> {
     dataset: Vec<T>,
     exclusions: Vec<Box<dyn ExclusionSync<T> + Send + Sync + 'a>>,
     bitset: Vec<memmap2::Mmap>,
     block_size: usize,
 }
 
-impl<'a, T> DiskBitPart<'a, T>
+impl<'a, T> Disk<'a, T>
 where
     T: Metric + Send + Sync,
     dyn ExclusionSync<T>: Send + Sync + 'a,
@@ -187,7 +187,7 @@ mod tests {
     pub(crate) const NASA: &str = include_str!("../sisap-data/src/nasa.ascii");
     pub(crate) const COLORS: &str = include_str!("../sisap-data/src/colors.ascii");
 
-    fn test<T>(dataset: &Vec<T>, bitpart: &DiskBitPart<T>, query: T, threshold: f64)
+    fn test<T>(dataset: &Vec<T>, bitpart: &Disk<T>, query: T, threshold: f64)
     where
         for<'a> T: Metric + Send + Sync + 'a,
     {

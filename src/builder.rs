@@ -1,13 +1,13 @@
-use crate::{metric::Metric, BitPart};
+use crate::{metric::Metric, Sequential};
 
 #[cfg(feature = "rayon")]
 use crate::exclusions::ExclusionSync;
 
 #[cfg(feature = "rayon")]
-use crate::parallel::ParallelBitPart;
+use crate::parallel::Parallel;
 
 #[cfg(feature = "on_disk")]
-use crate::on_disk::DiskBitPart;
+use crate::on_disk::Disk;
 
 /// Builder for the BitPart data structure.
 #[derive(Debug, Clone)]
@@ -75,8 +75,8 @@ where
     }
 
     /// Build the BitPart.
-    pub fn build<'a>(self) -> BitPart<'a, T> {
-        BitPart::setup(self)
+    pub fn build<'a>(self) -> Sequential<'a, T> {
+        Sequential::setup(self)
     }
 }
 
@@ -86,7 +86,7 @@ where
     for<'a> T: Metric + Send + Sync + 'a,
     dyn ExclusionSync<T>: Send + Sync,
 {
-    /// Construct a [`ParallelBitPart`](crate::ParallelBitPart).
+    /// Construct a [`Parallel`](crate::Parallel).
     ///
     /// `block_size` sets how many points are processed sequentially in the partition search phase during a range search. For example, `Some(N)` means that
     /// each block will be of size `N` rows. `None` will disable parallelism during queries - this is useful for small datasets where you only wish
@@ -95,8 +95,8 @@ where
     /// In other words, `block_size` controls the granularity of parallelisation: the higher the size, the more coarse the parallelism is. It is
     /// recommended that you set a power-of-two value such as `Some(512)` to allow for instruction-level parallelism, while still letting `rayon`
     /// dispatch jobs efficiently to multiple threads.
-    pub fn build_parallel<'a>(self, block_size: Option<usize>) -> ParallelBitPart<'a, T> {
-        ParallelBitPart::setup(self, block_size)
+    pub fn build_parallel<'a>(self, block_size: Option<usize>) -> Parallel<'a, T> {
+        Parallel::setup(self, block_size)
     }
 }
 
@@ -106,7 +106,7 @@ where
     for<'a> T: Metric + Send + Sync + 'a,
     dyn ExclusionSync<T>: Send + Sync,
 {
-    /// Construct a [`DiskBitPart`](crate::DiskBitPart).
+    /// Construct a [`Disk`](crate::Disk).
     ///
     /// `path` should be a path for the directory in which partitioning data will be stored.
     /// This function uses [`create_dir`](std::fs::create_dir) to create the directory, *not* [`create_dir_all`](std::fs::create_dir_all).
@@ -114,11 +114,11 @@ where
     /// # Panics
     ///
     /// This function will panic if the `create_dir` call is unsuccessful.
-    pub fn build_on_disk<'a, P>(self, path: P, block_size: Option<usize>) -> DiskBitPart<'a, T>
+    pub fn build_on_disk<'a, P>(self, path: P, block_size: Option<usize>) -> Disk<'a, T>
     where
         P: AsRef<std::path::Path> + 'a,
     {
         std::fs::create_dir(&path).unwrap();
-        DiskBitPart::setup(self, path, block_size)
+        Disk::setup(self, path, block_size)
     }
 }

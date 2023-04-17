@@ -10,7 +10,7 @@ use rayon::prelude::*;
 /// Parallel BitPart.
 ///
 /// The BitPart algorithm (and its data structures) are designed to be highly parallelisable.
-/// `ParallelBitPart` takes advantage of this by using [`rayon`](rayon) to parallelise both
+/// `Parallel` takes advantage of this by using [`rayon`](rayon) to parallelise both
 /// the initial construction of the data structure and subsequent queries.
 ///
 /// Jobs are distributed across threads by work-stealing. By default `rayon` will create as many threads
@@ -20,14 +20,14 @@ use rayon::prelude::*;
 /// overhead no matter the job size. The one and only exception is when filtering candidate points based on partitioning data; points
 /// are explicitly processed in chunks to enable instruction-level parallelism when comparing bitsets.
 /// See [`build_parallel`](crate::builder::BitPartBuilder::build_parallel) for configuration.
-pub struct ParallelBitPart<'a, T> {
+pub struct Parallel<'a, T> {
     dataset: Vec<T>,
     exclusions: Vec<Box<dyn ExclusionSync<T> + Send + Sync + 'a>>,
     bitset: Vec<BitVec>,
     block_size: usize,
 }
 
-impl<'a, T> ParallelBitPart<'a, T>
+impl<'a, T> Parallel<'a, T>
 where
     T: Metric + Send + Sync,
     dyn ExclusionSync<T>: Send + Sync + 'a,
@@ -189,7 +189,7 @@ mod tests {
     pub(crate) const NASA: &str = include_str!("../sisap-data/src/nasa.ascii");
     pub(crate) const COLORS: &str = include_str!("../sisap-data/src/colors.ascii");
 
-    fn test<T>(dataset: &Vec<T>, bitpart: &ParallelBitPart<T>, query: T, threshold: f64)
+    fn test<T>(dataset: &Vec<T>, bitpart: &Parallel<T>, query: T, threshold: f64)
     where
         for<'a> T: Metric + Send + Sync + 'a,
     {
