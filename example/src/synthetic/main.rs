@@ -2,7 +2,7 @@ use std::fs;
 
 use bitpart::{
     metric::{Euclidean, Metric},
-    BitPart, BitPartBuilder,
+    BitPart, Builder,
 };
 use sisap_data::cartesian_parser::parse;
 
@@ -17,7 +17,7 @@ fn main() {
         .collect::<Vec<Euclidean<[f64; 20]>>>();
     println!("read ok");
 
-    let bitpart = BitPartBuilder::new(points.clone(), 40).build_parallel(Some(512));
+    let bitpart = Builder::new(points.clone(), 40).build_parallel(Some(512));
 
     let query = Euclidean::new([
         -1.087991147654979,

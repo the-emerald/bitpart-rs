@@ -1,6 +1,6 @@
 use bitpart::{
     metric::{Euclidean, Metric},
-    BitPart, BitPartBuilder,
+    BitPart, Builder,
 };
 use criterion::{criterion_group, criterion_main, BatchSize, BenchmarkId, Criterion};
 use rayon::prelude::*;
@@ -12,7 +12,7 @@ use sisap_data::{
 use std::{fs, time::Duration};
 
 /// Benchmark setup times for a particular dataset.
-fn setup_with<T>(c: &mut Criterion, group_name: String, builder: BitPartBuilder<T>)
+fn setup_with<T>(c: &mut Criterion, group_name: String, builder: Builder<T>)
 where
     for<'a> T: Metric + Send + Sync + 'a,
 {
@@ -42,7 +42,7 @@ fn query_with<T>(
     c: &mut Criterion,
     group_name: String,
     dataset: Vec<T>,
-    builder: BitPartBuilder<T>,
+    builder: Builder<T>,
     query: T,
     threshold: f64,
 ) where
@@ -105,7 +105,7 @@ pub fn synthetic_query(c: &mut Criterion) {
 
     let query = Euclidean::new(SYNTHETIC_QUERY);
 
-    let builder = BitPartBuilder::new(points.clone(), 40);
+    let builder = Builder::new(points.clone(), 40);
 
     query_with(
         c,
@@ -116,7 +116,7 @@ pub fn synthetic_query(c: &mut Criterion) {
         SYNTHETIC_THRESHOLD,
     );
 
-    let builder = BitPartBuilder::new(points.clone(), 20);
+    let builder = Builder::new(points.clone(), 20);
     query_with(
         c,
         "synthetic_query_20".to_owned(),
@@ -129,7 +129,7 @@ pub fn synthetic_query(c: &mut Criterion) {
 
 pub fn sisap_colors_setup(c: &mut Criterion) {
     let colors = get_colors();
-    let builder = BitPartBuilder::new(colors, 40);
+    let builder = Builder::new(colors, 40);
 
     setup_with(c, "sisap_colors_setup".to_owned(), builder);
 }
@@ -138,7 +138,7 @@ pub fn sisap_colors_query(c: &mut Criterion) {
     let colors = get_colors();
     let query = Euclidean::new(Colors(COLORS_QUERY));
 
-    let builder = BitPartBuilder::new(colors.clone(), 40);
+    let builder = Builder::new(colors.clone(), 40);
 
     query_with(
         c,
@@ -149,7 +149,7 @@ pub fn sisap_colors_query(c: &mut Criterion) {
         COLORS_THRESHOLD,
     );
 
-    let builder = BitPartBuilder::new(colors.clone(), 20);
+    let builder = Builder::new(colors.clone(), 20);
     query_with(
         c,
         "sisap_colors_query_20".to_owned(),
@@ -162,7 +162,7 @@ pub fn sisap_colors_query(c: &mut Criterion) {
 
 pub fn sisap_nasa_setup(c: &mut Criterion) {
     let nasa = get_nasa();
-    let builder = BitPartBuilder::new(nasa, 40);
+    let builder = Builder::new(nasa, 40);
 
     setup_with(c, "sisap_colors_setup".to_owned(), builder);
 }
@@ -171,7 +171,7 @@ pub fn sisap_nasa_query(c: &mut Criterion) {
     let nasa = get_nasa();
     let query = Euclidean::new(Nasa(NASA_QUERY));
 
-    let builder = BitPartBuilder::new(nasa.clone(), 40);
+    let builder = Builder::new(nasa.clone(), 40);
 
     query_with(
         c,
@@ -182,7 +182,7 @@ pub fn sisap_nasa_query(c: &mut Criterion) {
         NASA_THRESHOLD,
     );
 
-    let builder = BitPartBuilder::new(nasa.clone(), 20);
+    let builder = Builder::new(nasa.clone(), 20);
     query_with(
         c,
         "sisap_nasa_query_20".to_owned(),
@@ -197,7 +197,7 @@ pub fn nn_query_inner<T>(
     c: &mut Criterion,
     group_name: String,
     n: usize,
-    builder: BitPartBuilder<T>,
+    builder: Builder<T>,
     points: Vec<T>,
     thresholds: Vec<f64>,
 ) where
@@ -301,7 +301,7 @@ pub fn nn_query(c: &mut Criterion) {
         .map(|nn| nn.last().unwrap().1)
         .collect::<Vec<_>>();
 
-        let builder = BitPartBuilder::new(points.clone(), 40);
+        let builder = Builder::new(points.clone(), 40);
 
         nn_query_inner(
             c,

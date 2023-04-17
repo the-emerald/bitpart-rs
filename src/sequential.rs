@@ -1,4 +1,4 @@
-use crate::builder::BitPartBuilder;
+use crate::builder::Builder;
 use crate::exclusions::{BallExclusion, Exclusion, SheetExclusion};
 use crate::metric::Metric;
 use crate::BitPart;
@@ -98,7 +98,7 @@ where
             .collect()
     }
 
-    pub(crate) fn setup(builder: BitPartBuilder<T>) -> Self {
+    pub(crate) fn setup(builder: Builder<T>) -> Self {
         // TODO: actually randomise this
         let ref_points = &builder.dataset[0..(builder.ref_points as usize)];
         let mut exclusions = Self::ball_exclusions(&builder, ref_points);
@@ -111,10 +111,7 @@ where
         }
     }
 
-    fn ball_exclusions(
-        builder: &BitPartBuilder<T>,
-        ref_points: &[T],
-    ) -> Vec<Box<dyn Exclusion<T> + 'a>> {
+    fn ball_exclusions(builder: &Builder<T>, ref_points: &[T]) -> Vec<Box<dyn Exclusion<T> + 'a>> {
         let radii = [
             builder.mean_distance - 2.0 * builder.radius_increment,
             builder.mean_distance - builder.radius_increment,
@@ -133,7 +130,7 @@ where
     }
 
     fn sheet_exclusions(
-        _builder: &BitPartBuilder<T>,
+        _builder: &Builder<T>,
         ref_points: &[T],
     ) -> Vec<Box<dyn Exclusion<T> + 'a>> {
         ref_points
@@ -146,10 +143,7 @@ where
             .collect()
     }
 
-    fn make_bitset(
-        builder: &BitPartBuilder<T>,
-        exclusions: &[Box<dyn Exclusion<T> + 'a>],
-    ) -> Vec<BitVec> {
+    fn make_bitset(builder: &Builder<T>, exclusions: &[Box<dyn Exclusion<T> + 'a>]) -> Vec<BitVec> {
         exclusions
             .iter()
             .map(|ex| {
@@ -202,7 +196,7 @@ mod tests {
             .map(Euclidean::new)
             .collect::<Vec<_>>();
 
-        let bitpart = BitPartBuilder::new(nasa.clone(), 40).build();
+        let bitpart = Builder::new(nasa.clone(), 40).build();
         let query = nasa[317].clone();
         let threshold = 1.0;
 
@@ -217,7 +211,7 @@ mod tests {
             .map(Euclidean::new)
             .collect::<Vec<_>>();
 
-        let bitpart = BitPartBuilder::new(colors.clone(), 40).build();
+        let bitpart = Builder::new(colors.clone(), 40).build();
         let query = colors[70446].clone();
         let threshold = 0.5;
 

@@ -1,4 +1,4 @@
-use crate::builder::BitPartBuilder;
+use crate::builder::Builder;
 use crate::exclusions::{BallExclusion, ExclusionSync, SheetExclusion};
 use crate::metric::Metric;
 
@@ -100,7 +100,7 @@ where
     T: Metric + Send + Sync,
     dyn ExclusionSync<T>: Send + Sync + 'a,
 {
-    pub(crate) fn setup<P>(builder: BitPartBuilder<T>, path: P, block_size: Option<usize>) -> Self
+    pub(crate) fn setup<P>(builder: Builder<T>, path: P, block_size: Option<usize>) -> Self
     where
         P: AsRef<Path> + 'a,
     {
@@ -120,7 +120,7 @@ where
     }
 
     fn ball_exclusions(
-        builder: &BitPartBuilder<T>,
+        builder: &Builder<T>,
         ref_points: &[T],
     ) -> Vec<Box<dyn ExclusionSync<T> + Send + Sync + 'a>> {
         let radii = [
@@ -142,7 +142,7 @@ where
     }
 
     fn sheet_exclusions(
-        _builder: &BitPartBuilder<T>,
+        _builder: &Builder<T>,
         ref_points: &[T],
     ) -> Vec<Box<dyn ExclusionSync<T> + Send + Sync + 'a>> {
         ref_points
@@ -157,7 +157,7 @@ where
 
     fn make_bitset(
         _block_size: usize,
-        builder: &BitPartBuilder<T>,
+        builder: &Builder<T>,
         path: PathBuf,
         exclusions: &[Box<dyn ExclusionSync<T> + Send + Sync + 'a>],
     ) -> Vec<memmap2::Mmap> {
@@ -227,7 +227,7 @@ mod tests {
             .collect::<Vec<_>>();
 
         let bitpart =
-            BitPartBuilder::new(nasa.clone(), 40).build_on_disk("/tmp/sisap_nasa_par/", Some(8192));
+            Builder::new(nasa.clone(), 40).build_on_disk("/tmp/sisap_nasa_par/", Some(8192));
         let query = nasa[317].clone();
         let threshold = 1.0;
 
@@ -244,8 +244,8 @@ mod tests {
             .map(Euclidean::new)
             .collect::<Vec<_>>();
 
-        let bitpart = BitPartBuilder::new(colors.clone(), 40)
-            .build_on_disk("/tmp/sisap_colors_par/", Some(8192));
+        let bitpart =
+            Builder::new(colors.clone(), 40).build_on_disk("/tmp/sisap_colors_par/", Some(8192));
         let query = colors[70446].clone();
         let threshold = 0.5;
 
@@ -276,7 +276,7 @@ mod tests {
             .take(1000)
             .collect::<Vec<_>>();
 
-        let bitpart = BitPartBuilder::new(points.clone(), 40).build_on_disk("/tmp/nn/", Some(8192));
+        let bitpart = Builder::new(points.clone(), 40).build_on_disk("/tmp/nn/", Some(8192));
 
         for (query, threshold) in queries {
             test(&points, &bitpart, query, threshold);

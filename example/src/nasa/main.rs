@@ -2,7 +2,7 @@ use std::fs;
 
 use bitpart::{
     metric::{Euclidean, Metric},
-    BitPart, BitPartBuilder,
+    BitPart, Builder,
 };
 use sisap_data::nasa::{parse_nasa, Nasa};
 
@@ -13,7 +13,7 @@ fn main() {
         .map(Euclidean::new)
         .collect::<Vec<_>>();
 
-    let bitpart = BitPartBuilder::new(nasa.clone(), 40).build();
+    let bitpart = Builder::new(nasa.clone(), 40).build();
 
     // Line 319 in nasa.ascii
     let query = Euclidean::new(Nasa([

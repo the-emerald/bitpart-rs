@@ -1,4 +1,4 @@
-use crate::builder::BitPartBuilder;
+use crate::builder::Builder;
 use crate::exclusions::{BallExclusion, ExclusionSync, SheetExclusion};
 use crate::metric::Metric;
 use crate::BitPart;
@@ -20,7 +20,7 @@ use std::collections::HashSet;
 /// In general, it is not possible to change the "size" of each job as `rayon`'s work-stealing strategy works well to eliminate
 /// overhead no matter the job size. The one and only exception is when filtering candidate points based on partitioning data; points
 /// are explicitly processed in chunks to enable instruction-level parallelism when comparing bitsets.
-/// See [`build_parallel`](crate::builder::BitPartBuilder::build_parallel) for configuration.
+/// See [`build_parallel`](crate::builder::Builder::build_parallel) for configuration.
 pub struct Parallel<'a, T> {
     dataset: Vec<T>,
     exclusions: Vec<Box<dyn ExclusionSync<T> + Send + Sync + 'a>>,
@@ -81,7 +81,7 @@ where
     T: Metric + Send + Sync,
     dyn ExclusionSync<T>: Send + Sync + 'a,
 {
-    pub(crate) fn setup(builder: BitPartBuilder<T>, block_size: Option<usize>) -> Self {
+    pub(crate) fn setup(builder: Builder<T>, block_size: Option<usize>) -> Self {
         let block_size = block_size.unwrap_or(builder.dataset.len());
         // TODO: actually randomise this
         let ref_points = &builder.dataset[0..(builder.ref_points as usize)];
@@ -97,7 +97,7 @@ where
     }
 
     fn ball_exclusions(
-        builder: &BitPartBuilder<T>,
+        builder: &Builder<T>,
         ref_points: &[T],
     ) -> Vec<Box<dyn ExclusionSync<T> + Send + Sync + 'a>> {
         let radii = [
@@ -119,7 +119,7 @@ where
     }
 
     fn sheet_exclusions(
-        _builder: &BitPartBuilder<T>,
+        _builder: &Builder<T>,
         ref_points: &[T],
     ) -> Vec<Box<dyn ExclusionSync<T> + Send + Sync + 'a>> {
         ref_points
@@ -134,7 +134,7 @@ where
 
     fn make_bitset(
         _block_size: usize,
-        builder: &BitPartBuilder<T>,
+        builder: &Builder<T>,
         exclusions: &[Box<dyn ExclusionSync<T> + Send + Sync + 'a>],
     ) -> Vec<BitVec> {
         exclusions
@@ -233,7 +233,7 @@ mod tests {
             .map(Euclidean::new)
             .collect::<Vec<_>>();
 
-        let bitpart = BitPartBuilder::new(nasa.clone(), 40).build_parallel(Some(512));
+        let bitpart = Builder::new(nasa.clone(), 40).build_parallel(Some(512));
         let query = nasa[317].clone();
         let threshold = 1.0;
 
@@ -248,7 +248,7 @@ mod tests {
             .map(Euclidean::new)
             .collect::<Vec<_>>();
 
-        let mut bitpart = BitPartBuilder::new(nasa.clone(), 40).build_parallel(Some(512));
+        let mut bitpart = Builder::new(nasa.clone(), 40).build_parallel(Some(512));
         let query = nasa[317].clone();
         let threshold = 1.0;
 
@@ -264,7 +264,7 @@ mod tests {
             .map(Euclidean::new)
             .collect::<Vec<_>>();
 
-        let bitpart = BitPartBuilder::new(colors.clone(), 40).build_parallel(Some(512));
+        let bitpart = Builder::new(colors.clone(), 40).build_parallel(Some(512));
         let query = colors[70446].clone();
         let threshold = 0.5;
 
@@ -279,7 +279,7 @@ mod tests {
             .map(Euclidean::new)
             .collect::<Vec<_>>();
 
-        let mut bitpart = BitPartBuilder::new(colors.clone(), 40).build_parallel(Some(512));
+        let mut bitpart = Builder::new(colors.clone(), 40).build_parallel(Some(512));
         let query = colors[70446].clone();
         let threshold = 0.5;
 
@@ -308,7 +308,7 @@ mod tests {
             .take(1000)
             .collect::<Vec<_>>();
 
-        let bitpart = BitPartBuilder::new(points.clone(), 40).build_parallel(Some(8192));
+        let bitpart = Builder::new(points.clone(), 40).build_parallel(Some(8192));
 
         for (query, threshold) in queries {
             test(&points, &bitpart, query, threshold);
@@ -336,7 +336,7 @@ mod tests {
             .take(1000)
             .collect::<Vec<_>>();
 
-        let mut bitpart = BitPartBuilder::new(points.clone(), 40).build_parallel(Some(8192));
+        let mut bitpart = Builder::new(points.clone(), 40).build_parallel(Some(8192));
 
         bitpart.cull(0.95, 0.95);
         for (query, threshold) in queries {

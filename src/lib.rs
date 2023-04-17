@@ -3,14 +3,14 @@
 //! ```
 //! # use rand::prelude::*;
 //! # use bitpart::metric::{Euclidean, Metric};
-//! # use bitpart::{BitPart, BitPartBuilder};
+//! # use bitpart::{BitPart, Builder};
 //! #
 //! let points: Vec<Euclidean<Vec<f64>>> = (0..1000)
 //!     .map(|_| (0..20).map(|_| rand::random()).collect())
 //!     .map(Euclidean::new)
 //!     .collect();
 //!
-//! let bitpart = BitPartBuilder::new(points.clone(), 40).build();
+//! let bitpart = Builder::new(points.clone(), 40).build();
 //!
 //! let query = points[0].clone();
 //! let threshold = 0.1234;

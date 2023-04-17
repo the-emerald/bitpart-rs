@@ -11,7 +11,7 @@ use crate::on_disk::Disk;
 
 /// Builder for the BitPart data structure.
 #[derive(Debug, Clone)]
-pub struct BitPartBuilder<T> {
+pub struct Builder<T> {
     pub(crate) dataset: Vec<T>,
 
     pub(crate) radius_increment: f64,
@@ -21,7 +21,7 @@ pub struct BitPartBuilder<T> {
     pub(crate) ref_points: u64,
 }
 
-impl<T> BitPartBuilder<T>
+impl<T> Builder<T>
 where
     for<'a> T: Metric + 'a,
 {
@@ -83,7 +83,7 @@ where
 }
 
 #[cfg(feature = "rayon")]
-impl<T> BitPartBuilder<T>
+impl<T> Builder<T>
 where
     for<'a> T: Metric + Send + Sync + 'a,
     dyn ExclusionSync<T>: Send + Sync,
@@ -103,7 +103,7 @@ where
 }
 
 #[cfg(feature = "on_disk")]
-impl<T> BitPartBuilder<T>
+impl<T> Builder<T>
 where
     for<'a> T: Metric + Send + Sync + 'a,
     dyn ExclusionSync<T>: Send + Sync,
