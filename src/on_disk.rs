@@ -1,11 +1,14 @@
 use crate::builder::BitPartBuilder;
 use crate::exclusions::{BallExclusion, ExclusionSync, SheetExclusion};
 use crate::metric::Metric;
+
 use bitvec::prelude::*;
 use itertools::{Either, Itertools};
 use rayon::prelude::*;
-use std::fs::File;
-use std::path::{Path, PathBuf};
+use std::{
+    fs::File,
+    path::{Path, PathBuf},
+};
 
 /// On-disk BitPart.
 ///

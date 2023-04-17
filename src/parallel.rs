@@ -1,12 +1,12 @@
-use std::collections::HashSet;
-
 use crate::builder::BitPartBuilder;
 use crate::exclusions::{BallExclusion, ExclusionSync, SheetExclusion};
 use crate::metric::Metric;
 use crate::BitPart;
+
 use bitvec::prelude::*;
 use itertools::{Either, Itertools};
 use rayon::prelude::*;
+use std::collections::HashSet;
 
 /// Parallel BitPart.
 ///

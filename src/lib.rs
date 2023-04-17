@@ -55,6 +55,7 @@ mod on_disk;
 #[cfg(feature = "on_disk")]
 pub use on_disk::*;
 
+/// Trait for BitPart data structures.
 pub trait BitPart<T> {
     fn range_search(&self, point: T, threshold: f64) -> Vec<(T, f64)>;
 }

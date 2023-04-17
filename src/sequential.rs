@@ -2,6 +2,7 @@ use crate::builder::BitPartBuilder;
 use crate::exclusions::{BallExclusion, Exclusion, SheetExclusion};
 use crate::metric::Metric;
 use crate::BitPart;
+
 use bitvec::prelude::*;
 use itertools::Itertools;
 

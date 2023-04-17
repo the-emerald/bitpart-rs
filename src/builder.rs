@@ -26,6 +26,7 @@ where
     for<'a> T: Metric + 'a,
 {
     /// Create a new `BitPartBuilder` from a dataset.
+    ///
     /// # Panics
     /// This function will panic if `ref_points` is greater than the size of the dataset.
     pub fn new(dataset: impl IntoIterator<Item = T>, ref_points: u64) -> Self {
@@ -65,6 +66,7 @@ where
     }
 
     /// Set the number of ref points
+    ///
     /// # Panics
     /// This function will panic if `ref_points` is greater than the size of the dataset.
     pub fn ref_points(mut self, ref_points: u64) -> Self {
@@ -112,7 +114,6 @@ where
     /// This function uses [`create_dir`](std::fs::create_dir) to create the directory, *not* [`create_dir_all`](std::fs::create_dir_all).
     ///
     /// # Panics
-    ///
     /// This function will panic if the `create_dir` call is unsuccessful.
     pub fn build_on_disk<'a, P>(self, path: P, block_size: Option<usize>) -> Disk<'a, T>
     where
