@@ -3,7 +3,7 @@
 //! ```
 //! # use rand::prelude::*;
 //! # use bitpart::metric::{Euclidean, Metric};
-//! # use bitpart::BitPartBuilder;
+//! # use bitpart::{BitPart, BitPartBuilder};
 //! #
 //! let points: Vec<Euclidean<Vec<f64>>> = (0..1000)
 //!     .map(|_| (0..20).map(|_| rand::random()).collect())
@@ -54,3 +54,7 @@ pub use parallel::*;
 mod on_disk;
 #[cfg(feature = "on_disk")]
 pub use on_disk::*;
+
+pub trait BitPart<T> {
+    fn range_search(&self, point: T, threshold: f64) -> Vec<(T, f64)>;
+}

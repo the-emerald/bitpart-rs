@@ -1,6 +1,7 @@
 use crate::builder::BitPartBuilder;
 use crate::exclusions::{BallExclusion, Exclusion, SheetExclusion};
 use crate::metric::Metric;
+use crate::BitPart;
 use bitvec::prelude::*;
 use itertools::Itertools;
 
@@ -17,12 +18,11 @@ pub struct Sequential<'a, T> {
     bitset: Vec<BitVec>,
 }
 
-impl<'a, T> Sequential<'a, T>
+impl<T> BitPart<T> for Sequential<'_, T>
 where
     T: Metric,
-    dyn Exclusion<T>: 'a,
 {
-    pub fn range_search(&self, point: T, threshold: f64) -> Vec<(T, f64)> {
+    fn range_search(&self, point: T, threshold: f64) -> Vec<(T, f64)> {
         let mut ins = vec![];
         let mut outs = vec![];
 
@@ -64,7 +64,13 @@ where
             }
         }
     }
+}
 
+impl<'a, T> Sequential<'a, T>
+where
+    T: Metric,
+    dyn Exclusion<T>: 'a,
+{
     /// Performs a bitwise-or on all exclusion zone columns that do not contain the query point.
     fn get_nots(&self, outs: &[usize]) -> BitVec {
         outs.iter()

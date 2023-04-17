@@ -2,7 +2,7 @@ use std::fs;
 
 use bitpart::{
     metric::{Euclidean, Metric},
-    BitPartBuilder,
+    BitPart, BitPartBuilder,
 };
 use sisap_data::colors::{parse_colors, Colors};
 

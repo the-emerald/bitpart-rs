@@ -3,6 +3,7 @@ use std::collections::HashSet;
 use crate::builder::BitPartBuilder;
 use crate::exclusions::{BallExclusion, ExclusionSync, SheetExclusion};
 use crate::metric::Metric;
+use crate::BitPart;
 use bitvec::prelude::*;
 use itertools::{Either, Itertools};
 use rayon::prelude::*;
@@ -27,12 +28,11 @@ pub struct Parallel<'a, T> {
     block_size: usize,
 }
 
-impl<'a, T> Parallel<'a, T>
+impl<T> BitPart<T> for Parallel<'_, T>
 where
     T: Metric + Send + Sync,
-    dyn ExclusionSync<T>: Send + Sync + 'a,
 {
-    pub fn range_search(&self, point: T, threshold: f64) -> Vec<(T, f64)> {
+    fn range_search(&self, point: T, threshold: f64) -> Vec<(T, f64)> {
         let (ins, outs): (Vec<usize>, Vec<usize>) = self
             .exclusions
             .par_iter()
@@ -74,7 +74,13 @@ where
             .filter(|(_, d)| *d <= threshold)
             .collect()
     }
+}
 
+impl<'a, T> Parallel<'a, T>
+where
+    T: Metric + Send + Sync,
+    dyn ExclusionSync<T>: Send + Sync + 'a,
+{
     pub(crate) fn setup(builder: BitPartBuilder<T>, block_size: Option<usize>) -> Self {
         let block_size = block_size.unwrap_or(builder.dataset.len());
         // TODO: actually randomise this

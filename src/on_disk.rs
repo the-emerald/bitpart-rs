@@ -32,12 +32,11 @@ pub struct Disk<'a, T> {
     block_size: usize,
 }
 
-impl<'a, T> Disk<'a, T>
+impl<T> crate::BitPart<T> for Disk<'_, T>
 where
     T: Metric + Send + Sync,
-    dyn ExclusionSync<T>: Send + Sync + 'a,
 {
-    pub fn range_search(&self, point: T, threshold: f64) -> Vec<(T, f64)> {
+    fn range_search(&self, point: T, threshold: f64) -> Vec<(T, f64)> {
         let (ins, outs): (Vec<usize>, Vec<usize>) = self
             .exclusions
             .par_iter()
@@ -91,7 +90,13 @@ where
             .filter(|(_, d)| *d <= threshold)
             .collect::<Vec<_>>()
     }
+}
 
+impl<'a, T> Disk<'a, T>
+where
+    T: Metric + Send + Sync,
+    dyn ExclusionSync<T>: Send + Sync + 'a,
+{
     pub(crate) fn setup<P>(builder: BitPartBuilder<T>, path: P, block_size: Option<usize>) -> Self
     where
         P: AsRef<Path> + 'a,
@@ -178,7 +183,7 @@ where
 
 #[cfg(test)]
 mod tests {
-    use crate::metric::Euclidean;
+    use crate::{metric::Euclidean, BitPart};
     use sisap_data::{cartesian_parser::parse, colors::parse_colors, nasa::parse_nasa};
     use std::fs;
 
