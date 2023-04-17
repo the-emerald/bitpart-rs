@@ -153,6 +153,15 @@ where
         ones as f64 / self.bitset[0].len() as f64
     }
 
+    /// Cull exclusion zones with low exclusion power.
+    ///
+    /// `emptiness_threshold` controls the threshold ratio of how many points are in/out in relation to the dataset size before it is culled.
+    /// If an exclusion zone contains or excludes too many points, it is said to have a *low* exclusion power.
+    ///
+    /// `similarity_threshold` controls the threshold ratio for similarity between two exclusion zones before one is culled.
+    /// This function will compare each zone with all other zones and calculate their [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance).
+    /// If their distance to dataset size ratio falls below the threshold, one of the zones will be culled.
+    /// This is done as if two exclusion zones are too similar, they have a low exclusion power if both are kept.
     pub fn cull(&mut self, emptiness_treshold: f64, similarity_threshold: f64) {
         let mut to_cull = HashSet::new();
 

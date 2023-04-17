@@ -34,7 +34,7 @@
 //!
 //! TODO: Talk about bitpart-fast-math and vectorisation
 
-// #![deny(missing_docs)]
+#![deny(missing_docs)]
 
 mod builder;
 pub use builder::*;
@@ -57,5 +57,8 @@ pub use on_disk::*;
 
 /// Trait for BitPart data structures.
 pub trait BitPart<T> {
+    /// Perform a range search, given a `point` and a radius `threshold` around it.
+    ///
+    /// Returns a vector of points which fall within the specific radius, along with their distance from the query `point`.
     fn range_search(&self, point: T, threshold: f64) -> Vec<(T, f64)>;
 }

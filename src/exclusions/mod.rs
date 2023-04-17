@@ -64,7 +64,6 @@ where
 #[cfg(feature = "rayon")]
 impl<T> ExclusionSync<T> for BallExclusion<T> where T: Metric + Send + Sync {}
 
-// todo: this is only 3p
 pub(crate) struct SheetExclusion<T> {
     a: T,
     b: T,

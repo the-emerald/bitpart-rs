@@ -63,6 +63,7 @@ where
     T: Clone,
 {
     fn distance(&self, rhs: &Euclidean<T>) -> f64 {
+        // Euclidean distance is the sqrt of the sum of (point1 - point2)^2 for each dimension.
         self.0
             .into_iter()
             .zip(rhs.0.into_iter())
