@@ -34,6 +34,8 @@
 //!
 //! TODO: Talk about bitpart-fast-math and vectorisation
 
+// #![deny(missing_docs)]
+
 mod builder;
 pub use builder::*;
 

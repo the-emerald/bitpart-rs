@@ -106,15 +106,19 @@ where
     for<'a> T: Metric + Send + Sync + 'a,
     dyn ExclusionSync<T>: Send + Sync,
 {
+    /// Construct a [`DiskBitPart`](crate::DiskBitPart).
+    ///
+    /// `path` should be a path for the directory in which partitioning data will be stored.
+    /// This function uses [`create_dir`](std::fs::create_dir) to create the directory, *not* [`create_dir_all`](std::fs::create_dir_all).
+    ///
+    /// # Panics
+    ///
+    /// This function will panic if the `create_dir` call is unsuccessful.
     pub fn build_on_disk<'a, P>(self, path: P, block_size: Option<usize>) -> DiskBitPart<'a, T>
     where
         P: AsRef<std::path::Path> + 'a,
     {
         std::fs::create_dir(&path).unwrap();
-        // if !path.as_ref().is_dir() {
-        //     panic!("not a dir");
-        // }
-
         DiskBitPart::setup(self, path, block_size)
     }
 }
