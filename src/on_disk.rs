@@ -285,3 +285,24 @@ mod tests {
         std::fs::remove_dir_all("/tmp/nn/").unwrap();
     }
 }
+
+impl<T> Builder<T>
+where
+    for<'a> T: Metric + Send + Sync + 'a,
+    dyn ExclusionSync<T>: Send + Sync,
+{
+    /// Construct a [`Disk`](crate::Disk).
+    ///
+    /// `path` should be a path for the directory in which partitioning data will be stored.
+    /// This function uses [`create_dir`](std::fs::create_dir) to create the directory, *not* [`create_dir_all`](std::fs::create_dir_all).
+    ///
+    /// # Panics
+    /// This function will panic if the `create_dir` call is unsuccessful.
+    pub fn build_on_disk<'a, P>(self, path: P, block_size: Option<usize>) -> Disk<'a, T>
+    where
+        P: AsRef<std::path::Path> + 'a,
+    {
+        std::fs::create_dir(&path).unwrap();
+        Disk::setup(self, path, block_size)
+    }
+}

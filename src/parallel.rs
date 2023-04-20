@@ -344,3 +344,22 @@ mod tests {
         }
     }
 }
+
+impl<T> Builder<T>
+where
+    for<'a> T: Metric + Send + Sync + 'a,
+    dyn ExclusionSync<T>: Send + Sync,
+{
+    /// Construct a [`Parallel`](crate::Parallel).
+    ///
+    /// `block_size` sets how many points are processed sequentially in the partition search phase during a range search. For example, `Some(N)` means that
+    /// each block will be of size `N` rows. `None` will disable parallelism during queries - this is useful for small datasets where you only wish
+    /// to parallelise the bitset creation.
+    ///
+    /// In other words, `block_size` controls the granularity of parallelisation: the higher the size, the more coarse the parallelism is. It is
+    /// recommended that you set a power-of-two value such as `Some(512)` to allow for instruction-level parallelism, while still letting `rayon`
+    /// dispatch jobs efficiently to multiple threads.
+    pub fn build_parallel<'a>(self, block_size: Option<usize>) -> Parallel<'a, T> {
+        Parallel::setup(self, block_size)
+    }
+}
