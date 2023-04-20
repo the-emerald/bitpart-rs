@@ -30,7 +30,10 @@
 //! ```
 //! TODO: Talk about how the algorithm works here
 //!
-//! TODO: Talk about features here
+//! # Features
+//! - `rayon`: Enables parallelised BitPart
+//! - `serde`: Enables (de)serialization through [`serde`](serde)
+//! - `disk`: Enables on-disk BitPart.
 //!
 //! TODO: Talk about bitpart-fast-math and vectorisation
 
@@ -50,9 +53,9 @@ mod parallel;
 #[cfg(feature = "rayon")]
 pub use parallel::*;
 
-#[cfg(feature = "on_disk")]
+#[cfg(feature = "disk")]
 mod on_disk;
-#[cfg(feature = "on_disk")]
+#[cfg(feature = "disk")]
 pub use on_disk::*;
 
 /// Trait for BitPart data structures.

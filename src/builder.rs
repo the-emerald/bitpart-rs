@@ -6,7 +6,7 @@ use crate::exclusions::ExclusionSync;
 #[cfg(feature = "rayon")]
 use crate::parallel::Parallel;
 
-#[cfg(feature = "on_disk")]
+#[cfg(feature = "disk")]
 use crate::on_disk::Disk;
 
 /// Builder for the BitPart data structure.
@@ -102,7 +102,7 @@ where
     }
 }
 
-#[cfg(feature = "on_disk")]
+#[cfg(feature = "disk")]
 impl<T> Builder<T>
 where
     for<'a> T: Metric + Send + Sync + 'a,

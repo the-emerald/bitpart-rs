@@ -29,7 +29,7 @@ members = [".", "sisap-data", "example", "generators", "nearest-neighbours"]
 [features]
 rayon = ["dep:rayon"]
 serde = ["dep:serde"]
-on_disk = ["rayon", "dep:serde", "bitvec/serde", "dep:bincode", "dep:memmap2"]
+disk = ["rayon", "dep:serde", "bitvec/serde", "dep:bincode", "dep:memmap2"]
 
 [profile.test]
 opt-level = 3
