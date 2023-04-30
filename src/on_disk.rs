@@ -30,7 +30,7 @@ use std::{
 /// `Disk` is parallelised. See [`Parallel`](crate::Parallel) for an explanation of the mechanics.
 pub struct Disk<'a, T> {
     dataset: Vec<T>,
-    exclusions: Vec<Box<dyn ExclusionSync<T> + Send + Sync + 'a>>,
+    exclusions: Vec<Box<dyn ExclusionSync<T> + 'a>>,
     bitset: Vec<memmap2::Mmap>,
     block_size: usize,
 }
@@ -98,7 +98,7 @@ where
 impl<'a, T> Disk<'a, T>
 where
     T: Metric + Send + Sync,
-    dyn ExclusionSync<T>: Send + Sync + 'a,
+    dyn ExclusionSync<T>: 'a,
 {
     pub(crate) fn setup<P>(builder: Builder<T>, path: P, block_size: Option<usize>) -> Self
     where
@@ -122,7 +122,7 @@ where
     fn ball_exclusions(
         builder: &Builder<T>,
         ref_points: &[T],
-    ) -> Vec<Box<dyn ExclusionSync<T> + Send + Sync + 'a>> {
+    ) -> Vec<Box<dyn ExclusionSync<T> + 'a>> {
         let radii = [
             builder.mean_distance - 2.0 * builder.radius_increment,
             builder.mean_distance - builder.radius_increment,
@@ -135,8 +135,7 @@ where
             .iter()
             .cartesian_product(radii.into_iter())
             .map(|(point, radius)| {
-                Box::new(BallExclusion::new(point.clone(), radius))
-                    as Box<dyn ExclusionSync<T> + Send + Sync>
+                Box::new(BallExclusion::new(point.clone(), radius)) as Box<dyn ExclusionSync<T>>
             })
             .collect()
     }
@@ -144,13 +143,13 @@ where
     fn sheet_exclusions(
         _builder: &Builder<T>,
         ref_points: &[T],
-    ) -> Vec<Box<dyn ExclusionSync<T> + Send + Sync + 'a>> {
+    ) -> Vec<Box<dyn ExclusionSync<T> + 'a>> {
         ref_points
             .iter()
             .combinations(2)
             .map(|x| {
                 Box::new(SheetExclusion::new(x[0].clone(), x[1].clone(), 0.0))
-                    as Box<dyn ExclusionSync<T> + Send + Sync>
+                    as Box<dyn ExclusionSync<T>>
             })
             .collect()
     }
@@ -159,7 +158,7 @@ where
         _block_size: usize,
         builder: &Builder<T>,
         path: PathBuf,
-        exclusions: &[Box<dyn ExclusionSync<T> + Send + Sync + 'a>],
+        exclusions: &[Box<dyn ExclusionSync<T> + 'a>],
     ) -> Vec<memmap2::Mmap> {
         exclusions
             .par_iter()
@@ -172,7 +171,7 @@ where
         dataset: &[T],
         mut path: PathBuf,
         index: usize,
-        ez: &(dyn ExclusionSync<T> + Send + Sync + 'a),
+        ez: &(dyn ExclusionSync<T> + 'a),
     ) -> memmap2::Mmap {
         let bv = dataset.iter().map(|pt| ez.is_in(pt)).collect::<BitVec>();
 
@@ -289,7 +288,6 @@ mod tests {
 impl<T> Builder<T>
 where
     for<'a> T: Metric + Send + Sync + 'a,
-    dyn ExclusionSync<T>: Send + Sync,
 {
     /// Construct a [`Disk`](crate::Disk).
     ///

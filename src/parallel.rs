@@ -23,7 +23,7 @@ use std::collections::HashSet;
 /// See [`build_parallel`](crate::builder::Builder::build_parallel) for configuration.
 pub struct Parallel<'a, T> {
     dataset: Vec<T>,
-    exclusions: Vec<Box<dyn ExclusionSync<T> + Send + Sync + 'a>>,
+    exclusions: Vec<Box<dyn ExclusionSync<T> + 'a>>,
     bitset: Vec<BitVec>,
     block_size: usize,
 }
@@ -79,7 +79,7 @@ where
 impl<'a, T> Parallel<'a, T>
 where
     T: Metric + Send + Sync,
-    dyn ExclusionSync<T>: Send + Sync + 'a,
+    dyn ExclusionSync<T>: 'a,
 {
     pub(crate) fn setup(builder: Builder<T>, block_size: Option<usize>) -> Self {
         let block_size = block_size.unwrap_or(builder.dataset.len());
@@ -99,7 +99,7 @@ where
     fn ball_exclusions(
         builder: &Builder<T>,
         ref_points: &[T],
-    ) -> Vec<Box<dyn ExclusionSync<T> + Send + Sync + 'a>> {
+    ) -> Vec<Box<dyn ExclusionSync<T> + 'a>> {
         let radii = [
             builder.mean_distance - 2.0 * builder.radius_increment,
             builder.mean_distance - builder.radius_increment,
@@ -112,8 +112,7 @@ where
             .iter()
             .cartesian_product(radii.into_iter())
             .map(|(point, radius)| {
-                Box::new(BallExclusion::new(point.clone(), radius))
-                    as Box<dyn ExclusionSync<T> + Send + Sync>
+                Box::new(BallExclusion::new(point.clone(), radius)) as Box<dyn ExclusionSync<T>>
             })
             .collect()
     }
@@ -121,13 +120,13 @@ where
     fn sheet_exclusions(
         _builder: &Builder<T>,
         ref_points: &[T],
-    ) -> Vec<Box<dyn ExclusionSync<T> + Send + Sync + 'a>> {
+    ) -> Vec<Box<dyn ExclusionSync<T> + 'a>> {
         ref_points
             .iter()
             .combinations(2)
             .map(|x| {
                 Box::new(SheetExclusion::new(x[0].clone(), x[1].clone(), 0.0))
-                    as Box<dyn ExclusionSync<T> + Send + Sync>
+                    as Box<dyn ExclusionSync<T>>
             })
             .collect()
     }
@@ -135,7 +134,7 @@ where
     fn make_bitset(
         _block_size: usize,
         builder: &Builder<T>,
-        exclusions: &[Box<dyn ExclusionSync<T> + Send + Sync + 'a>],
+        exclusions: &[Box<dyn ExclusionSync<T> + 'a>],
     ) -> Vec<BitVec> {
         exclusions
             .par_iter()
@@ -348,7 +347,6 @@ mod tests {
 impl<T> Builder<T>
 where
     for<'a> T: Metric + Send + Sync + 'a,
-    dyn ExclusionSync<T>: Send + Sync,
 {
     /// Construct a [`Parallel`](crate::Parallel).
     ///
