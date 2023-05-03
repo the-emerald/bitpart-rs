@@ -31,7 +31,7 @@ where
     group.bench_function("par", |bn| {
         bn.iter_batched(
             || builder.clone(),
-            |data| data.build_parallel(Some(512)),
+            |data| data.build_parallel(Some(8192)),
             BatchSize::SmallInput,
         )
     });
@@ -71,7 +71,7 @@ fn query_with<T>(
     });
 
     // Benchmark query (parallel)
-    let bitpart_parallel = builder.clone().build_parallel(Some(512));
+    let bitpart_parallel = builder.clone().build_parallel(Some(8192));
     group.bench_function("par", |bn| {
         bn.iter(|| bitpart_parallel.range_search(query.clone(), threshold));
     });
@@ -93,15 +93,26 @@ fn get_nasa() -> Vec<Euclidean<Nasa>> {
         .collect::<Vec<_>>()
 }
 
-pub fn synthetic_query(c: &mut Criterion) {
-    let points = parse(&fs::read_to_string("data/output.ascii").unwrap())
+fn get_synthetic() -> Vec<Euclidean<[f64; 20]>> {
+    parse(&fs::read_to_string("data/output.ascii").unwrap())
         .unwrap()
         .1
          .1
         .into_iter()
         .map(|v| v.try_into().unwrap())
         .map(Euclidean::new)
-        .collect::<Vec<Euclidean<[f64; 20]>>>();
+        .collect::<Vec<Euclidean<[f64; 20]>>>()
+}
+
+pub fn synthetic_setup(c: &mut Criterion) {
+    let points = get_synthetic();
+    let builder = Builder::new(points, 40);
+
+    setup_with(c, "synthetic_setup".to_owned(), builder);
+}
+
+pub fn synthetic_query(c: &mut Criterion) {
+    let points = get_synthetic();
 
     let query = Euclidean::new(SYNTHETIC_QUERY);
 
@@ -248,7 +259,7 @@ pub fn nn_query_inner<T>(
     });
 
     // Benchmark query (parallel)
-    let bitpart_parallel = builder.clone().build_parallel(Some(512));
+    let bitpart_parallel = builder.clone().build_parallel(Some(8192));
     group.bench_function("par", |bn| {
         bn.iter(|| {
             for (query, threshold) in points.iter().zip(thresholds.iter()).take(n) {
@@ -259,7 +270,7 @@ pub fn nn_query_inner<T>(
 
     for cull_threshold in [0.9, 0.8, 0.7] {
         // Query cull
-        let mut bitpart_cull = builder.clone().build_parallel(Some(512));
+        let mut bitpart_cull = builder.clone().build_parallel(Some(8192));
         bitpart_cull.cull(cull_threshold, cull_threshold);
         group.bench_function(BenchmarkId::new("cull", cull_threshold), |bn| {
             bn.iter(|| {
