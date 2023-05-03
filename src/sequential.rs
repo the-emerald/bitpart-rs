@@ -38,13 +38,11 @@ where
         let ands = ins
             .iter()
             .map(|&i| self.bitset.get(i).unwrap())
-            .cloned()
             .fold(BitVec::repeat(true, self.dataset.len()), |acc, v| acc & v);
 
         let nots = !outs
             .iter()
             .map(|&i| self.bitset.get(i).unwrap())
-            .cloned()
             .fold(BitVec::repeat(false, self.dataset.len()), |acc, v| acc | v);
 
         let candidates = ands & nots;
