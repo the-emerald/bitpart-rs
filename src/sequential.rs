@@ -49,11 +49,8 @@ where
         let candidates = ands & nots;
 
         candidates
-            .into_bools()
+            .into_usizes()
             .into_iter()
-            .enumerate()
-            .filter_map(|(idx, bit)| if bit { Some(idx) } else { None })
-            // .iter_ones()
             .map(|i| self.dataset.get(i).unwrap())
             .map(|pt| (pt.clone(), pt.distance(&point)))
             .filter(|(_, dist)| *dist <= threshold)
