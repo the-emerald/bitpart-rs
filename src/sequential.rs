@@ -23,7 +23,6 @@ impl<T> BitPart<T> for Sequential<'_, T>
 where
     T: Metric,
 {
-    #[inline(never)]
     fn range_search(&self, point: T, threshold: f64) -> Vec<(T, f64)> {
         let mut ins = vec![];
         let mut outs = vec![];
