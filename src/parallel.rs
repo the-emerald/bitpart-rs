@@ -3,7 +3,7 @@ use crate::exclusions::{BallExclusion, ExclusionSync, SheetExclusion};
 use crate::metric::Metric;
 use crate::BitPart;
 
-use bitvec::prelude::*;
+use bitvec_simd::BitVec;
 use itertools::{Either, Itertools};
 use rayon::prelude::*;
 use std::collections::HashSet;
@@ -24,7 +24,7 @@ use std::collections::HashSet;
 pub struct Parallel<'a, T> {
     dataset: Vec<T>,
     exclusions: Vec<Box<dyn ExclusionSync<T> + 'a>>,
-    bitset: Vec<BitVec>,
+    bitset: Vec<Vec<BitVec>>,
     block_size: usize,
 }
 
@@ -48,31 +48,36 @@ where
             })
             .partition_map(|x| x);
 
-        self.dataset
-            .par_chunks(self.block_size)
+        self.bitset
+            .par_iter()
             .enumerate()
-            .flat_map(|(blk_idx, points)| {
-                let from = blk_idx * self.block_size;
-                let to = (blk_idx * self.block_size) + points.len();
-                let len = points.len();
+            .flat_map(|(block_idx, bitvecs)| {
+                let len = bitvecs[0].len();
 
                 let ands = ins
                     .iter()
-                    .map(|idx| &self.bitset.get(*idx).unwrap()[from..to])
-                    .fold(BitVec::repeat(true, len), |acc: BitVec, v| acc & v);
+                    .map(|idx| bitvecs.get(*idx).unwrap())
+                    .fold(BitVec::ones(len), |acc, v| acc & v); // TODO: fold or reduce?
 
                 let nots = !outs
                     .iter()
-                    .map(|idx| &self.bitset.get(*idx).unwrap()[from..to])
-                    .fold(BitVec::repeat(false, len), |acc: BitVec, v| acc | v);
+                    .map(|idx| bitvecs.get(*idx).unwrap())
+                    .fold(BitVec::zeros(len), |acc, v| acc | v);
 
                 let res = ands & nots;
 
-                res.iter_ones().map(|idx| &points[idx]).collect::<Vec<_>>()
+                res.into_usizes()
+                    .into_iter()
+                    .map(|internal_idx| {
+                        self.dataset
+                            .get((block_idx * self.block_size) + internal_idx)
+                            .unwrap()
+                    })
+                    .collect::<Vec<_>>()
             })
             .map(|pt| (pt.clone(), point.distance(pt)))
             .filter(|(_, d)| *d <= threshold)
-            .collect()
+            .collect::<Vec<_>>()
     }
 }
 
@@ -135,21 +140,21 @@ where
         _block_size: usize,
         builder: &Builder<T>,
         exclusions: &[Box<dyn ExclusionSync<T> + 'a>],
-    ) -> Vec<BitVec> {
-        exclusions
-            .par_iter()
-            .map(|ez| {
-                builder
-                    .dataset
+    ) -> Vec<Vec<BitVec>> {
+        builder
+            .dataset
+            .par_chunks(_block_size)
+            .map(|points| {
+                exclusions
                     .iter()
-                    .map(|pt| ez.is_in(pt))
-                    .collect::<BitVec>()
+                    .map(|ez| BitVec::from_bool_iterator(points.iter().map(|pt| ez.is_in(pt))))
+                    .collect::<Vec<_>>()
             })
-            .collect::<Vec<_>>()
+            .collect()
     }
 
     fn ratio(&self, ones: usize) -> f64 {
-        ones as f64 / self.bitset[0].len() as f64
+        ones as f64 / self.dataset.len() as f64
     }
 
     /// Cull exclusion zones with low exclusion power.
@@ -162,19 +167,37 @@ where
     /// If their distance to dataset size ratio falls below the threshold, one of the zones will be culled.
     /// This is done as if two exclusion zones are too similar, they have a low exclusion power if both are kept.
     pub fn cull(&mut self, emptiness_treshold: f64, similarity_threshold: f64) {
+        let len = self.exclusions.len();
         let mut to_cull = HashSet::new();
 
-        for (idx, bv) in self.bitset.iter().enumerate() {
-            if self.ratio(bv.count_ones()) > emptiness_treshold
-                || self.ratio(bv.count_zeros()) > emptiness_treshold
+        // Count ones for each column, across all the blocks.
+        let popcnt = self.bitset.iter().fold(vec![0_usize; len], |acc, x| {
+            acc.into_iter()
+                .zip(x.iter())
+                .map(|(a, b)| a + b.count_ones())
+                .collect()
+        });
+
+        for (idx, cnt) in popcnt.into_iter().enumerate() {
+            if self.ratio(cnt) > emptiness_treshold
+                || self.ratio(self.dataset.len() - cnt) > emptiness_treshold
             {
                 to_cull.insert(idx);
             }
-            for (idx2, bv2) in self.bitset.iter().enumerate() {
+            for idx2 in 0..len {
                 if to_cull.contains(&idx2) {
                     continue;
                 }
-                if self.ratio((bv.clone() ^ bv2).count_ones()) > similarity_threshold {
+
+                // Find total distance by summing the hamming distance of each block
+                let hamming = {
+                    self.bitset
+                        .iter()
+                        .map(|bvs| (bvs[idx].xor_cloned(&bvs[idx2])).count_ones())
+                        .sum::<usize>()
+                };
+
+                if self.ratio(hamming) > similarity_threshold {
                     to_cull.insert(idx2);
                 }
             }
@@ -184,8 +207,11 @@ where
             .map(|idx| !to_cull.contains(&idx))
             .collect::<Vec<_>>();
 
-        let mut iter = keep.iter();
-        self.bitset.retain(|_| *iter.next().unwrap());
+        for bvs in self.bitset.iter_mut() {
+            let mut iter = keep.iter();
+
+            bvs.retain(|_| *iter.next().unwrap());
+        }
 
         let mut iter = keep.iter();
         self.exclusions.retain(|_| *iter.next().unwrap());

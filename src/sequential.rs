@@ -3,7 +3,7 @@ use crate::exclusions::{BallExclusion, Exclusion, SheetExclusion};
 use crate::metric::Metric;
 use crate::BitPart;
 
-use bitvec::prelude::*;
+use bitvec_simd::BitVec;
 use itertools::Itertools;
 
 /// Sequential BitPart.
@@ -23,6 +23,7 @@ impl<T> BitPart<T> for Sequential<'_, T>
 where
     T: Metric,
 {
+    #[inline(never)]
     fn range_search(&self, point: T, threshold: f64) -> Vec<(T, f64)> {
         let mut ins = vec![];
         let mut outs = vec![];
@@ -35,20 +36,24 @@ where
             }
         }
 
-        let ands = ins
+        let ands: BitVec = ins
             .iter()
             .map(|&i| self.bitset.get(i).unwrap())
-            .fold(BitVec::repeat(true, self.dataset.len()), |acc, v| acc & v);
+            .fold(BitVec::ones(self.dataset.len()), |acc, v| acc & v);
 
-        let nots = !outs
+        let nots: BitVec = !outs
             .iter()
             .map(|&i| self.bitset.get(i).unwrap())
-            .fold(BitVec::repeat(false, self.dataset.len()), |acc, v| acc | v);
+            .fold(BitVec::zeros(self.dataset.len()), |acc, v| acc | v);
 
         let candidates = ands & nots;
 
         candidates
-            .iter_ones()
+            .into_bools()
+            .into_iter()
+            .enumerate()
+            .filter_map(|(idx, bit)| if bit { Some(idx) } else { None })
+            // .iter_ones()
             .map(|i| self.dataset.get(i).unwrap())
             .map(|pt| (pt.clone(), pt.distance(&point)))
             .filter(|(_, dist)| *dist <= threshold)
@@ -109,13 +114,7 @@ where
     fn make_bitset(builder: &Builder<T>, exclusions: &[Box<dyn Exclusion<T> + 'a>]) -> Vec<BitVec> {
         exclusions
             .iter()
-            .map(|ex| {
-                builder
-                    .dataset
-                    .iter()
-                    .map(|pt| ex.is_in(pt))
-                    .collect::<BitVec>()
-            })
+            .map(|ex| BitVec::from_bool_iterator(builder.dataset.iter().map(|pt| ex.is_in(pt))))
             .collect::<Vec<_>>()
     }
 }
