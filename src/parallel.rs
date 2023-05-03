@@ -146,7 +146,7 @@ where
             .par_chunks(_block_size)
             .map(|points| {
                 exclusions
-                    .iter()
+                    .par_iter()
                     .map(|ez| BitVec::from_bool_iterator(points.iter().map(|pt| ez.is_in(pt))))
                     .collect::<Vec<_>>()
             })
