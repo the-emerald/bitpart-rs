@@ -275,7 +275,7 @@ pub fn nn_query_inner<T>(
         group.bench_function(BenchmarkId::new("cull", cull_threshold), |bn| {
             bn.iter(|| {
                 for (query, threshold) in points.iter().zip(thresholds.iter()).take(n) {
-                    bitpart_parallel.range_search(query.clone(), *threshold);
+                    bitpart_cull.range_search(query.clone(), *threshold);
                 }
             });
         });
