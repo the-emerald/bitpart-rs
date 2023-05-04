@@ -268,7 +268,7 @@ pub fn nn_query_inner<T>(
         });
     });
 
-    for cull_threshold in [0.9, 0.8, 0.7] {
+    for cull_threshold in [0.95, 0.9, 0.8, 0.7] {
         // Query cull
         let mut bitpart_cull = builder.clone().build_parallel(Some(8192));
         bitpart_cull.cull(cull_threshold, cull_threshold);
