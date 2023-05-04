@@ -217,7 +217,7 @@ pub fn nn_query_inner<T>(
     let mut group = c.benchmark_group(group_name);
 
     // Benchmark a brute force search
-    group.bench_function("bruteforce", |bn| {
+    group.bench_function("linear", |bn| {
         bn.iter_batched(
             || (points.clone(), thresholds.clone()),
             |(points_inner, thresholds_inner)| {
@@ -238,7 +238,7 @@ pub fn nn_query_inner<T>(
     });
 
     // Benchmark a parallel brute force search
-    group.bench_function("bruteforce_par", |bn| {
+    group.bench_function("linear_par", |bn| {
         bn.iter_batched(
             || (points.clone(), thresholds.clone()),
             |(points_inner, thresholds_inner)| {
