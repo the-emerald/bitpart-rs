@@ -184,22 +184,20 @@ where
             {
                 to_cull.insert(idx);
             }
-            for idx2 in 0..len {
-                if to_cull.contains(&idx2) {
-                    continue;
-                }
+        }
 
-                // Find total distance by summing the hamming distance of each block
-                let hamming = {
-                    self.bitset
-                        .iter()
-                        .map(|bvs| (bvs[idx].xor_cloned(&bvs[idx2])).count_ones())
-                        .sum::<usize>()
-                };
+        for indices in (0..self.exclusions.len()).combinations(2) {
+            let i = indices[0];
+            let j = indices[1];
+            let hamming = {
+                self.bitset
+                    .iter()
+                    .map(|bvs| (bvs[i].xor_cloned(&bvs[j])).count_ones())
+                    .sum::<usize>()
+            };
 
-                if self.ratio(hamming) > similarity_threshold {
-                    to_cull.insert(idx2);
-                }
+            if 1.0 - self.ratio(hamming) > similarity_threshold {
+                to_cull.insert(j);
             }
         }
 
