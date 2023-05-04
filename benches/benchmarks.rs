@@ -258,6 +258,15 @@ pub fn nn_query_inner<T>(
         )
     });
 
+    let bitpart_seq = builder.clone().build();
+    group.bench_function("seq", |bn| {
+        bn.iter(|| {
+            for (query, threshold) in points.iter().zip(thresholds.iter()).take(n) {
+                bitpart_seq.range_search(query.clone(), *threshold);
+            }
+        });
+    });
+
     // Benchmark query (parallel)
     let bitpart_parallel = builder.clone().build_parallel(Some(8192));
     group.bench_function("par", |bn| {
