@@ -185,7 +185,7 @@ where
                 to_cull.insert(idx);
             }
             for idx2 in 0..len {
-                if to_cull.contains(&idx2) {
+                if to_cull.contains(&idx2) || idx == idx2 {
                     continue;
                 }
 
@@ -197,7 +197,7 @@ where
                         .sum::<usize>()
                 };
 
-                if self.ratio(hamming) > similarity_threshold {
+                if 1.0 - self.ratio(hamming) > similarity_threshold {
                     to_cull.insert(idx2);
                 }
             }
