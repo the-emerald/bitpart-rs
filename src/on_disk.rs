@@ -56,12 +56,12 @@ where
             .partition_map(|x| x);
 
         let ins = ins
-            .into_par_iter()
+            .into_iter()
             .map(|idx| bincode::deserialize::<BitVec>(self.bitset.get(idx).unwrap()).unwrap())
             .collect::<Vec<_>>();
 
         let outs = outs
-            .into_par_iter()
+            .into_iter()
             .map(|idx| bincode::deserialize::<BitVec>(self.bitset.get(idx).unwrap()).unwrap())
             .collect::<Vec<_>>();
 
