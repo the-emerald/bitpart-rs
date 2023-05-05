@@ -357,6 +357,39 @@ pub fn nn_query(c: &mut Criterion) {
     }
 }
 
+pub fn block_size(c: &mut Criterion) {
+    let points = parse(&fs::read_to_string(format!("data/100k_d10_flat.ascii")).unwrap())
+        .unwrap()
+        .1
+         .1
+        .into_iter()
+        .map(Euclidean::new)
+        .collect::<Vec<_>>();
+
+    let thresholds = serde_json::from_str::<Vec<Vec<(usize, f64)>>>(
+        &fs::read_to_string(format!("data/100k_d10_flat.json")).unwrap(),
+    )
+    .unwrap()
+    .into_iter()
+    .map(|nn| nn.last().unwrap().1)
+    .collect::<Vec<_>>();
+
+    let mut group = c.benchmark_group("block_size");
+    let builder = Builder::new(points.clone(), 40);
+
+    for block_size in (0..7).map(|i| 512 * 2_usize.pow(i)) {
+        let bitpart = builder.clone().build_parallel(Some(block_size));
+
+        group.bench_function(block_size.to_string(), |bn| {
+            bn.iter(|| {
+                for (query, threshold) in points.iter().zip(thresholds.iter()).take(500) {
+                    bitpart.range_search(query.clone(), *threshold);
+                }
+            });
+        });
+    }
+}
+
 // criterion_group!(benches, sisap_nasa, sisap_colors);
 criterion_group! {
     name = benches;
@@ -367,7 +400,7 @@ criterion_group! {
 criterion_group! {
     name = nn_benches;
     config = Criterion::default().measurement_time(Duration::new(120, 0));
-    targets = nn_query
+    targets = block_size, nn_query
 }
 
 // criterion_main!(benches, nn_benches);
