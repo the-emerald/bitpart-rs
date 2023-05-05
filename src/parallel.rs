@@ -183,7 +183,7 @@ where
     /// Cull exclusion zones with low exclusion power.
     /// This function measures the exclusion power of a zone by counting the ratio of points that are in/out to the dataset.
     /// If either ratio is above the `threshold` given, it is marked for removal.
-    pub fn cull_by_popcnt(&mut self, emptiness_treshold: f64) {
+    pub fn cull_by_popcnt(&mut self, threshold: f64) {
         let len = self.exclusions.len();
         let mut to_cull = HashSet::new();
 
@@ -196,8 +196,8 @@ where
         });
 
         for (idx, cnt) in popcnt.into_iter().enumerate() {
-            if self.ratio(cnt) > emptiness_treshold
-                || self.ratio(self.dataset.len() - cnt) > emptiness_treshold
+            if self.ratio(cnt) > threshold
+                || self.ratio(self.dataset.len() - cnt) > threshold
             {
                 to_cull.insert(idx);
             }
