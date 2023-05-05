@@ -426,7 +426,7 @@ mod tests {
 
         let mut bitpart = Builder::new(points.clone(), 40).build_parallel(Some(8192));
 
-        bitpart.cull_by_popcnt(0.95);
+        bitpart.cull_by_similarity(0.95);
         for (query, threshold) in queries {
             test(&points, &bitpart, query, threshold);
         }
