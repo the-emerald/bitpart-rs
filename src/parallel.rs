@@ -158,15 +158,32 @@ where
     }
 
     /// Cull exclusion zones with low exclusion power.
-    ///
-    /// `emptiness_threshold` controls the threshold ratio of how many points are in/out in relation to the dataset size before it is culled.
-    /// If an exclusion zone contains or excludes too many points, it is said to have a *low* exclusion power.
-    ///
-    /// `similarity_threshold` controls the threshold ratio for similarity between two exclusion zones before one is culled.
-    /// This function will compare each zone with all other zones and calculate their [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance).
-    /// If their distance to dataset size ratio falls below the threshold, one of the zones will be culled.
-    /// This is done as if two exclusion zones are too similar, they have a low exclusion power if both are kept.
-    pub fn cull(&mut self, emptiness_treshold: f64, similarity_threshold: f64) {
+    /// This function will compare all zones in in the data structure with one another and calculate their [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance).
+    /// If a zone's similarity ratio is above the given `threshold`, it is marked for removal.
+    pub fn cull_by_similarity(&mut self, threshold: f64) {
+        let mut to_cull = HashSet::new();
+        for indices in (0..self.exclusions.len()).combinations(2) {
+            let i = indices[0];
+            let j = indices[1];
+            let hamming = {
+                self.bitset
+                    .iter()
+                    .map(|bvs| (bvs[i].xor_cloned(&bvs[j])).count_ones())
+                    .sum::<usize>()
+            };
+
+            if 1.0 - self.ratio(hamming) > threshold {
+                to_cull.insert(j);
+            }
+        }
+
+        self.cull(to_cull)
+    }
+
+    /// Cull exclusion zones with low exclusion power.
+    /// This function measures the exclusion power of a zone by counting the ratio of points that are in/out to the dataset.
+    /// If either ratio is above the `threshold` given, it is marked for removal.
+    pub fn cull_by_popcnt(&mut self, emptiness_treshold: f64) {
         let len = self.exclusions.len();
         let mut to_cull = HashSet::new();
 
@@ -186,21 +203,10 @@ where
             }
         }
 
-        for indices in (0..self.exclusions.len()).combinations(2) {
-            let i = indices[0];
-            let j = indices[1];
-            let hamming = {
-                self.bitset
-                    .iter()
-                    .map(|bvs| (bvs[i].xor_cloned(&bvs[j])).count_ones())
-                    .sum::<usize>()
-            };
+        self.cull(to_cull)
+    }
 
-            if 1.0 - self.ratio(hamming) > similarity_threshold {
-                to_cull.insert(j);
-            }
-        }
-
+    fn cull(&mut self, to_cull: HashSet<usize>) {
         let keep = (0..self.exclusions.len())
             .map(|idx| !to_cull.contains(&idx))
             .collect::<Vec<_>>();
@@ -264,7 +270,7 @@ mod tests {
     }
 
     #[test]
-    fn sisap_nasa_par_cull() {
+    fn sisap_nasa_par_cull_popcnt() {
         let nasa = parse_nasa(NASA)
             .unwrap()
             .into_iter()
@@ -275,7 +281,23 @@ mod tests {
         let query = nasa[317].clone();
         let threshold = 1.0;
 
-        bitpart.cull(0.95, 0.95);
+        bitpart.cull_by_popcnt(0.95);
+        test(&nasa, &bitpart, query, threshold);
+    }
+
+    #[test]
+    fn sisap_nasa_par_cull_similarity() {
+        let nasa = parse_nasa(NASA)
+            .unwrap()
+            .into_iter()
+            .map(Euclidean::new)
+            .collect::<Vec<_>>();
+
+        let mut bitpart = Builder::new(nasa.clone(), 40).build_parallel(Some(512));
+        let query = nasa[317].clone();
+        let threshold = 1.0;
+
+        bitpart.cull_by_similarity(0.95);
         test(&nasa, &bitpart, query, threshold);
     }
 
@@ -295,7 +317,7 @@ mod tests {
     }
 
     #[test]
-    fn sisap_colors_par_cull() {
+    fn sisap_colors_par_cull_popcnt() {
         let colors = parse_colors(COLORS)
             .unwrap()
             .into_iter()
@@ -306,7 +328,23 @@ mod tests {
         let query = colors[70446].clone();
         let threshold = 0.5;
 
-        bitpart.cull(0.95, 0.95);
+        bitpart.cull_by_popcnt(0.95);
+        test(&colors, &bitpart, query, threshold);
+    }
+
+    #[test]
+    fn sisap_colors_par_cull_similarity() {
+        let colors = parse_colors(COLORS)
+            .unwrap()
+            .into_iter()
+            .map(Euclidean::new)
+            .collect::<Vec<_>>();
+
+        let mut bitpart = Builder::new(colors.clone(), 40).build_parallel(Some(512));
+        let query = colors[70446].clone();
+        let threshold = 0.5;
+
+        bitpart.cull_by_similarity(0.95);
         test(&colors, &bitpart, query, threshold);
     }
 
@@ -339,7 +377,7 @@ mod tests {
     }
 
     #[test]
-    fn nearest_neighbour_cull() {
+    fn nearest_neighbour_cull_popcnt() {
         let points = parse(&fs::read_to_string("data/100k_d20_flat.ascii").unwrap())
             .unwrap()
             .1
@@ -361,7 +399,36 @@ mod tests {
 
         let mut bitpart = Builder::new(points.clone(), 40).build_parallel(Some(8192));
 
-        bitpart.cull(0.95, 0.95);
+        bitpart.cull_by_popcnt(0.95);
+        for (query, threshold) in queries {
+            test(&points, &bitpart, query, threshold);
+        }
+    }
+
+    #[test]
+    fn nearest_neighbour_cull_similarity() {
+        let points = parse(&fs::read_to_string("data/100k_d20_flat.ascii").unwrap())
+            .unwrap()
+            .1
+             .1
+            .into_iter()
+            .map(Euclidean::new)
+            .collect::<Vec<_>>();
+
+        let nns: Vec<Vec<(usize, f64)>> =
+            serde_json::from_str(&fs::read_to_string("data/100k_d20_flat.json").unwrap()).unwrap();
+
+        let queries = points
+            .iter()
+            .cloned()
+            .zip(nns.into_iter())
+            .map(|(pt, nn)| (pt, nn.last().unwrap().1))
+            .take(1000)
+            .collect::<Vec<_>>();
+
+        let mut bitpart = Builder::new(points.clone(), 40).build_parallel(Some(8192));
+
+        bitpart.cull_by_popcnt(0.95);
         for (query, threshold) in queries {
             test(&points, &bitpart, query, threshold);
         }

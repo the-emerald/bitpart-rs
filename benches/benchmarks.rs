@@ -277,11 +277,22 @@ pub fn nn_query_inner<T>(
         });
     });
 
-    for cull_threshold in [0.95, 0.9, 0.8, 0.7] {
-        // Query cull
+    for cull_threshold in [0.95, 0.9, 0.85, 0.8] {
+        // Cull by popcnt
         let mut bitpart_cull = builder.clone().build_parallel(Some(8192));
-        bitpart_cull.cull(cull_threshold, cull_threshold);
-        group.bench_function(BenchmarkId::new("cull", cull_threshold), |bn| {
+        bitpart_cull.cull_by_popcnt(cull_threshold);
+        group.bench_function(BenchmarkId::new("cull_pop", cull_threshold), |bn| {
+            bn.iter(|| {
+                for (query, threshold) in points.iter().zip(thresholds.iter()).take(n) {
+                    bitpart_cull.range_search(query.clone(), *threshold);
+                }
+            });
+        });
+
+        // Cull by similarity
+        let mut bitpart_cull = builder.clone().build_parallel(Some(8192));
+        bitpart_cull.cull_by_similarity(cull_threshold);
+        group.bench_function(BenchmarkId::new("cull_sim", cull_threshold), |bn| {
             bn.iter(|| {
                 for (query, threshold) in points.iter().zip(thresholds.iter()).take(n) {
                     bitpart_cull.range_search(query.clone(), *threshold);
