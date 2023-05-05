@@ -427,6 +427,21 @@ pub fn block_size(c: &mut Criterion) {
             });
         });
     }
+
+    // Control: parallel with block size = dataset len
+    let bitpart = builder.clone().build_parallel(None);
+    group.bench_function("None".to_string(), |bn| {
+        bn.iter(|| {
+            for (query, threshold) in points
+                .iter()
+                .zip(thresholds.iter())
+                .skip(REF_POINTS)
+                .take(500)
+            {
+                bitpart.range_search(query.clone(), *threshold);
+            }
+        });
+    });
 }
 
 const NN_QUERIES: usize = 500;
