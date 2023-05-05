@@ -299,6 +299,18 @@ pub fn nn_query_inner<T>(
                 }
             });
         });
+
+        // Cull both
+        let mut bitpart_cull = builder.clone().build_parallel(Some(8192));
+        bitpart_cull.cull_by_popcnt(cull_threshold);
+        bitpart_cull.cull_by_similarity(cull_threshold);
+        group.bench_function(BenchmarkId::new("cull_all", cull_threshold), |bn| {
+            bn.iter(|| {
+                for (query, threshold) in points.iter().zip(thresholds.iter()).take(n) {
+                    bitpart_cull.range_search(query.clone(), *threshold);
+                }
+            });
+        });
     }
 
     std::fs::remove_dir_all("/tmp/benchmark/").ok();
