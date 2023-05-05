@@ -208,6 +208,7 @@ pub fn nn_query_inner<T>(
     c: &mut Criterion,
     group_name: String,
     n: usize,
+    skip_first: usize,
     builder: Builder<T>,
     points: Vec<T>,
     thresholds: Vec<f64>,
@@ -224,6 +225,7 @@ pub fn nn_query_inner<T>(
                 for (query, threshold) in points_inner
                     .into_iter()
                     .zip(thresholds_inner.into_iter())
+                    .skip(skip_first)
                     .take(n)
                 {
                     let _ = points
@@ -245,6 +247,7 @@ pub fn nn_query_inner<T>(
                 for (query, threshold) in points_inner
                     .into_iter()
                     .zip(thresholds_inner.into_iter())
+                    .skip(skip_first)
                     .take(n)
                 {
                     let _ = points
@@ -261,7 +264,12 @@ pub fn nn_query_inner<T>(
     let bitpart_seq = builder.clone().build();
     group.bench_function("seq", |bn| {
         bn.iter(|| {
-            for (query, threshold) in points.iter().zip(thresholds.iter()).take(n) {
+            for (query, threshold) in points
+                .iter()
+                .zip(thresholds.iter())
+                .skip(skip_first)
+                .take(n)
+            {
                 bitpart_seq.range_search(query.clone(), *threshold);
             }
         });
@@ -271,7 +279,12 @@ pub fn nn_query_inner<T>(
     let bitpart_parallel = builder.clone().build_parallel(Some(8192));
     group.bench_function("par", |bn| {
         bn.iter(|| {
-            for (query, threshold) in points.iter().zip(thresholds.iter()).take(n) {
+            for (query, threshold) in points
+                .iter()
+                .zip(thresholds.iter())
+                .skip(skip_first)
+                .take(n)
+            {
                 bitpart_parallel.range_search(query.clone(), *threshold);
             }
         });
@@ -283,7 +296,12 @@ pub fn nn_query_inner<T>(
         bitpart_cull.cull_by_popcnt(cull_threshold);
         group.bench_function(BenchmarkId::new("cull_pop", cull_threshold), |bn| {
             bn.iter(|| {
-                for (query, threshold) in points.iter().zip(thresholds.iter()).take(n) {
+                for (query, threshold) in points
+                    .iter()
+                    .zip(thresholds.iter())
+                    .skip(skip_first)
+                    .take(n)
+                {
                     bitpart_cull.range_search(query.clone(), *threshold);
                 }
             });
@@ -294,7 +312,12 @@ pub fn nn_query_inner<T>(
         bitpart_cull.cull_by_similarity(cull_threshold);
         group.bench_function(BenchmarkId::new("cull_sim", cull_threshold), |bn| {
             bn.iter(|| {
-                for (query, threshold) in points.iter().zip(thresholds.iter()).take(n) {
+                for (query, threshold) in points
+                    .iter()
+                    .zip(thresholds.iter())
+                    .skip(skip_first)
+                    .take(n)
+                {
                     bitpart_cull.range_search(query.clone(), *threshold);
                 }
             });
@@ -306,7 +329,12 @@ pub fn nn_query_inner<T>(
         bitpart_cull.cull_by_similarity(cull_threshold);
         group.bench_function(BenchmarkId::new("cull_all", cull_threshold), |bn| {
             bn.iter(|| {
-                for (query, threshold) in points.iter().zip(thresholds.iter()).take(n) {
+                for (query, threshold) in points
+                    .iter()
+                    .zip(thresholds.iter())
+                    .skip(skip_first)
+                    .take(n)
+                {
                     bitpart_cull.range_search(query.clone(), *threshold);
                 }
             });
@@ -318,7 +346,12 @@ pub fn nn_query_inner<T>(
     let bitpart_parallel = builder.clone().build_on_disk("/tmp/benchmark/", Some(8192));
     group.bench_function("disk", |bn| {
         bn.iter(|| {
-            for (query, threshold) in points.iter().zip(thresholds.iter()).take(n) {
+            for (query, threshold) in points
+                .iter()
+                .zip(thresholds.iter())
+                .skip(skip_first)
+                .take(n)
+            {
                 bitpart_parallel.range_search(query.clone(), *threshold);
             }
         });
@@ -344,12 +377,13 @@ pub fn nn_query(c: &mut Criterion) {
         .map(|nn| nn.last().unwrap().1)
         .collect::<Vec<_>>();
 
-        let builder = Builder::new(points.clone(), 40);
+        let builder = Builder::new(points.clone(), REF_POINTS as u64);
 
         nn_query_inner(
             c,
             format!("100k_d{dims}_flat"),
-            500,
+            NN_QUERIES,
+            REF_POINTS,
             builder,
             points,
             thresholds,
@@ -382,13 +416,21 @@ pub fn block_size(c: &mut Criterion) {
 
         group.bench_function(block_size.to_string(), |bn| {
             bn.iter(|| {
-                for (query, threshold) in points.iter().zip(thresholds.iter()).take(500) {
+                for (query, threshold) in points
+                    .iter()
+                    .zip(thresholds.iter())
+                    .skip(REF_POINTS)
+                    .take(500)
+                {
                     bitpart.range_search(query.clone(), *threshold);
                 }
             });
         });
     }
 }
+
+const NN_QUERIES: usize = 500;
+const REF_POINTS: usize = 40;
 
 // criterion_group!(benches, sisap_nasa, sisap_colors);
 criterion_group! {
