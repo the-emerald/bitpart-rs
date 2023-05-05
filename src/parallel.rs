@@ -196,9 +196,7 @@ where
         });
 
         for (idx, cnt) in popcnt.into_iter().enumerate() {
-            if self.ratio(cnt) > threshold
-                || self.ratio(self.dataset.len() - cnt) > threshold
-            {
+            if self.ratio(cnt) > threshold || self.ratio(self.dataset.len() - cnt) > threshold {
                 to_cull.insert(idx);
             }
         }
