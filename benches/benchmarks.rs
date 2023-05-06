@@ -204,7 +204,27 @@ pub fn sisap_nasa_query(c: &mut Criterion) {
     );
 }
 
-pub fn nn_query_inner<T>(
+fn get_nn_points(dims: u64) -> (Vec<Euclidean<Vec<f64>>>, Vec<f64>) {
+    let points = parse(&fs::read_to_string(format!("data/100k_d{dims}_flat.ascii")).unwrap())
+        .unwrap()
+        .1
+         .1
+        .into_iter()
+        .map(Euclidean::new)
+        .collect::<Vec<_>>();
+
+    let thresholds = serde_json::from_str::<Vec<Vec<(usize, f64)>>>(
+        &fs::read_to_string(format!("data/100k_d{dims}_flat.json")).unwrap(),
+    )
+    .unwrap()
+    .into_iter()
+    .map(|nn| nn.last().unwrap().1)
+    .collect::<Vec<_>>();
+
+    (points, thresholds)
+}
+
+fn nn_query_inner<T>(
     c: &mut Criterion,
     group_name: String,
     n: usize,
@@ -361,22 +381,7 @@ pub fn nn_query_inner<T>(
 
 pub fn nn_query(c: &mut Criterion) {
     for dims in (10..=30).step_by(2) {
-        let points = parse(&fs::read_to_string(format!("data/100k_d{dims}_flat.ascii")).unwrap())
-            .unwrap()
-            .1
-             .1
-            .into_iter()
-            .map(Euclidean::new)
-            .collect::<Vec<_>>();
-
-        let thresholds = serde_json::from_str::<Vec<Vec<(usize, f64)>>>(
-            &fs::read_to_string(format!("data/100k_d{dims}_flat.json")).unwrap(),
-        )
-        .unwrap()
-        .into_iter()
-        .map(|nn| nn.last().unwrap().1)
-        .collect::<Vec<_>>();
-
+        let (points, thresholds) = get_nn_points(dims);
         let builder = Builder::new(points.clone(), REF_POINTS as u64);
 
         nn_query_inner(
@@ -391,25 +396,16 @@ pub fn nn_query(c: &mut Criterion) {
     }
 }
 
-pub fn block_size(c: &mut Criterion) {
-    let points = parse(&fs::read_to_string(format!("data/100k_d10_flat.ascii")).unwrap())
-        .unwrap()
-        .1
-         .1
-        .into_iter()
-        .map(Euclidean::new)
-        .collect::<Vec<_>>();
-
-    let thresholds = serde_json::from_str::<Vec<Vec<(usize, f64)>>>(
-        &fs::read_to_string(format!("data/100k_d10_flat.json")).unwrap(),
-    )
-    .unwrap()
-    .into_iter()
-    .map(|nn| nn.last().unwrap().1)
-    .collect::<Vec<_>>();
-
-    let mut group = c.benchmark_group("block_size");
-    let builder = Builder::new(points.clone(), 40);
+fn block_size_inner<T>(
+    c: &mut Criterion,
+    group_name: String,
+    builder: Builder<T>,
+    points: Vec<T>,
+    thresholds: Vec<f64>,
+) where
+    for<'a> T: Metric + Send + Sync + 'a,
+{
+    let mut group = c.benchmark_group(group_name);
 
     for block_size in (0..7).map(|i| 512 * 2_usize.pow(i)) {
         let bitpart = builder.clone().build_parallel(Some(block_size));
@@ -442,6 +438,29 @@ pub fn block_size(c: &mut Criterion) {
             }
         });
     });
+}
+
+pub fn block_size(c: &mut Criterion) {
+    let (points, thresholds) = get_nn_points(10);
+    let builder = Builder::new(points.clone(), 40);
+
+    // Measure vector-stored points
+    block_size_inner(
+        c,
+        "block_size".to_owned(),
+        builder.clone(),
+        points.clone(),
+        thresholds.clone(),
+    );
+
+    // Measure array-stored points
+    let points = points
+        .into_iter()
+        .map(|x| Euclidean::new(x.into_inner().try_into().unwrap()))
+        .collect::<Vec<Euclidean<[f64; 10]>>>();
+    let builder = Builder::new(points.clone(), 40);
+
+    block_size_inner(c, "block_size_arr".to_owned(), builder, points, thresholds)
 }
 
 const NN_QUERIES: usize = 500;
