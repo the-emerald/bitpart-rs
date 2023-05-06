@@ -505,20 +505,26 @@ const NN_QUERIES: usize = 500;
 const REF_POINTS: usize = 40;
 
 // criterion_group!(benches, sisap_nasa, sisap_colors);
+// criterion_group! {
+//     name = benches;
+//     config = Criterion::default().measurement_time(Duration::new(60, 0));
+//     targets = sisap_nasa_query, sisap_colors_query, synthetic_query
+// }
+
 criterion_group! {
-    name = benches;
-    config = Criterion::default().measurement_time(Duration::new(60, 0));
-    targets = sisap_nasa_query, sisap_colors_query, synthetic_query
+    name = setup;
+    config = Criterion::default().measurement_time(Duration::new(240, 0));
+    targets = nn_setup_time
 }
 
 criterion_group! {
     name = nn_benches;
     config = Criterion::default().measurement_time(Duration::new(180, 0));
-    targets = nn_setup_time, block_size, nn_query
+    targets = block_size, nn_query
 }
 
 // criterion_main!(benches, nn_benches);
-criterion_main!(nn_benches);
+criterion_main!(setup, nn_benches);
 
 const NASA_THRESHOLD: f64 = 1.0;
 
