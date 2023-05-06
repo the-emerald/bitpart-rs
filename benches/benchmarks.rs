@@ -379,6 +379,7 @@ fn nn_query_inner<T>(
     std::fs::remove_dir_all("/tmp/benchmark/").ok();
 }
 
+/// Benchmark the average performance of various algorithms over different dimension sizes
 pub fn nn_query(c: &mut Criterion) {
     for dims in (10..=30).step_by(2) {
         let (points, thresholds) = get_nn_points(dims);
@@ -440,6 +441,7 @@ fn block_size_inner<T>(
     });
 }
 
+/// Benchmark the most effective block size.
 pub fn block_size(c: &mut Criterion) {
     let (points, thresholds) = get_nn_points(10);
     let builder = Builder::new(points.clone(), 40);
@@ -463,6 +465,42 @@ pub fn block_size(c: &mut Criterion) {
     block_size_inner(c, "block_size_arr".to_owned(), builder, points, thresholds)
 }
 
+/// Benchmark the setup time of variants.
+pub fn nn_setup_time(c: &mut Criterion) {
+    let (points, _) = get_nn_points(20);
+    let mut group = c.benchmark_group("setup");
+
+    for sz in (1..=10).map(|x| x * 10000) {
+        let points_subset = points.iter().cloned().take(sz).collect::<Vec<_>>();
+
+        group.bench_function(BenchmarkId::new("seq", sz), |bn| {
+            bn.iter_batched(
+                || points_subset.clone(),
+                |p| Builder::new(p, 40).build(),
+                BatchSize::LargeInput,
+            );
+        });
+
+        group.bench_function(BenchmarkId::new("par", sz), |bn| {
+            bn.iter_batched(
+                || points_subset.clone(),
+                |p| Builder::new(p, 40).build_parallel(Some(8192)),
+                BatchSize::LargeInput,
+            );
+        });
+
+        std::fs::remove_dir_all("/tmp/benchmark/").ok();
+        group.bench_function(BenchmarkId::new("disk", sz), |bn| {
+            bn.iter_batched(
+                || points_subset.clone(),
+                |p| Builder::new(p, 40).build_on_disk("/tmp/benchmark", Some(8192)),
+                BatchSize::LargeInput,
+            );
+        });
+        std::fs::remove_dir_all("/tmp/benchmark/").ok();
+    }
+}
+
 const NN_QUERIES: usize = 500;
 const REF_POINTS: usize = 40;
 
@@ -476,7 +514,7 @@ criterion_group! {
 criterion_group! {
     name = nn_benches;
     config = Criterion::default().measurement_time(Duration::new(180, 0));
-    targets = block_size, nn_query
+    targets = nn_setup_time, block_size, nn_query
 }
 
 // criterion_main!(benches, nn_benches);
