@@ -6,7 +6,8 @@ use nom::{
     IResult,
 };
 
-/// The configuration for a particular test file. This is the first line in a SISAP test file.
+/// The configuration of the dataset.
+/// This corresponds to the first line in an `.ascii` file.
 #[derive(Debug, Clone, Copy)]
 pub struct FileConfig {
     /// Dimension size for each vector
@@ -43,8 +44,11 @@ fn config(input: &str) -> IResult<&str, FileConfig> {
     ))
 }
 
+/// Parse a `.ascii` file.
+/// Points are stored as a [Vec](std::vec).
+/// If the dimensionality of the dataset can be determined at compile-time,
+/// [`parse_array`] can be used to remove one layer of indirection.
 pub fn parse(input: &str) -> IResult<&str, (FileConfig, Vec<Vec<f64>>)> {
-    //todo use const generics?
     let (input, file_config) = config(input)?;
     let (input, _) = newline(input)?;
     let (input, vectors) = verify(
@@ -57,15 +61,39 @@ pub fn parse(input: &str) -> IResult<&str, (FileConfig, Vec<Vec<f64>>)> {
     Ok((input, (file_config, vectors)))
 }
 
+/// Parse an `.ascii` file.
+/// Points are stored as an [array](core::array), but this requires the dimensionality
+/// to be `const`. If this cannot be done at compile-time, use [`parse`].
+///
+/// # Panics
+///
+/// This function will panic if `N` does not match the dimension size specified in the file being parsed.
+pub fn parse_array<const N: usize>(input: &str) -> IResult<&str, (FileConfig, Vec<[f64; N]>)> {
+    let (input, file_config) = config(input)?;
+    assert_eq!(N as u64, file_config.dimensions);
+
+    let (input, _) = newline(input)?;
+    let (input, vectors) = verify(
+        many1(verify(vector, |v: &Vec<f64>| v.len() == N)),
+        |v: &Vec<Vec<f64>>| v.len() == file_config.lines as usize,
+    )(input)?;
+
+    let vectors = vectors.into_iter().map(|x| x.try_into().unwrap()).collect();
+
+    Ok((input, (file_config, vectors)))
+}
+
 #[cfg(test)]
 mod tests {
+    use crate::{colors::COLORS_DIMENSION, nasa::NASA_DIMENSION};
+
     use super::*;
 
     const NASA: &str = include_str!("nasa.ascii");
     const COLORS: &str = include_str!("colors.ascii");
 
     #[test]
-    fn test_nasa() {
+    fn nasa() {
         let (config, vectors) = parse(NASA).unwrap().1;
 
         assert_eq!(config.dimensions, 20);
@@ -77,7 +105,19 @@ mod tests {
     }
 
     #[test]
-    fn test_colors() {
+    fn nasa_const() {
+        let (config, vectors) = parse_array::<NASA_DIMENSION>(NASA).unwrap().1;
+
+        assert_eq!(config.dimensions, 20);
+        assert_eq!(config.lines, 40150);
+        assert!(vectors
+            .iter()
+            .all(|v| v.len() == config.dimensions as usize));
+        assert_eq!(config.lines as usize, vectors.len());
+    }
+
+    #[test]
+    fn colors() {
         let (config, vectors) = parse(COLORS).unwrap().1;
 
         assert_eq!(config.dimensions, 112);
@@ -86,5 +126,23 @@ mod tests {
             .iter()
             .all(|v| v.len() == config.dimensions as usize));
         assert_eq!(config.lines as usize, vectors.len());
+    }
+
+    #[test]
+    fn colors_const() {
+        let (config, vectors) = parse_array::<COLORS_DIMENSION>(COLORS).unwrap().1;
+
+        assert_eq!(config.dimensions, 112);
+        assert_eq!(config.lines, 112682);
+        assert!(vectors
+            .iter()
+            .all(|v| v.len() == config.dimensions as usize));
+        assert_eq!(config.lines as usize, vectors.len());
+    }
+
+    #[test]
+    #[should_panic]
+    fn colors_const_wrong_dim() {
+        let (_, _) = parse_array::<1111>(COLORS).unwrap().1;
     }
 }

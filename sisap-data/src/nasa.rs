@@ -2,7 +2,8 @@ use std::ops::Deref;
 
 use crate::cartesian_parser::parse;
 
-const NASA_DIMENSION: usize = 20;
+/// Dimensionality of `nasa.ascii`.
+pub const NASA_DIMENSION: usize = 20;
 
 /// A data point in the NASA test dataset.
 #[derive(Clone, Copy, Debug, PartialEq)]

@@ -2,7 +2,8 @@ use std::ops::Deref;
 
 use crate::cartesian_parser::parse;
 
-const COLORS_DIMENSION: usize = 112;
+/// Dimensionality of `colors.ascii`.
+pub const COLORS_DIMENSION: usize = 112;
 
 /// A data point in the NASA test dataset.
 #[derive(Clone, Copy, Debug, PartialEq)]
