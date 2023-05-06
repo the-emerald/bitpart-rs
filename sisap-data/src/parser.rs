@@ -45,7 +45,7 @@ fn config(input: &str) -> IResult<&str, FileConfig> {
 }
 
 /// Parse a `.ascii` file.
-/// Points are stored as a [Vec](std::vec).
+/// Points are stored as a [Vec](mod@std::vec).
 /// If the dimensionality of the dataset can be determined at compile-time,
 /// [`parse_array`] can be used to remove one layer of indirection.
 pub fn parse(input: &str) -> IResult<&str, (FileConfig, Vec<Vec<f64>>)> {

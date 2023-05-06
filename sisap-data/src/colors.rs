@@ -1,11 +1,12 @@
+use nom::Finish;
 use std::ops::Deref;
 
-use crate::parser::parse;
+use crate::parser::parse_array;
 
 /// Dimensionality of `colors.ascii`.
 pub const COLORS_DIMENSION: usize = 112;
 
-/// A data point in the NASA test dataset.
+/// A data point in the Colors test dataset.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Colors(pub [f64; COLORS_DIMENSION]);
 
@@ -35,19 +36,9 @@ impl<'a> IntoIterator for &'a Colors {
     }
 }
 
+/// Convenience function to parse `colors.ascii` and wrap points in [`Colors`].
 pub fn parse_colors(input: &str) -> Result<Vec<Colors>, crate::Error> {
-    let (_, (fc, v)) = parse(input)?;
+    let (_, (_, v)) = parse_array(input).finish()?;
 
-    // Parser already ensures all vectors have the same dimension as file config, so
-    // all we need to do is check against the config
-    if fc.dimensions != COLORS_DIMENSION as u64 {
-        return Err(crate::Error::IncorrectVectorSize(
-            COLORS_DIMENSION as u64,
-            fc.dimensions,
-        ));
-    }
-
-    Ok(v.into_iter()
-        .map(|x| Colors(x.try_into().unwrap()))
-        .collect())
+    Ok(v.into_iter().map(Colors).collect())
 }

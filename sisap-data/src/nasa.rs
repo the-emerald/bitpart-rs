@@ -1,6 +1,7 @@
+use nom::Finish;
 use std::ops::Deref;
 
-use crate::parser::parse;
+use crate::parser::parse_array;
 
 /// Dimensionality of `nasa.ascii`.
 pub const NASA_DIMENSION: usize = 20;
@@ -35,17 +36,9 @@ impl<'a> IntoIterator for &'a Nasa {
     }
 }
 
+/// Convenience function to parse `nasa.ascii` and wrap points in [`Nasa`].
 pub fn parse_nasa(input: &str) -> Result<Vec<Nasa>, crate::Error> {
-    let (_, (fc, v)) = parse(input)?;
+    let (_, (_, v)) = parse_array(input).finish()?;
 
-    // Parser already ensures all vectors have the same dimension as file config, so
-    // all we need to do is check against the config
-    if fc.dimensions != NASA_DIMENSION as u64 {
-        return Err(crate::Error::IncorrectVectorSize(
-            NASA_DIMENSION as u64,
-            fc.dimensions,
-        ));
-    }
-
-    Ok(v.into_iter().map(|x| Nasa(x.try_into().unwrap())).collect())
+    Ok(v.into_iter().map(Nasa).collect())
 }
