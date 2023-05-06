@@ -472,19 +472,16 @@ pub fn nn_setup_time(c: &mut Criterion) {
 
     for sz in (1..=10).map(|x| x * 10000) {
         let points_subset = points.iter().cloned().take(sz).collect::<Vec<_>>();
+        let builder = Builder::new(points_subset, 40);
 
         group.bench_function(BenchmarkId::new("seq", sz), |bn| {
-            bn.iter_batched(
-                || points_subset.clone(),
-                |p| Builder::new(p, 40).build(),
-                BatchSize::LargeInput,
-            );
+            bn.iter_batched(|| builder.clone(), |b| b.build(), BatchSize::LargeInput);
         });
 
         group.bench_function(BenchmarkId::new("par", sz), |bn| {
             bn.iter_batched(
-                || points_subset.clone(),
-                |p| Builder::new(p, 40).build_parallel(Some(8192)),
+                || builder.clone(),
+                |b| b.build_parallel(Some(8192)),
                 BatchSize::LargeInput,
             );
         });
@@ -492,8 +489,11 @@ pub fn nn_setup_time(c: &mut Criterion) {
         std::fs::remove_dir_all("/tmp/benchmark/").ok();
         group.bench_function(BenchmarkId::new("disk", sz), |bn| {
             bn.iter_batched(
-                || points_subset.clone(),
-                |p| Builder::new(p, 40).build_on_disk("/tmp/benchmark", Some(8192)),
+                || {
+                    std::fs::remove_dir_all("/tmp/benchmark/").ok();
+                    builder.clone()
+                },
+                |b| b.build_on_disk("/tmp/benchmark", Some(8192)),
                 BatchSize::LargeInput,
             );
         });
