@@ -19,10 +19,12 @@ where
     /// Create a new `BitPartBuilder` from a dataset.
     ///
     /// # Panics
-    /// This function will panic if `ref_points` is greater than the size of the dataset.
+    /// This function will panic if `ref_points` is greater than the size of the dataset, or is zero.
     pub fn new(dataset: impl IntoIterator<Item = T>, ref_points: u64) -> Self {
         let dataset = dataset.into_iter().collect::<Vec<_>>();
+
         assert!(ref_points as usize <= dataset.len());
+        assert!(ref_points > 0);
 
         Self {
             dataset,
@@ -33,17 +35,26 @@ where
         }
     }
 
-    /// Set the mean distance.
-    ///
+    /// Set the mean distance used when generating ball exclusion zones.
     /// For historical reasons, the default value is `1.81`.
+    ///
+    /// To generate ball exclusions, five radii are chosen per reference point. Their distances are:
+    /// ```text
+    /// mean_distance + 2 * radius_increment
+    /// mean_distance + radius_increment
+    /// mean_distance
+    /// mean_distance - radius_increment
+    /// mean_distance - 2 * radius_increment
+    /// ```
     pub fn mean_distance(mut self, mean_distance: f64) -> Self {
         self.mean_distance = mean_distance;
         self
     }
 
-    /// Set the radius increment.
-    ///
+    /// Set the radius incremented used when generating exclusion zones.
     /// For historical reasons, the default value is `0.3`.
+    ///
+    /// See [`mean_distance`](crate::Builder::mean_distance) for a detailed explanation of how this value is used.
     pub fn radius_increment(mut self, radius_increment: f64) -> Self {
         self.radius_increment = radius_increment;
         self
@@ -59,9 +70,10 @@ where
     /// Set the number of ref points
     ///
     /// # Panics
-    /// This function will panic if `ref_points` is greater than the size of the dataset.
+    /// This function will panic if `ref_points` is greater than the size of the dataset, or is zero.
     pub fn ref_points(mut self, ref_points: u64) -> Self {
         assert!(ref_points as usize <= self.dataset.len());
+        assert!(ref_points > 0);
 
         self.ref_points = ref_points;
         self

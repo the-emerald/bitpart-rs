@@ -10,9 +10,7 @@ use itertools::Itertools;
 ///
 /// This is essentially a Rust port of the [reference library](https://github.com/aldearle/BitPart) written in Java.
 ///
-/// # Construction
-///
-/// # Query
+/// Explicit SIMD optimisations for bitvector operations are provided by [`bitvec_simd`](bitvec_simd).
 pub struct Sequential<'a, T> {
     dataset: Vec<T>,
     exclusions: Vec<Box<dyn Exclusion<T> + 'a>>,

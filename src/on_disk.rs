@@ -16,7 +16,7 @@ use std::{
 /// holds a vector of [`Mmap`](memmap2::Mmap)s and only deserializes the relevant columns into memory at query-time.
 ///
 /// The BitPart data structure consists of three components: the dataset itself, information about exclusion zones, and a
-/// vector of bitsets which represent the partitioning data for each point and exclusion zone. Note that for a given query,
+/// vector of bitsets which represent the partitioning data for each point and exclusion zone. For a given query,
 /// not every partition matters - exclusion zones are only considered if the
 /// query point [must be in](crate::exclusions::Exclusion::must_be_in) or [must be out](crate::exclusions::Exclusion::must_be_out).
 /// Therefore, we can reduce the amount of memory used by BitPart by only loading columns useful to a particular query.
@@ -24,10 +24,10 @@ use std::{
 /// As a benchmark figure, on the default setting of 40 reference points, `40 * 5 = 200` balls and `40c2 = 780` plane exclusions are made.
 /// At 20 dimensions, each point requires `20 * 64 = 1280` bits of storage plus `200 + 780 = 980` bits of partitioning data.
 ///
-/// Because the bitsets are memory-mapped to files, the kernel may decide to cache reads into memory. This has the consequence that
-/// if `Disk` is used when volatile memory can fully hold the partitioning data, queries are almost native speed (with a ~10% performance penalty).
+/// Unlike [`Sequential`](crate::Sequential) and [`Parallel`](crate::Parallel), this struct usees [`bitvec`](bitvec::vec::BitVec)
+/// bitvectors. They are not SIMD-optimised so expect worse performance in addition to the overhead from memory mapping (IO and deser).
 ///
-/// `Disk` is parallelised. See [`Parallel`](crate::Parallel) for an explanation of the mechanics.
+/// `Disk` is parallelised.
 pub struct Disk<'a, T> {
     dataset: Vec<T>,
     exclusions: Vec<Box<dyn ExclusionSync<T> + 'a>>,

@@ -15,5 +15,7 @@ pub trait Metric: Clone {
     /// ```text
     /// x.distance(y) <= x.distance(y) + y.distance(z)
     /// ```
+    ///
+    /// **It is the responsibility of the implementer to ensure that the axiom are met.**
     fn distance(&self, rhs: &Self) -> f64;
 }

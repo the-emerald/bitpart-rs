@@ -20,6 +20,9 @@ use std::collections::HashSet;
 /// In general, it is not possible to change the "size" of each job as `rayon`'s work-stealing strategy works well to eliminate
 /// overhead no matter the job size. The one and only exception is when filtering candidate points based on partitioning data; points
 /// are explicitly processed in chunks to enable instruction-level parallelism when comparing bitsets.
+///
+/// Explicit SIMD optimisations for bitvector operations are provided by [`bitvec_simd`](bitvec_simd).
+///
 /// See [`build_parallel`](crate::builder::Builder::build_parallel) for configuration.
 pub struct Parallel<'a, T> {
     dataset: Vec<T>,

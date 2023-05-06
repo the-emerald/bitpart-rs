@@ -32,10 +32,8 @@
 //!
 //! # Features
 //! - `rayon`: Enables parallelised BitPart
-//! - `serde`: Enables (de)serialization through [`serde`](serde)
 //! - `disk`: Enables on-disk BitPart.
-//!
-//! TODO: Talk about bitpart-fast-math and vectorisation
+//! - `serde`: Enables (de)serialization through [`serde`](serde)
 
 #![deny(missing_docs)]
 

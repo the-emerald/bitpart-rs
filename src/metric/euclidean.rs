@@ -1,9 +1,9 @@
 use std::ops::{Deref, Sub};
 
+use super::Metric;
+
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
-
-use super::Metric;
 
 /// Wrapper struct to apply Euclidean distance to an object set.
 /// # Example
