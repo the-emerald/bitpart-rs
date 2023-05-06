@@ -23,6 +23,11 @@ impl<T> Euclidean<T> {
     pub fn new(t: T) -> Self {
         Self(t)
     }
+
+    /// Consumes the `Euclidean`, returning the wrapped value.
+    pub fn into_inner(self) -> T {
+        self.0
+    }
 }
 
 impl<T> Deref for Euclidean<T> {
