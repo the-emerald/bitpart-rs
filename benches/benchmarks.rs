@@ -456,7 +456,7 @@ criterion_group! {
 
 criterion_group! {
     name = nn_benches;
-    config = Criterion::default().measurement_time(Duration::new(120, 0));
+    config = Criterion::default().measurement_time(Duration::new(180, 0));
     targets = block_size, nn_query
 }
 
