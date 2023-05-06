@@ -28,9 +28,9 @@ harness = false
 members = [".", "sisap-data", "example", "generators", "nearest-neighbours"]
 
 [features]
-rayon = ["dep:rayon"]
+par = ["dep:rayon"]
 serde = ["dep:serde"]
-disk = ["rayon", "dep:serde", "bitvec", "dep:bincode", "dep:memmap2"]
+disk = ["par", "dep:serde", "bitvec", "dep:bincode", "dep:memmap2"]
 
 [profile.test]
 opt-level = 3

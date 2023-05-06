@@ -48,9 +48,9 @@ pub mod metric;
 mod sequential;
 pub use sequential::*;
 
-#[cfg(feature = "rayon")]
+#[cfg(feature = "par")]
 mod parallel;
-#[cfg(feature = "rayon")]
+#[cfg(feature = "par")]
 pub use parallel::*;
 
 #[cfg(feature = "disk")]

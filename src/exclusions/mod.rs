@@ -9,7 +9,7 @@
 
 use crate::metric::Metric;
 
-#[cfg(feature = "rayon")]
+#[cfg(feature = "par")]
 /// Marker trait for exclusions that are also `Send` and `Sync`.
 pub trait ExclusionSync<T>: Exclusion<T> + Send + Sync
 where
@@ -61,7 +61,7 @@ where
     }
 }
 
-#[cfg(feature = "rayon")]
+#[cfg(feature = "par")]
 impl<T> ExclusionSync<T> for BallExclusion<T> where T: Metric + Send + Sync {}
 
 pub(crate) struct SheetExclusion<T> {
@@ -96,5 +96,5 @@ where
     }
 }
 
-#[cfg(feature = "rayon")]
+#[cfg(feature = "par")]
 impl<T> ExclusionSync<T> for SheetExclusion<T> where T: Metric + Send + Sync {}
