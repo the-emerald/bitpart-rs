@@ -7,7 +7,7 @@ use bitpart::{
 use sisap_data::colors::{parse_colors, Colors};
 
 fn main() {
-    let colors = parse_colors(&fs::read_to_string("../sisap-data/src/colors.ascii").unwrap())
+    let colors = parse_colors(&fs::read_to_string("./sisap-data/src/colors.ascii").unwrap())
         .unwrap()
         .into_iter()
         .map(Euclidean::new)

@@ -7,7 +7,7 @@ use bitpart::{
 use sisap_data::nasa::{parse_nasa, Nasa};
 
 fn main() {
-    let nasa = parse_nasa(&fs::read_to_string("../sisap-data/src/nasa.ascii").unwrap())
+    let nasa = parse_nasa(&fs::read_to_string("./sisap-data/src/nasa.ascii").unwrap())
         .unwrap()
         .into_iter()
         .map(Euclidean::new)

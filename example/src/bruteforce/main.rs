@@ -3,7 +3,7 @@ use sisap_data::cartesian_parser::parse;
 use std::fs;
 
 fn main() {
-    let points = parse(&fs::read_to_string("data/100k_flat.ascii").unwrap())
+    let points = parse(&fs::read_to_string("data/100k_d10_flat.ascii").unwrap())
         .unwrap()
         .1
          .1
@@ -14,6 +14,7 @@ fn main() {
     let query = &points[0];
     let threshold = 1.9188728695060282;
 
+    println!("linear search, 1000 iterations");
     for _ in 0..1000 {
         let _ = points
             .iter()
