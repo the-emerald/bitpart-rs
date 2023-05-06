@@ -513,13 +513,13 @@ const REF_POINTS: usize = 40;
 
 criterion_group! {
     name = setup;
-    config = Criterion::default().measurement_time(Duration::new(240, 0));
+    config = Criterion::default().measurement_time(Duration::new(240, 0)).warm_up_time(Duration::new(10, 0));
     targets = nn_setup_time
 }
 
 criterion_group! {
     name = nn_benches;
-    config = Criterion::default().measurement_time(Duration::new(180, 0));
+    config = Criterion::default().measurement_time(Duration::new(180, 0)).warm_up_time(Duration::new(10, 0));
     targets = block_size, nn_query
 }
 
