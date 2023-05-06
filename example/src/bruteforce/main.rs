@@ -1,5 +1,5 @@
 use bitpart::metric::Metric;
-use sisap_data::cartesian_parser::parse;
+use sisap_data::parser::parse;
 use std::fs;
 
 fn main() {

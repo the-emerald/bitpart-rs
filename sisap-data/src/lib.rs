@@ -1,6 +1,6 @@
-pub mod cartesian_parser;
 pub mod colors;
 pub mod nasa;
+pub mod parser;
 
 /// Errors that can be encountered while parsing a dataset.
 #[derive(Debug, thiserror::Error)]

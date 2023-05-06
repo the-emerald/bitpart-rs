@@ -1,6 +1,6 @@
 use std::ops::Deref;
 
-use crate::cartesian_parser::parse;
+use crate::parser::parse;
 
 /// Dimensionality of `colors.ascii`.
 pub const COLORS_DIMENSION: usize = 112;

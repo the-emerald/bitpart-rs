@@ -5,9 +5,9 @@ use bitpart::{
 use criterion::{criterion_group, criterion_main, BatchSize, BenchmarkId, Criterion};
 use rayon::prelude::*;
 use sisap_data::{
-    cartesian_parser::parse,
     colors::{parse_colors, Colors},
     nasa::{parse_nasa, Nasa},
+    parser::parse,
 };
 use std::{fs, time::Duration};
 

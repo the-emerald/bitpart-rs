@@ -4,7 +4,7 @@ use bitpart::{
     metric::{Euclidean, Metric},
     BitPart, Builder,
 };
-use sisap_data::cartesian_parser::parse;
+use sisap_data::parser::parse;
 
 fn main() {
     let points = parse(&fs::read_to_string("data/output.ascii").unwrap())

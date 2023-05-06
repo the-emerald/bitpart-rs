@@ -1,6 +1,6 @@
 use std::ops::Deref;
 
-use crate::cartesian_parser::parse;
+use crate::parser::parse;
 
 /// Dimensionality of `nasa.ascii`.
 pub const NASA_DIMENSION: usize = 20;

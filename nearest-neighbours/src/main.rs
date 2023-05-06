@@ -3,7 +3,7 @@ use bitpart::metric::{Euclidean, Metric};
 use clap::Parser;
 use indicatif::{ParallelProgressIterator, ProgressStyle};
 use rayon::prelude::*;
-use sisap_data::cartesian_parser::parse;
+use sisap_data::parser::parse;
 use std::{
     fs::{self, File},
     io::{BufWriter, Write},
