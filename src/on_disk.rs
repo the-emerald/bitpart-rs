@@ -9,6 +9,7 @@ use std::{
     fs::File,
     path::{Path, PathBuf},
 };
+use thiserror::Error;
 
 /// On-disk BitPart.
 ///
@@ -39,7 +40,9 @@ impl<T> crate::BitPart<T> for Disk<'_, T>
 where
     T: Metric + Send + Sync,
 {
-    fn range_search(&self, point: T, threshold: f64) -> Vec<(T, f64)> {
+    type Error = DiskError;
+
+    fn range_search(&self, point: T, threshold: f64) -> Result<Vec<(T, f64)>, Self::Error> {
         let (ins, outs): (Vec<usize>, Vec<usize>) = self
             .exclusions
             .par_iter()
@@ -57,15 +60,16 @@ where
 
         let ins = ins
             .into_par_iter()
-            .map(|idx| bincode::deserialize::<BitVec>(self.bitset.get(idx).unwrap()).unwrap())
-            .collect::<Vec<_>>();
+            .map(|idx| bincode::deserialize::<BitVec>(self.bitset.get(idx).unwrap()))
+            .collect::<Result<Vec<_>, bincode::Error>>()?;
 
         let outs = outs
             .into_par_iter()
-            .map(|idx| bincode::deserialize::<BitVec>(self.bitset.get(idx).unwrap()).unwrap())
-            .collect::<Vec<_>>();
+            .map(|idx| bincode::deserialize::<BitVec>(self.bitset.get(idx).unwrap()))
+            .collect::<Result<Vec<_>, bincode::Error>>()?;
 
-        self.dataset
+        let res = self
+            .dataset
             .par_chunks(self.block_size)
             .enumerate()
             .flat_map(|(blk_idx, points)| {
@@ -91,7 +95,9 @@ where
             })
             .map(|pt| (pt.clone(), point.distance(pt)))
             .filter(|(_, d)| *d <= threshold)
-            .collect::<Vec<_>>()
+            .collect::<Vec<_>>();
+
+        Ok(res)
     }
 
     fn len(&self) -> usize {
@@ -112,7 +118,11 @@ where
     T: Metric + Send + Sync,
     dyn ExclusionSync<T>: 'a,
 {
-    pub(crate) fn setup<P>(builder: Builder<T>, path: P, block_size: Option<usize>) -> Self
+    pub(crate) fn setup<P>(
+        builder: Builder<T>,
+        path: P,
+        block_size: Option<usize>,
+    ) -> Result<Self, DiskError>
     where
         P: AsRef<Path> + 'a,
     {
@@ -122,13 +132,13 @@ where
         let ref_points = &builder.dataset[0..(builder.ref_points as usize)];
         let mut exclusions = Self::ball_exclusions(&builder, ref_points);
         exclusions.extend(Self::sheet_exclusions(&builder, ref_points));
-        let bitset = Self::make_bitset(block_size, &builder, path, &exclusions);
-        Self {
+        let bitset = Self::make_bitset(block_size, &builder, path, &exclusions)?;
+        Ok(Self {
             dataset: builder.dataset,
             bitset,
             exclusions,
             block_size,
-        }
+        })
     }
 
     fn ball_exclusions(
@@ -171,12 +181,12 @@ where
         builder: &Builder<T>,
         path: PathBuf,
         exclusions: &[Box<dyn ExclusionSync<T> + 'a>],
-    ) -> Vec<memmap2::Mmap> {
+    ) -> Result<Vec<memmap2::Mmap>, DiskError> {
         exclusions
             .par_iter()
             .enumerate()
             .map(|(idx, ez)| Self::make_mmap(&builder.dataset, path.clone(), idx, ez.as_ref()))
-            .collect::<Vec<_>>()
+            .collect::<Result<Vec<_>, _>>()
     }
 
     fn make_mmap(
@@ -184,14 +194,14 @@ where
         mut path: PathBuf,
         index: usize,
         ez: &(dyn ExclusionSync<T> + 'a),
-    ) -> memmap2::Mmap {
+    ) -> Result<memmap2::Mmap, DiskError> {
         let bv = dataset.iter().map(|pt| ez.is_in(pt)).collect::<BitVec>();
 
         path.push(format!("{}.bincode", index));
-        let file = File::create(&path).unwrap();
-        bincode::serialize_into(file, &bv).unwrap();
+        let file = File::create(&path)?;
+        bincode::serialize_into(file, &bv)?;
 
-        unsafe { memmap2::Mmap::map(&File::open(path).unwrap()).unwrap() }
+        unsafe { Ok(memmap2::Mmap::map(&File::open(path)?)?) }
     }
 }
 
@@ -210,8 +220,7 @@ mod tests {
     where
         for<'a> T: Metric + Send + Sync + 'a,
     {
-        let res = bitpart.range_search(query.clone(), threshold);
-        bitpart.range_search(query.clone(), threshold);
+        let res = bitpart.range_search(query.clone(), threshold).unwrap();
 
         // Check all points within threshold
         assert!(res
@@ -237,8 +246,9 @@ mod tests {
             .map(Euclidean::new)
             .collect::<Vec<_>>();
 
-        let bitpart =
-            Builder::new(nasa.clone(), 40).build_on_disk("/tmp/sisap_nasa_par/", Some(8192));
+        let bitpart = Builder::new(nasa.clone(), 40)
+            .build_on_disk("/tmp/sisap_nasa_par/", Some(8192))
+            .unwrap();
         let query = nasa[317].clone();
         let threshold = 1.0;
 
@@ -255,8 +265,9 @@ mod tests {
             .map(Euclidean::new)
             .collect::<Vec<_>>();
 
-        let bitpart =
-            Builder::new(colors.clone(), 40).build_on_disk("/tmp/sisap_colors_par/", Some(8192));
+        let bitpart = Builder::new(colors.clone(), 40)
+            .build_on_disk("/tmp/sisap_colors_par/", Some(8192))
+            .unwrap();
         let query = colors[70446].clone();
         let threshold = 0.5;
 
@@ -287,7 +298,9 @@ mod tests {
             .take(1000)
             .collect::<Vec<_>>();
 
-        let bitpart = Builder::new(points.clone(), 40).build_on_disk("/tmp/nn/", Some(8192));
+        let bitpart = Builder::new(points.clone(), 40)
+            .build_on_disk("/tmp/nn/", Some(8192))
+            .unwrap();
 
         for (query, threshold) in queries {
             test(&points, &bitpart, query, threshold);
@@ -308,11 +321,27 @@ where
     ///
     /// # Panics
     /// This function will panic if the `create_dir` call is unsuccessful.
-    pub fn build_on_disk<'a, P>(self, path: P, block_size: Option<usize>) -> Disk<'a, T>
+    pub fn build_on_disk<'a, P>(
+        self,
+        path: P,
+        block_size: Option<usize>,
+    ) -> Result<Disk<'a, T>, DiskError>
     where
         P: AsRef<std::path::Path> + 'a,
     {
         std::fs::create_dir(&path).unwrap();
         Disk::setup(self, path, block_size)
     }
+}
+
+/// Errors that can be encountered while using [`Disk`].
+#[derive(Debug, Error)]
+pub enum DiskError {
+    /// Generic IO error. This means either the memory map could not be opened,
+    /// or a bitvector's file could not be accessed.
+    #[error("io error")]
+    Io(#[from] std::io::Error),
+    /// Could not (de)serialize a bitvector.
+    #[error("could not (de)serialize bitvector")]
+    Serde(#[from] bincode::Error),
 }

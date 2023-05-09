@@ -290,7 +290,7 @@ fn nn_query_inner<T>(
                 .skip(skip_first)
                 .take(n)
             {
-                bitpart_seq.range_search(query.clone(), *threshold);
+                bitpart_seq.range_search(query.clone(), *threshold).unwrap();
             }
         });
     });
@@ -305,7 +305,9 @@ fn nn_query_inner<T>(
                 .skip(skip_first)
                 .take(n)
             {
-                bitpart_parallel.range_search(query.clone(), *threshold);
+                bitpart_parallel
+                    .range_search(query.clone(), *threshold)
+                    .unwrap();
             }
         });
     });
@@ -322,7 +324,9 @@ fn nn_query_inner<T>(
                     .skip(skip_first)
                     .take(n)
                 {
-                    bitpart_cull.range_search(query.clone(), *threshold);
+                    bitpart_cull
+                        .range_search(query.clone(), *threshold)
+                        .unwrap();
                 }
             });
         });
@@ -338,7 +342,9 @@ fn nn_query_inner<T>(
                     .skip(skip_first)
                     .take(n)
                 {
-                    bitpart_cull.range_search(query.clone(), *threshold);
+                    bitpart_cull
+                        .range_search(query.clone(), *threshold)
+                        .unwrap();
                 }
             });
         });
@@ -355,7 +361,9 @@ fn nn_query_inner<T>(
                     .skip(skip_first)
                     .take(n)
                 {
-                    bitpart_cull.range_search(query.clone(), *threshold);
+                    bitpart_cull
+                        .range_search(query.clone(), *threshold)
+                        .unwrap();
                 }
             });
         });
@@ -363,7 +371,10 @@ fn nn_query_inner<T>(
 
     std::fs::remove_dir_all("/tmp/benchmark/").ok();
     // Benchmark on-disk
-    let bitpart_parallel = builder.clone().build_on_disk("/tmp/benchmark/", Some(8192));
+    let bitpart_disk = builder
+        .clone()
+        .build_on_disk("/tmp/benchmark/", Some(8192))
+        .unwrap();
     group.bench_function("disk", |bn| {
         bn.iter(|| {
             for (query, threshold) in points
@@ -372,7 +383,9 @@ fn nn_query_inner<T>(
                 .skip(skip_first)
                 .take(n)
             {
-                bitpart_parallel.range_search(query.clone(), *threshold);
+                bitpart_disk
+                    .range_search(query.clone(), *threshold)
+                    .unwrap();
             }
         });
     });
@@ -419,7 +432,7 @@ fn block_size_inner<T>(
                     .skip(REF_POINTS)
                     .take(500)
                 {
-                    bitpart.range_search(query.clone(), *threshold);
+                    bitpart.range_search(query.clone(), *threshold).unwrap();
                 }
             });
         });
@@ -435,7 +448,7 @@ fn block_size_inner<T>(
                 .skip(REF_POINTS)
                 .take(500)
             {
-                bitpart.range_search(query.clone(), *threshold);
+                bitpart.range_search(query.clone(), *threshold).unwrap();
             }
         });
     });

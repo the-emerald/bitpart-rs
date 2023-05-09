@@ -43,7 +43,7 @@ fn main() {
     ]);
     let threshold = 3.0;
 
-    let res = bitpart.range_search(query.clone(), threshold);
+    let res = bitpart.range_search(query.clone(), threshold).unwrap();
     println!("{} points returned", res.len());
 
     print!("CHECK: all returned points within threshold... ");

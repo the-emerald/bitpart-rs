@@ -1,3 +1,5 @@
+use std::convert::Infallible;
+
 use crate::builder::Builder;
 use crate::exclusions::{BallExclusion, Exclusion, SheetExclusion};
 use crate::metric::Metric;
@@ -21,7 +23,9 @@ impl<T> BitPart<T> for Sequential<'_, T>
 where
     T: Metric,
 {
-    fn range_search(&self, point: T, threshold: f64) -> Vec<(T, f64)> {
+    type Error = Infallible;
+
+    fn range_search(&self, point: T, threshold: f64) -> Result<Vec<(T, f64)>, Self::Error> {
         let mut ins = vec![];
         let mut outs = vec![];
 
@@ -45,13 +49,13 @@ where
 
         let candidates = ands & nots;
 
-        candidates
+        Ok(candidates
             .into_usizes()
             .into_iter()
             .map(|i| self.dataset.get(i).unwrap())
             .map(|pt| (pt.clone(), pt.distance(&point)))
             .filter(|(_, dist)| *dist <= threshold)
-            .collect()
+            .collect())
     }
 
     fn len(&self) -> usize {
@@ -139,7 +143,7 @@ mod tests {
     where
         for<'a> T: Metric + 'a,
     {
-        let res = bitpart.range_search(query.clone(), threshold);
+        let res = bitpart.range_search(query.clone(), threshold).unwrap();
 
         // Check all points within threshold
         assert!(res

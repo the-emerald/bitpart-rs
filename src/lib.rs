@@ -15,7 +15,7 @@
 //! let query = points[0].clone();
 //! let threshold = 0.1234;
 //!
-//! let res = bitpart.range_search(query.clone(), threshold);
+//! let res = bitpart.range_search(query.clone(), threshold).unwrap();
 //!
 //! // All points are within the threshold.
 //! assert!(res.iter().all(|(p, _)| p.distance(&query) <= threshold));
@@ -58,10 +58,13 @@ pub use on_disk::*;
 
 /// Trait for BitPart data structures.
 pub trait BitPart<T> {
+    /// Corresponding error type for the data structure.
+    type Error: std::error::Error;
+
     /// Perform a range search, given a `point` and a radius `threshold` around it.
     ///
     /// Returns a vector of points which fall within the specific radius, along with their distance from the query `point`.
-    fn range_search(&self, point: T, threshold: f64) -> Vec<(T, f64)>;
+    fn range_search(&self, point: T, threshold: f64) -> Result<Vec<(T, f64)>, Self::Error>;
 
     /// Returns the size of the dataset.
     fn len(&self) -> usize;

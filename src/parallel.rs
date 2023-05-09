@@ -7,6 +7,7 @@ use bitvec_simd::BitVec;
 use itertools::{Either, Itertools};
 use rayon::prelude::*;
 use std::collections::HashSet;
+use thiserror::Error;
 
 /// Parallel BitPart.
 ///
@@ -35,7 +36,13 @@ impl<T> BitPart<T> for Parallel<'_, T>
 where
     T: Metric + Send + Sync,
 {
-    fn range_search(&self, point: T, threshold: f64) -> Vec<(T, f64)> {
+    type Error = ParallelError;
+
+    fn range_search(&self, point: T, threshold: f64) -> Result<Vec<(T, f64)>, ParallelError> {
+        if self.exclusions.is_empty() {
+            return Err(ParallelError::NoZones);
+        }
+
         let (ins, outs): (Vec<usize>, Vec<usize>) = self
             .exclusions
             .par_iter()
@@ -51,10 +58,12 @@ where
             })
             .partition_map(|x| x);
 
-        self.bitset
+        let res = self
+            .bitset
             .par_iter()
             .enumerate()
             .flat_map(|(block_idx, bitvecs)| {
+                // SAFETY: Queries can only be made if there are still exclusion zones left.
                 let len = bitvecs[0].len();
 
                 let ands = ins
@@ -80,7 +89,9 @@ where
             })
             .map(|pt| (pt.clone(), point.distance(pt)))
             .filter(|(_, d)| *d <= threshold)
-            .collect::<Vec<_>>()
+            .collect::<Vec<_>>();
+
+        Ok(res)
     }
 
     fn len(&self) -> usize {
@@ -250,7 +261,7 @@ mod tests {
     where
         for<'a> T: Metric + Send + Sync + 'a,
     {
-        let res = bitpart.range_search(query.clone(), threshold);
+        let res = bitpart.range_search(query.clone(), threshold).unwrap();
 
         // Check all points within threshold
         assert!(res
@@ -362,6 +373,7 @@ mod tests {
     }
 
     #[test]
+    #[should_panic]
     fn no_zones() {
         let colors = parse_colors(COLORS)
             .unwrap()
@@ -477,7 +489,25 @@ where
     /// In other words, `block_size` controls the granularity of parallelisation: the higher the size, the more coarse the parallelism is. It is
     /// recommended that you set a power-of-two value such as `Some(512)` to allow for instruction-level parallelism, while still letting `rayon`
     /// dispatch jobs efficiently to multiple threads.
+    ///
+    /// # Panics
+    ///
+    /// This function will panic if `block_size` is set to `Some(0)`. Use `None` if you want bitvector operations to be performed on a single thread.
     pub fn build_parallel<'a>(self, block_size: Option<usize>) -> Parallel<'a, T> {
+        assert!(block_size != Some(0));
         Parallel::setup(self, block_size)
     }
+}
+
+/// Errors that can be encountered during the construction of [`Parallel`].
+#[derive(Debug, Error)]
+pub enum ParallelError {
+    /// There are no exclusion zones in the data structure.
+    ///
+    /// This error can only occur if [`cull_by_similarity`](crate::Parallel::cull_by_similarity) and/or
+    /// [`cull_by_similarity`](crate::Parallel::cull_by_popcnt) was used and no exclusion zones are left.
+    ///
+    /// **If this error is encountered, the data structure cannot be used again.**
+    #[error("no exclusion zones defined")]
+    NoZones,
 }
