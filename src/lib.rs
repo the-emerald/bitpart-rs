@@ -62,4 +62,13 @@ pub trait BitPart<T> {
     ///
     /// Returns a vector of points which fall within the specific radius, along with their distance from the query `point`.
     fn range_search(&self, point: T, threshold: f64) -> Vec<(T, f64)>;
+
+    /// Returns the size of the dataset.
+    fn len(&self) -> usize;
+
+    /// Returns whether the data structure is empty.
+    fn is_empty(&self) -> bool;
+
+    /// Returns the number of exclusion zones being used.
+    fn zones(&self) -> usize;
 }

@@ -53,6 +53,18 @@ where
             .filter(|(_, dist)| *dist <= threshold)
             .collect()
     }
+
+    fn len(&self) -> usize {
+        self.dataset.len()
+    }
+
+    fn zones(&self) -> usize {
+        self.exclusions.len()
+    }
+
+    fn is_empty(&self) -> bool {
+        self.dataset.len() == 0
+    }
 }
 
 impl<'a, T> Sequential<'a, T>

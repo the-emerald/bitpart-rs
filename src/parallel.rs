@@ -82,6 +82,18 @@ where
             .filter(|(_, d)| *d <= threshold)
             .collect::<Vec<_>>()
     }
+
+    fn len(&self) -> usize {
+        self.dataset.len()
+    }
+
+    fn zones(&self) -> usize {
+        self.exclusions.len()
+    }
+
+    fn is_empty(&self) -> bool {
+        self.dataset.len() == 0
+    }
 }
 
 impl<'a, T> Parallel<'a, T>
@@ -346,6 +358,22 @@ mod tests {
         let threshold = 0.5;
 
         bitpart.cull_by_similarity(0.95);
+        test(&colors, &bitpart, query, threshold);
+    }
+
+    #[test]
+    fn no_zones() {
+        let colors = parse_colors(COLORS)
+            .unwrap()
+            .into_iter()
+            .map(Euclidean::new)
+            .collect::<Vec<_>>();
+
+        let mut bitpart = Builder::new(colors.clone(), 40).build_parallel(Some(512));
+        let query = colors[70446].clone();
+        let threshold = 0.5;
+
+        bitpart.cull_by_popcnt(0.0);
         test(&colors, &bitpart, query, threshold);
     }
 
