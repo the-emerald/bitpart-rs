@@ -137,9 +137,9 @@ def plot_cull():
     y_sim_95err = [y_sim_95el, y_sim_95eh]
     ax.errorbar(x, y_sim_95, yerr=y_sim_95err, label='Similarity (95%)', capsize=5)
 
-    y_all_95 = [x[3] for x in points if x[1] == "all" and x[2] == "0.8"]
-    y_all_95el = [x[4] for x in points if x[1] == "all" and x[2] == "0.8"]
-    y_all_95eh = [x[5] for x in points if x[1] == "all" and x[2] == "0.8"]
+    y_all_95 = [x[3] for x in points if x[1] == "all" and x[2] == "0.95"]
+    y_all_95el = [x[4] for x in points if x[1] == "all" and x[2] == "0.95"]
+    y_all_95eh = [x[5] for x in points if x[1] == "all" and x[2] == "0.95"]
     y_all_95err = [y_all_95el, y_all_95eh]
     ax.errorbar(x, y_all_95, yerr=y_all_95err, label='Population + Similarity (95%)', capsize=5)
 
