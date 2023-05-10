@@ -18,7 +18,7 @@ thiserror = "1.0.40"
 [dev-dependencies]
 criterion = "0.4"
 sisap-data = { path = "sisap-data" }
-serde_json = "1.0.94"
+serde_json = { version = "1.0.94", features = ["float_roundtrip"] }
 rand = "0.8.5"
 
 [[bench]]
