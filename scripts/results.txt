@@ -1,0 +1,2341 @@
+    Finished bench [optimized] target(s) in 0.03s
+Benchmarking setup/seq/10000
+Benchmarking setup/seq/10000: Warming up for 10.000 s
+Benchmarking setup/seq/10000: Collecting 100 samples in estimated 247.82 s (1400 iterations)
+Benchmarking setup/seq/10000: Analyzing
+setup/seq/10000         time:   [176.61 ms 176.64 ms 176.66 ms]
+Found 5 outliers among 100 measurements (5.00%)
+  1 (1.00%) low mild
+  3 (3.00%) high mild
+  1 (1.00%) high severe
+mean   [176.61 ms 176.66 ms] std. dev.      [100.61 µs 140.00 µs]
+median [176.63 ms 176.66 ms] med. abs. dev. [62.456 µs 112.98 µs]
+Benchmarking setup/par/10000
+Benchmarking setup/par/10000: Warming up for 10.000 s
+Benchmarking setup/par/10000: Collecting 100 samples in estimated 267.09 s (10100 iterations)
+Benchmarking setup/par/10000: Analyzing
+setup/par/10000         time:   [26.229 ms 26.259 ms 26.282 ms]
+slope  [26.229 ms 26.282 ms] R^2            [0.9948569 0.9949336]
+mean   [26.039 ms 26.129 ms] std. dev.      [223.29 µs 233.45 µs]
+median [25.878 ms 26.305 ms] med. abs. dev. [41.290 µs 337.62 µs]
+Benchmarking setup/disk/10000
+Benchmarking setup/disk/10000: Warming up for 10.000 s
+Benchmarking setup/disk/10000: Collecting 100 samples in estimated 454.27 s (10100 iterations)
+Benchmarking setup/disk/10000: Analyzing
+setup/disk/10000        time:   [40.393 ms 40.424 ms 40.460 ms]
+Found 3 outliers among 100 measurements (3.00%)
+  1 (1.00%) high mild
+  2 (2.00%) high severe
+slope  [40.393 ms 40.460 ms] R^2            [0.9986729 0.9986532]
+mean   [40.378 ms 40.432 ms] std. dev.      [85.642 µs 194.53 µs]
+median [40.362 ms 40.414 ms] med. abs. dev. [74.679 µs 117.47 µs]
+Benchmarking setup/seq/20000
+Benchmarking setup/seq/20000: Warming up for 10.000 s
+Benchmarking setup/seq/20000: Collecting 100 samples in estimated 247.69 s (700 iterations)
+Benchmarking setup/seq/20000: Analyzing
+setup/seq/20000         time:   [352.82 ms 352.98 ms 353.18 ms]
+Found 8 outliers among 100 measurements (8.00%)
+  4 (4.00%) high mild
+  4 (4.00%) high severe
+mean   [352.82 ms 353.18 ms] std. dev.      [331.77 µs 1.3021 ms]
+median [352.73 ms 352.82 ms] med. abs. dev. [140.64 µs 232.67 µs]
+Benchmarking setup/par/20000
+Benchmarking setup/par/20000: Warming up for 10.000 s
+
+Warning: Unable to complete 100 samples in 240.0s. You may wish to increase target time to 265.8s, enable flat sampling, or reduce sample count to 60.
+Benchmarking setup/par/20000: Collecting 100 samples in estimated 265.80 s (5050 iterations)
+Benchmarking setup/par/20000: Analyzing
+setup/par/20000         time:   [52.549 ms 52.841 ms 53.185 ms]
+Found 5 outliers among 100 measurements (5.00%)
+  2 (2.00%) high mild
+  3 (3.00%) high severe
+slope  [52.549 ms 53.185 ms] R^2            [0.9263903 0.9249554]
+mean   [52.044 ms 52.472 ms] std. dev.      [716.42 µs 1.4276 ms]
+median [51.603 ms 52.479 ms] med. abs. dev. [285.10 µs 1.3055 ms]
+Benchmarking setup/disk/20000
+Benchmarking setup/disk/20000: Warming up for 10.000 s
+
+Warning: Unable to complete 100 samples in 240.0s. You may wish to increase target time to 422.5s, enable flat sampling, or reduce sample count to 50.
+Benchmarking setup/disk/20000: Collecting 100 samples in estimated 422.47 s (5050 iterations)
+Benchmarking setup/disk/20000: Analyzing
+setup/disk/20000        time:   [79.049 ms 79.085 ms 79.122 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) low mild
+slope  [79.049 ms 79.122 ms] R^2            [0.9995572 0.9995552]
+mean   [79.075 ms 79.136 ms] std. dev.      [135.12 µs 179.51 µs]
+median [79.089 ms 79.168 ms] med. abs. dev. [116.44 µs 221.47 µs]
+Benchmarking setup/seq/30000
+Benchmarking setup/seq/30000: Warming up for 10.000 s
+Benchmarking setup/seq/30000: Collecting 100 samples in estimated 265.14 s (500 iterations)
+Benchmarking setup/seq/30000: Analyzing
+setup/seq/30000         time:   [528.47 ms 528.53 ms 528.59 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high severe
+mean   [528.47 ms 528.59 ms] std. dev.      [251.58 µs 376.52 µs]
+median [528.38 ms 528.50 ms] med. abs. dev. [171.92 µs 333.17 µs]
+Benchmarking setup/par/30000
+Benchmarking setup/par/30000: Warming up for 10.000 s
+
+Warning: Unable to complete 100 samples in 240.0s. You may wish to increase target time to 396.7s, enable flat sampling, or reduce sample count to 50.
+Benchmarking setup/par/30000: Collecting 100 samples in estimated 396.74 s (5050 iterations)
+Benchmarking setup/par/30000: Analyzing
+setup/par/30000         time:   [78.515 ms 78.566 ms 78.603 ms]
+slope  [78.515 ms 78.603 ms] R^2            [0.9967269 0.9967527]
+mean   [77.823 ms 78.162 ms] std. dev.      [795.19 µs 906.94 µs]
+median [78.573 ms 78.620 ms] med. abs. dev. [64.248 µs 182.12 µs]
+Benchmarking setup/disk/30000
+Benchmarking setup/disk/30000: Warming up for 10.000 s
+Benchmarking setup/disk/30000: Collecting 100 samples in estimated 246.19 s (2000 iterations)
+Benchmarking setup/disk/30000: Analyzing
+setup/disk/30000        time:   [117.82 ms 117.87 ms 117.91 ms]
+mean   [117.82 ms 117.91 ms] std. dev.      [206.55 µs 261.48 µs]
+median [117.83 ms 117.95 ms] med. abs. dev. [189.97 µs 317.47 µs]
+Benchmarking setup/seq/40000
+Benchmarking setup/seq/40000: Warming up for 10.000 s
+Benchmarking setup/seq/40000: Collecting 100 samples in estimated 283.57 s (400 iterations)
+Benchmarking setup/seq/40000: Analyzing
+setup/seq/40000         time:   [706.54 ms 707.64 ms 709.11 ms]
+Found 10 outliers among 100 measurements (10.00%)
+  2 (2.00%) high mild
+  8 (8.00%) high severe
+mean   [706.54 ms 709.11 ms] std. dev.      [2.1426 ms 10.342 ms]
+median [706.02 ms 706.23 ms] med. abs. dev. [223.38 µs 397.76 µs]
+Benchmarking setup/par/40000
+Benchmarking setup/par/40000: Warming up for 10.000 s
+Benchmarking setup/par/40000: Collecting 100 samples in estimated 242.75 s (2200 iterations)
+Benchmarking setup/par/40000: Analyzing
+setup/par/40000         time:   [104.45 ms 104.66 ms 104.86 ms]
+Found 23 outliers among 100 measurements (23.00%)
+  20 (20.00%) low severe
+  3 (3.00%) low mild
+mean   [104.45 ms 104.86 ms] std. dev.      [893.93 µs 1.1596 ms]
+median [105.02 ms 105.19 ms] med. abs. dev. [258.76 µs 521.77 µs]
+Benchmarking setup/disk/40000
+Benchmarking setup/disk/40000: Warming up for 10.000 s
+Benchmarking setup/disk/40000: Collecting 100 samples in estimated 244.82 s (1500 iterations)
+Benchmarking setup/disk/40000: Analyzing
+setup/disk/40000        time:   [157.19 ms 157.25 ms 157.31 ms]
+Found 4 outliers among 100 measurements (4.00%)
+  3 (3.00%) low mild
+  1 (1.00%) high mild
+mean   [157.19 ms 157.31 ms] std. dev.      [268.60 µs 364.59 µs]
+median [157.23 ms 157.34 ms] med. abs. dev. [180.69 µs 324.37 µs]
+Benchmarking setup/seq/50000
+Benchmarking setup/seq/50000: Warming up for 10.000 s
+Benchmarking setup/seq/50000: Collecting 100 samples in estimated 267.53 s (300 iterations)
+Benchmarking setup/seq/50000: Analyzing
+setup/seq/50000         time:   [889.41 ms 889.57 ms 889.72 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+mean   [889.41 ms 889.72 ms] std. dev.      [678.26 µs 893.65 µs]
+median [889.43 ms 889.72 ms] med. abs. dev. [506.86 µs 966.00 µs]
+Benchmarking setup/par/50000
+Benchmarking setup/par/50000: Warming up for 10.000 s
+Benchmarking setup/par/50000: Collecting 100 samples in estimated 248.47 s (1900 iterations)
+Benchmarking setup/par/50000: Analyzing
+setup/par/50000         time:   [130.46 ms 130.74 ms 131.00 ms]
+Found 21 outliers among 100 measurements (21.00%)
+  21 (21.00%) low severe
+mean   [130.46 ms 131.00 ms] std. dev.      [1.1605 ms 1.5494 ms]
+median [131.28 ms 131.47 ms] med. abs. dev. [243.61 µs 428.24 µs]
+Benchmarking setup/disk/50000
+Benchmarking setup/disk/50000: Warming up for 10.000 s
+Benchmarking setup/disk/50000: Collecting 100 samples in estimated 243.72 s (1200 iterations)
+Benchmarking setup/disk/50000: Analyzing
+setup/disk/50000        time:   [197.24 ms 197.31 ms 197.39 ms]
+mean   [197.24 ms 197.39 ms] std. dev.      [335.14 µs 421.16 µs]
+median [197.21 ms 197.44 ms] med. abs. dev. [336.56 µs 524.96 µs]
+Benchmarking setup/seq/60000
+Benchmarking setup/seq/60000: Warming up for 10.000 s
+Benchmarking setup/seq/60000: Collecting 100 samples in estimated 321.53 s (300 iterations)
+Benchmarking setup/seq/60000: Analyzing
+setup/seq/60000         time:   [1.0682 s 1.0683 s 1.0684 s]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+mean   [1.0682 s 1.0684 s] std. dev.      [575.78 µs 833.57 µs]
+median [1.0680 s 1.0683 s] med. abs. dev. [417.71 µs 775.86 µs]
+Benchmarking setup/par/60000
+Benchmarking setup/par/60000: Warming up for 10.000 s
+Benchmarking setup/par/60000: Collecting 100 samples in estimated 251.08 s (1600 iterations)
+Benchmarking setup/par/60000: Analyzing
+setup/par/60000         time:   [157.53 ms 158.30 ms 159.16 ms]
+Found 33 outliers among 100 measurements (33.00%)
+  18 (18.00%) low severe
+  1 (1.00%) low mild
+  14 (14.00%) high severe
+mean   [157.53 ms 159.16 ms] std. dev.      [2.9387 ms 5.2574 ms]
+median [157.77 ms 157.95 ms] med. abs. dev. [336.59 µs 695.89 µs]
+Benchmarking setup/disk/60000
+Benchmarking setup/disk/60000: Warming up for 10.000 s
+Benchmarking setup/disk/60000: Collecting 100 samples in estimated 242.42 s (1000 iterations)
+Benchmarking setup/disk/60000: Analyzing
+setup/disk/60000        time:   [235.76 ms 235.87 ms 235.99 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+mean   [235.76 ms 235.99 ms] std. dev.      [486.90 µs 636.26 µs]
+median [235.65 ms 235.98 ms] med. abs. dev. [450.30 µs 712.37 µs]
+Benchmarking setup/seq/70000
+Benchmarking setup/seq/70000: Warming up for 10.000 s
+Benchmarking setup/seq/70000: Collecting 100 samples in estimated 252.31 s (200 iterations)
+Benchmarking setup/seq/70000: Analyzing
+setup/seq/70000         time:   [1.2564 s 1.2569 s 1.2574 s]
+Found 5 outliers among 100 measurements (5.00%)
+  5 (5.00%) high mild
+mean   [1.2564 s 1.2574 s] std. dev.      [2.1825 ms 2.9955 ms]
+median [1.2557 s 1.2573 s] med. abs. dev. [1.9649 ms 2.9514 ms]
+Benchmarking setup/par/70000
+Benchmarking setup/par/70000: Warming up for 10.000 s
+Benchmarking setup/par/70000: Collecting 100 samples in estimated 256.21 s (1400 iterations)
+Benchmarking setup/par/70000: Analyzing
+setup/par/70000         time:   [183.03 ms 183.48 ms 183.90 ms]
+Found 22 outliers among 100 measurements (22.00%)
+  21 (21.00%) low severe
+  1 (1.00%) high mild
+mean   [183.03 ms 183.90 ms] std. dev.      [1.8608 ms 2.4958 ms]
+median [184.47 ms 184.60 ms] med. abs. dev. [220.18 µs 449.28 µs]
+Benchmarking setup/disk/70000
+Benchmarking setup/disk/70000: Warming up for 10.000 s
+Benchmarking setup/disk/70000: Collecting 100 samples in estimated 255.94 s (900 iterations)
+Benchmarking setup/disk/70000: Analyzing
+setup/disk/70000        time:   [276.56 ms 276.69 ms 276.82 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+mean   [276.56 ms 276.82 ms] std. dev.      [570.68 µs 765.85 µs]
+median [276.47 ms 276.81 ms] med. abs. dev. [523.34 µs 827.83 µs]
+Benchmarking setup/seq/80000
+Benchmarking setup/seq/80000: Warming up for 10.000 s
+Benchmarking setup/seq/80000: Collecting 100 samples in estimated 294.99 s (200 iterations)
+Benchmarking setup/seq/80000: Analyzing
+setup/seq/80000         time:   [1.4387 s 1.4419 s 1.4453 s]
+mean   [1.4387 s 1.4453 s] std. dev.      [15.391 ms 17.926 ms]
+median [1.4311 s 1.4409 s] med. abs. dev. [6.7363 ms 21.566 ms]
+Benchmarking setup/par/80000
+Benchmarking setup/par/80000: Warming up for 10.000 s
+Benchmarking setup/par/80000: Collecting 100 samples in estimated 250.62 s (1200 iterations)
+Benchmarking setup/par/80000: Analyzing
+setup/par/80000         time:   [209.36 ms 210.02 ms 210.68 ms]
+Found 28 outliers among 100 measurements (28.00%)
+  21 (21.00%) low severe
+  2 (2.00%) high mild
+  5 (5.00%) high severe
+mean   [209.36 ms 210.68 ms] std. dev.      [2.6599 ms 4.0726 ms]
+median [210.69 ms 210.90 ms] med. abs. dev. [363.01 µs 811.59 µs]
+Benchmarking setup/disk/80000
+Benchmarking setup/disk/80000: Warming up for 10.000 s
+Benchmarking setup/disk/80000: Collecting 100 samples in estimated 242.87 s (700 iterations)
+Benchmarking setup/disk/80000: Analyzing
+setup/disk/80000        time:   [318.50 ms 319.61 ms 321.03 ms]
+Found 5 outliers among 100 measurements (5.00%)
+  5 (5.00%) high severe
+mean   [318.50 ms 321.03 ms] std. dev.      [1.7523 ms 9.4889 ms]
+median [318.04 ms 318.45 ms] med. abs. dev. [527.11 µs 997.46 µs]
+Benchmarking setup/seq/90000
+Benchmarking setup/seq/90000: Warming up for 10.000 s
+Benchmarking setup/seq/90000: Collecting 100 samples in estimated 340.63 s (200 iterations)
+Benchmarking setup/seq/90000: Analyzing
+setup/seq/90000         time:   [1.6918 s 1.6927 s 1.6937 s]
+Found 5 outliers among 100 measurements (5.00%)
+  4 (4.00%) high mild
+  1 (1.00%) high severe
+mean   [1.6918 s 1.6937 s] std. dev.      [3.1953 ms 6.2263 ms]
+median [1.6908 s 1.6929 s] med. abs. dev. [2.5976 ms 4.0691 ms]
+Benchmarking setup/par/90000
+Benchmarking setup/par/90000: Warming up for 10.000 s
+Benchmarking setup/par/90000: Collecting 100 samples in estimated 258.87 s (1100 iterations)
+Benchmarking setup/par/90000: Analyzing
+setup/par/90000         time:   [235.88 ms 236.46 ms 236.99 ms]
+Found 19 outliers among 100 measurements (19.00%)
+  19 (19.00%) low severe
+mean   [235.88 ms 236.99 ms] std. dev.      [2.3412 ms 3.2396 ms]
+median [237.58 ms 237.79 ms] med. abs. dev. [364.01 µs 657.08 µs]
+Benchmarking setup/disk/90000
+Benchmarking setup/disk/90000: Warming up for 10.000 s
+Benchmarking setup/disk/90000: Collecting 100 samples in estimated 258.68 s (700 iterations)
+Benchmarking setup/disk/90000: Analyzing
+setup/disk/90000        time:   [359.70 ms 359.93 ms 360.15 ms]
+Found 3 outliers among 100 measurements (3.00%)
+  3 (3.00%) high mild
+mean   [359.70 ms 360.15 ms] std. dev.      [935.92 µs 1.3488 ms]
+median [359.62 ms 360.18 ms] med. abs. dev. [764.21 µs 1.2705 ms]
+Benchmarking setup/seq/100000
+Benchmarking setup/seq/100000: Warming up for 10.000 s
+Benchmarking setup/seq/100000: Collecting 100 samples in estimated 385.95 s (200 iterations)
+Benchmarking setup/seq/100000: Analyzing
+setup/seq/100000        time:   [1.9064 s 1.9070 s 1.9078 s]
+Found 17 outliers among 100 measurements (17.00%)
+  11 (11.00%) high mild
+  6 (6.00%) high severe
+mean   [1.9064 s 1.9078 s] std. dev.      [2.7670 ms 4.3378 ms]
+median [1.9053 s 1.9061 s] med. abs. dev. [1.0524 ms 2.0101 ms]
+Benchmarking setup/par/100000
+Benchmarking setup/par/100000: Warming up for 10.000 s
+Benchmarking setup/par/100000: Collecting 100 samples in estimated 261.25 s (1000 iterations)
+Benchmarking setup/par/100000: Analyzing
+setup/par/100000        time:   [263.34 ms 264.68 ms 266.14 ms]
+Found 32 outliers among 100 measurements (32.00%)
+  18 (18.00%) low severe
+  2 (2.00%) high mild
+  12 (12.00%) high severe
+mean   [263.34 ms 266.14 ms] std. dev.      [5.2157 ms 8.8413 ms]
+median [263.88 ms 264.12 ms] med. abs. dev. [520.85 µs 1.1955 ms]
+Benchmarking setup/disk/100000
+Benchmarking setup/disk/100000: Warming up for 10.000 s
+Benchmarking setup/disk/100000: Collecting 100 samples in estimated 250.16 s (600 iterations)
+Benchmarking setup/disk/100000: Analyzing
+setup/disk/100000       time:   [409.62 ms 409.89 ms 410.16 ms]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) low mild
+  1 (1.00%) high mild
+mean   [409.62 ms 410.16 ms] std. dev.      [1.1918 ms 1.5849 ms]
+median [409.69 ms 410.19 ms] med. abs. dev. [978.08 µs 1.7563 ms]
+
+Benchmarking block_size/512
+Benchmarking block_size/512: Warming up for 10.000 s
+Benchmarking block_size/512: Collecting 100 samples in estimated 243.46 s (1900 iterations)
+Benchmarking block_size/512: Analyzing
+block_size/512          time:   [129.08 ms 129.26 ms 129.45 ms]
+mean   [129.08 ms 129.45 ms] std. dev.      [854.69 µs 1.0152 ms]
+median [128.73 ms 129.93 ms] med. abs. dev. [353.78 µs 1.3623 ms]
+Benchmarking block_size/1024
+Benchmarking block_size/1024: Warming up for 10.000 s
+
+Warning: Unable to complete 100 samples in 240.0s. You may wish to increase target time to 458.0s, enable flat sampling, or reduce sample count to 50.
+Benchmarking block_size/1024: Collecting 100 samples in estimated 458.02 s (5050 iterations)
+Benchmarking block_size/1024: Analyzing
+block_size/1024         time:   [91.006 ms 91.041 ms 91.076 ms]
+Found 3 outliers among 100 measurements (3.00%)
+  1 (1.00%) low mild
+  1 (1.00%) high mild
+  1 (1.00%) high severe
+slope  [91.006 ms 91.076 ms] R^2            [0.9996509 0.9996516]
+mean   [91.036 ms 91.107 ms] std. dev.      [148.04 µs 220.03 µs]
+median [91.023 ms 91.091 ms] med. abs. dev. [118.19 µs 222.99 µs]
+Benchmarking block_size/2048
+Benchmarking block_size/2048: Warming up for 10.000 s
+Benchmarking block_size/2048: Collecting 100 samples in estimated 248.15 s (2100 iterations)
+Benchmarking block_size/2048: Analyzing
+block_size/2048         time:   [119.21 ms 119.28 ms 119.35 ms]
+mean   [119.21 ms 119.35 ms] std. dev.      [311.33 µs 385.20 µs]
+median [119.10 ms 119.32 ms] med. abs. dev. [278.96 µs 474.76 µs]
+Benchmarking block_size/4096
+Benchmarking block_size/4096: Warming up for 10.000 s
+Benchmarking block_size/4096: Collecting 100 samples in estimated 250.34 s (2400 iterations)
+Benchmarking block_size/4096: Analyzing
+block_size/4096         time:   [105.12 ms 105.16 ms 105.20 ms]
+mean   [105.12 ms 105.20 ms] std. dev.      [178.84 µs 225.17 µs]
+median [105.10 ms 105.19 ms] med. abs. dev. [151.06 µs 258.02 µs]
+Benchmarking block_size/8192
+Benchmarking block_size/8192: Warming up for 10.000 s
+
+Warning: Unable to complete 100 samples in 240.0s. You may wish to increase target time to 436.2s, enable flat sampling, or reduce sample count to 50.
+Benchmarking block_size/8192: Collecting 100 samples in estimated 436.23 s (5050 iterations)
+Benchmarking block_size/8192: Analyzing
+block_size/8192         time:   [87.557 ms 88.465 ms 89.671 ms]
+Found 10 outliers among 100 measurements (10.00%)
+  1 (1.00%) high mild
+  9 (9.00%) high severe
+slope  [87.557 ms 89.671 ms] R^2            [0.7297526 0.7235336]
+mean   [87.555 ms 88.975 ms] std. dev.      [1.3836 ms 5.3278 ms]
+median [87.255 ms 87.327 ms] med. abs. dev. [102.83 µs 181.66 µs]
+Benchmarking block_size/16384
+Benchmarking block_size/16384: Warming up for 10.000 s
+
+Warning: Unable to complete 100 samples in 240.0s. You may wish to increase target time to 458.7s, enable flat sampling, or reduce sample count to 50.
+Benchmarking block_size/16384: Collecting 100 samples in estimated 458.70 s (5050 iterations)
+Benchmarking block_size/16384: Analyzing
+block_size/16384        time:   [91.522 ms 91.533 ms 91.545 ms]
+Found 10 outliers among 100 measurements (10.00%)
+  8 (8.00%) low severe
+  2 (2.00%) high mild
+slope  [91.522 ms 91.545 ms] R^2            [0.9999586 0.9999583]
+mean   [91.457 ms 91.534 ms] std. dev.      [132.19 µs 244.17 µs]
+median [91.519 ms 91.549 ms] med. abs. dev. [50.219 µs 82.744 µs]
+Benchmarking block_size/32768
+Benchmarking block_size/32768: Warming up for 10.000 s
+Benchmarking block_size/32768: Collecting 100 samples in estimated 240.16 s (2100 iterations)
+Benchmarking block_size/32768: Analyzing
+block_size/32768        time:   [114.37 ms 114.39 ms 114.41 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) low mild
+mean   [114.37 ms 114.41 ms] std. dev.      [85.352 µs 111.01 µs]
+median [114.35 ms 114.41 ms] med. abs. dev. [71.985 µs 118.26 µs]
+Benchmarking block_size/None
+Benchmarking block_size/None: Warming up for 10.000 s
+Benchmarking block_size/None: Collecting 100 samples in estimated 243.04 s (1200 iterations)
+Benchmarking block_size/None: Analyzing
+block_size/None         time:   [201.99 ms 202.08 ms 202.23 ms]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) high mild
+  1 (1.00%) high severe
+mean   [201.99 ms 202.23 ms] std. dev.      [200.98 µs 1.0493 ms]
+median [201.95 ms 202.09 ms] med. abs. dev. [174.91 µs 293.93 µs]
+
+Benchmarking block_size_arr/512
+Benchmarking block_size_arr/512: Warming up for 10.000 s
+Benchmarking block_size_arr/512: Collecting 100 samples in estimated 247.27 s (2400 iterations)
+Benchmarking block_size_arr/512: Analyzing
+block_size_arr/512      time:   [103.58 ms 103.73 ms 103.88 ms]
+mean   [103.58 ms 103.88 ms] std. dev.      [721.59 µs 807.63 µs]
+median [103.30 ms 104.43 ms] med. abs. dev. [474.80 µs 1.2747 ms]
+Benchmarking block_size_arr/1024
+Benchmarking block_size_arr/1024: Warming up for 10.000 s
+
+Warning: Unable to complete 100 samples in 240.0s. You may wish to increase target time to 362.1s, enable flat sampling, or reduce sample count to 50.
+Benchmarking block_size_arr/1024: Collecting 100 samples in estimated 362.08 s (5050 iterations)
+Benchmarking block_size_arr/1024: Analyzing
+block_size_arr/1024     time:   [72.390 ms 72.811 ms 73.312 ms]
+Found 7 outliers among 100 measurements (7.00%)
+  7 (7.00%) high severe
+slope  [72.390 ms 73.312 ms] R^2            [0.9376923 0.9359624]
+mean   [72.219 ms 72.614 ms] std. dev.      [411.50 µs 1.5021 ms]
+median [72.138 ms 72.234 ms] med. abs. dev. [125.33 µs 196.60 µs]
+Benchmarking block_size_arr/2048
+Benchmarking block_size_arr/2048: Warming up for 10.000 s
+Benchmarking block_size_arr/2048: Collecting 100 samples in estimated 246.86 s (2500 iterations)
+Benchmarking block_size_arr/2048: Analyzing
+block_size_arr/2048     time:   [99.519 ms 99.563 ms 99.606 ms]
+mean   [99.519 ms 99.606 ms] std. dev.      [194.25 µs 249.72 µs]
+median [99.519 ms 99.620 ms] med. abs. dev. [164.37 µs 292.96 µs]
+Benchmarking block_size_arr/4096
+Benchmarking block_size_arr/4096: Warming up for 10.000 s
+
+Warning: Unable to complete 100 samples in 240.0s. You may wish to increase target time to 427.7s, enable flat sampling, or reduce sample count to 50.
+Benchmarking block_size_arr/4096: Collecting 100 samples in estimated 427.67 s (5050 iterations)
+Benchmarking block_size_arr/4096: Analyzing
+block_size_arr/4096     time:   [85.107 ms 85.193 ms 85.278 ms]
+slope  [85.107 ms 85.278 ms] R^2            [0.9976234 0.9976234]
+mean   [85.083 ms 85.241 ms] std. dev.      [357.92 µs 445.53 µs]
+median [84.947 ms 85.191 ms] med. abs. dev. [287.62 µs 546.73 µs]
+Benchmarking block_size_arr/8192
+Benchmarking block_size_arr/8192: Warming up for 10.000 s
+
+Warning: Unable to complete 100 samples in 240.0s. You may wish to increase target time to 361.8s, enable flat sampling, or reduce sample count to 50.
+Benchmarking block_size_arr/8192: Collecting 100 samples in estimated 361.80 s (5050 iterations)
+Benchmarking block_size_arr/8192: Analyzing
+block_size_arr/8192     time:   [71.383 ms 71.424 ms 71.470 ms]
+slope  [71.383 ms 71.470 ms] R^2            [0.9991296 0.9991161]
+mean   [71.507 ms 71.573 ms] std. dev.      [146.98 µs 189.44 µs]
+median [71.554 ms 71.609 ms] med. abs. dev. [81.169 µs 165.95 µs]
+Benchmarking block_size_arr/16384
+Benchmarking block_size_arr/16384: Warming up for 10.000 s
+
+Warning: Unable to complete 100 samples in 240.0s. You may wish to increase target time to 390.3s, enable flat sampling, or reduce sample count to 50.
+Benchmarking block_size_arr/16384: Collecting 100 samples in estimated 390.26 s (5050 iterations)
+Benchmarking block_size_arr/16384: Analyzing
+block_size_arr/16384    time:   [77.274 ms 77.281 ms 77.288 ms]
+Found 6 outliers among 100 measurements (6.00%)
+  1 (1.00%) low severe
+  5 (5.00%) high mild
+slope  [77.274 ms 77.288 ms] R^2            [0.9999795 0.9999794]
+mean   [77.273 ms 77.289 ms] std. dev.      [33.147 µs 50.201 µs]
+median [77.270 ms 77.283 ms] med. abs. dev. [20.966 µs 43.925 µs]
+Benchmarking block_size_arr/32768
+Benchmarking block_size_arr/32768: Warming up for 10.000 s
+Benchmarking block_size_arr/32768: Collecting 100 samples in estimated 248.00 s (2500 iterations)
+Benchmarking block_size_arr/32768: Analyzing
+block_size_arr/32768    time:   [99.399 ms 99.688 ms 100.03 ms]
+Found 14 outliers among 100 measurements (14.00%)
+  14 (14.00%) high severe
+mean   [99.399 ms 100.03 ms] std. dev.      [986.57 µs 2.1207 ms]
+median [99.164 ms 99.206 ms] med. abs. dev. [82.016 µs 143.46 µs]
+Benchmarking block_size_arr/None
+Benchmarking block_size_arr/None: Warming up for 10.000 s
+Benchmarking block_size_arr/None: Collecting 100 samples in estimated 258.10 s (1400 iterations)
+Benchmarking block_size_arr/None: Analyzing
+block_size_arr/None     time:   [183.04 ms 183.08 ms 183.13 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+mean   [183.04 ms 183.13 ms] std. dev.      [195.47 µs 259.70 µs]
+median [183.02 ms 183.13 ms] med. abs. dev. [178.70 µs 269.68 µs]
+
+Benchmarking 100k_d10_flat/lin
+Benchmarking 100k_d10_flat/lin: Warming up for 10.000 s
+Benchmarking 100k_d10_flat/lin: Collecting 100 samples in estimated 289.47 s (500 iterations)
+Benchmarking 100k_d10_flat/lin: Analyzing
+100k_d10_flat/lin       time:   [578.39 ms 578.76 ms 579.14 ms]
+mean   [578.39 ms 579.14 ms] std. dev.      [1.7026 ms 2.1370 ms]
+median [577.63 ms 579.04 ms] med. abs. dev. [847.97 µs 2.4132 ms]
+Benchmarking 100k_d10_flat/lin_par
+Benchmarking 100k_d10_flat/lin_par: Warming up for 10.000 s
+Benchmarking 100k_d10_flat/lin_par: Collecting 100 samples in estimated 253.09 s (1900 iterations)
+Benchmarking 100k_d10_flat/lin_par: Analyzing
+100k_d10_flat/lin_par   time:   [136.92 ms 137.41 ms 137.85 ms]
+Found 12 outliers among 100 measurements (12.00%)
+  12 (12.00%) low severe
+mean   [136.92 ms 137.85 ms] std. dev.      [1.7003 ms 2.8858 ms]
+median [138.14 ms 138.34 ms] med. abs. dev. [282.96 µs 462.29 µs]
+Benchmarking 100k_d10_flat/seq
+Benchmarking 100k_d10_flat/seq: Warming up for 10.000 s
+Benchmarking 100k_d10_flat/seq: Collecting 100 samples in estimated 248.60 s (1100 iterations)
+Benchmarking 100k_d10_flat/seq: Analyzing
+100k_d10_flat/seq       time:   [224.81 ms 224.87 ms 224.94 ms]
+Found 13 outliers among 100 measurements (13.00%)
+  11 (11.00%) high mild
+  2 (2.00%) high severe
+mean   [224.81 ms 224.94 ms] std. dev.      [249.92 µs 381.32 µs]
+median [224.69 ms 224.80 ms] med. abs. dev. [92.538 µs 223.68 µs]
+Benchmarking 100k_d10_flat/par
+Benchmarking 100k_d10_flat/par: Warming up for 10.000 s
+
+Warning: Unable to complete 100 samples in 240.0s. You may wish to increase target time to 436.5s, enable flat sampling, or reduce sample count to 50.
+Benchmarking 100k_d10_flat/par: Collecting 100 samples in estimated 436.53 s (5050 iterations)
+Benchmarking 100k_d10_flat/par: Analyzing
+100k_d10_flat/par       time:   [87.521 ms 87.576 ms 87.617 ms]
+slope  [87.521 ms 87.617 ms] R^2            [0.9975758 0.9975999]
+mean   [86.946 ms 87.224 ms] std. dev.      [666.73 µs 740.38 µs]
+median [86.462 ms 87.647 ms] med. abs. dev. [79.898 µs 808.63 µs]
+Benchmarking 100k_d10_flat/cull_pop/0.95
+Benchmarking 100k_d10_flat/cull_pop/0.95: Warming up for 10.000 s
+
+Warning: Unable to complete 100 samples in 240.0s. You may wish to increase target time to 326.3s, enable flat sampling, or reduce sample count to 60.
+Benchmarking 100k_d10_flat/cull_pop/0.95: Collecting 100 samples in estimated 326.34 s (5050 iterations)
+Benchmarking 100k_d10_flat/cull_pop/0.95: Analyzing
+100k_d10_flat/cull_pop/0.95
+                        time:   [65.454 ms 66.302 ms 67.410 ms]
+Found 14 outliers among 100 measurements (14.00%)
+  1 (1.00%) low severe
+  2 (2.00%) low mild
+  1 (1.00%) high mild
+  10 (10.00%) high severe
+slope  [65.454 ms 67.410 ms] R^2            [0.6660982 0.6585699]
+mean   [65.321 ms 66.444 ms] std. dev.      [934.18 µs 4.3034 ms]
+median [65.135 ms 65.149 ms] med. abs. dev. [25.320 µs 52.448 µs]
+Benchmarking 100k_d10_flat/cull_sim/0.95
+Benchmarking 100k_d10_flat/cull_sim/0.95: Warming up for 10.000 s
+
+Warning: Unable to complete 100 samples in 240.0s. You may wish to increase target time to 325.6s, enable flat sampling, or reduce sample count to 60.
+Benchmarking 100k_d10_flat/cull_sim/0.95: Collecting 100 samples in estimated 325.58 s (5050 iterations)
+Benchmarking 100k_d10_flat/cull_sim/0.95: Analyzing
+100k_d10_flat/cull_sim/0.95
+                        time:   [63.171 ms 63.194 ms 63.225 ms]
+slope  [63.171 ms 63.225 ms] R^2            [0.9967918 0.9967780]
+mean   [63.571 ms 63.971 ms] std. dev.      [885.16 µs 1.1170 ms]
+median [63.179 ms 63.221 ms] med. abs. dev. [65.563 µs 144.69 µs]
+Benchmarking 100k_d10_flat/cull_all/0.95
+Benchmarking 100k_d10_flat/cull_all/0.95: Warming up for 10.000 s
+
+Warning: Unable to complete 100 samples in 240.0s. You may wish to increase target time to 325.0s, enable flat sampling, or reduce sample count to 60.
+Benchmarking 100k_d10_flat/cull_all/0.95: Collecting 100 samples in estimated 325.00 s (5050 iterations)
+Benchmarking 100k_d10_flat/cull_all/0.95: Analyzing
+100k_d10_flat/cull_all/0.95
+                        time:   [65.477 ms 65.492 ms 65.506 ms]
+Found 12 outliers among 100 measurements (12.00%)
+  6 (6.00%) low severe
+  6 (6.00%) low mild
+slope  [65.477 ms 65.506 ms] R^2            [0.9998492 0.9998511]
+mean   [65.389 ms 65.476 ms] std. dev.      [103.38 µs 314.82 µs]
+median [65.482 ms 65.504 ms] med. abs. dev. [36.883 µs 65.940 µs]
+Benchmarking 100k_d10_flat/cull_pop/0.9
+Benchmarking 100k_d10_flat/cull_pop/0.9: Warming up for 10.000 s
+
+Warning: Unable to complete 100 samples in 240.0s. You may wish to increase target time to 316.3s, enable flat sampling, or reduce sample count to 60.
+Benchmarking 100k_d10_flat/cull_pop/0.9: Collecting 100 samples in estimated 316.30 s (5050 iterations)
+Benchmarking 100k_d10_flat/cull_pop/0.9: Analyzing
+100k_d10_flat/cull_pop/0.9
+                        time:   [62.867 ms 62.875 ms 62.883 ms]
+Found 14 outliers among 100 measurements (14.00%)
+  1 (1.00%) low severe
+  2 (2.00%) low mild
+  8 (8.00%) high mild
+  3 (3.00%) high severe
+slope  [62.867 ms 62.883 ms] R^2            [0.9999510 0.9999515]
+mean   [62.879 ms 62.910 ms] std. dev.      [53.630 µs 109.27 µs]
+median [62.873 ms 62.889 ms] med. abs. dev. [25.877 µs 50.845 µs]
+Benchmarking 100k_d10_flat/cull_sim/0.9
+Benchmarking 100k_d10_flat/cull_sim/0.9: Warming up for 10.000 s
+
+Warning: Unable to complete 100 samples in 240.0s. You may wish to increase target time to 326.3s, enable flat sampling, or reduce sample count to 60.
+Benchmarking 100k_d10_flat/cull_sim/0.9: Collecting 100 samples in estimated 326.31 s (5050 iterations)
+Benchmarking 100k_d10_flat/cull_sim/0.9: Analyzing
+100k_d10_flat/cull_sim/0.9
+                        time:   [65.690 ms 65.703 ms 65.716 ms]
+Found 5 outliers among 100 measurements (5.00%)
+  2 (2.00%) low mild
+  3 (3.00%) high mild
+slope  [65.690 ms 65.716 ms] R^2            [0.9999165 0.9999167]
+mean   [65.698 ms 65.721 ms] std. dev.      [47.675 µs 70.286 µs]
+median [65.698 ms 65.720 ms] med. abs. dev. [39.235 µs 61.341 µs]
+Benchmarking 100k_d10_flat/cull_all/0.9
+Benchmarking 100k_d10_flat/cull_all/0.9: Warming up for 10.000 s
+
+Warning: Unable to complete 100 samples in 240.0s. You may wish to increase target time to 314.4s, enable flat sampling, or reduce sample count to 60.
+Benchmarking 100k_d10_flat/cull_all/0.9: Collecting 100 samples in estimated 314.42 s (5050 iterations)
+Benchmarking 100k_d10_flat/cull_all/0.9: Analyzing
+100k_d10_flat/cull_all/0.9
+                        time:   [63.418 ms 64.466 ms 65.733 ms]
+Found 8 outliers among 100 measurements (8.00%)
+  1 (1.00%) high mild
+  7 (7.00%) high severe
+slope  [63.418 ms 65.733 ms] R^2            [0.6375193 0.6302000]
+mean   [63.309 ms 64.270 ms] std. dev.      [977.80 µs 3.7518 ms]
+median [63.040 ms 63.299 ms] med. abs. dev. [98.198 µs 350.64 µs]
+Benchmarking 100k_d10_flat/cull_pop/0.85
+Benchmarking 100k_d10_flat/cull_pop/0.85: Warming up for 10.000 s
+
+Warning: Unable to complete 100 samples in 240.0s. You may wish to increase target time to 320.3s, enable flat sampling, or reduce sample count to 60.
+Benchmarking 100k_d10_flat/cull_pop/0.85: Collecting 100 samples in estimated 320.34 s (5050 iterations)
+Benchmarking 100k_d10_flat/cull_pop/0.85: Analyzing
+100k_d10_flat/cull_pop/0.85
+                        time:   [63.822 ms 63.835 ms 63.848 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) low mild
+slope  [63.822 ms 63.848 ms] R^2            [0.9998954 0.9998962]
+mean   [63.825 ms 63.849 ms] std. dev.      [51.661 µs 71.445 µs]
+median [63.832 ms 63.858 ms] med. abs. dev. [44.521 µs 81.153 µs]
+Benchmarking 100k_d10_flat/cull_sim/0.85
+Benchmarking 100k_d10_flat/cull_sim/0.85: Warming up for 10.000 s
+
+Warning: Unable to complete 100 samples in 240.0s. You may wish to increase target time to 320.3s, enable flat sampling, or reduce sample count to 60.
+Benchmarking 100k_d10_flat/cull_sim/0.85: Collecting 100 samples in estimated 320.26 s (5050 iterations)
+Benchmarking 100k_d10_flat/cull_sim/0.85: Analyzing
+100k_d10_flat/cull_sim/0.85
+                        time:   [64.467 ms 64.484 ms 64.501 ms]
+Found 7 outliers among 100 measurements (7.00%)
+  1 (1.00%) low severe
+  1 (1.00%) low mild
+  5 (5.00%) high mild
+slope  [64.467 ms 64.501 ms] R^2            [0.9998208 0.9998200]
+mean   [64.445 ms 64.483 ms] std. dev.      [76.076 µs 120.47 µs]
+median [64.449 ms 64.477 ms] med. abs. dev. [56.890 µs 90.031 µs]
+Benchmarking 100k_d10_flat/cull_all/0.85
+Benchmarking 100k_d10_flat/cull_all/0.85: Warming up for 10.000 s
+
+Warning: Unable to complete 100 samples in 240.0s. You may wish to increase target time to 319.5s, enable flat sampling, or reduce sample count to 60.
+Benchmarking 100k_d10_flat/cull_all/0.85: Collecting 100 samples in estimated 319.46 s (5050 iterations)
+Benchmarking 100k_d10_flat/cull_all/0.85: Analyzing
+100k_d10_flat/cull_all/0.85
+                        time:   [64.563 ms 64.698 ms 64.898 ms]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high severe
+slope  [64.563 ms 64.898 ms] R^2            [0.9814487 0.9807640]
+mean   [64.418 ms 64.673 ms] std. dev.      [194.91 µs 1.0352 ms]
+median [64.288 ms 64.586 ms] med. abs. dev. [116.75 µs 319.54 µs]
+Benchmarking 100k_d10_flat/cull_pop/0.8
+Benchmarking 100k_d10_flat/cull_pop/0.8: Warming up for 10.000 s
+
+Warning: Unable to complete 100 samples in 240.0s. You may wish to increase target time to 325.8s, enable flat sampling, or reduce sample count to 60.
+Benchmarking 100k_d10_flat/cull_pop/0.8: Collecting 100 samples in estimated 325.77 s (5050 iterations)
+Benchmarking 100k_d10_flat/cull_pop/0.8: Analyzing
+100k_d10_flat/cull_pop/0.8
+                        time:   [64.970 ms 64.979 ms 64.988 ms]
+Found 11 outliers among 100 measurements (11.00%)
+  7 (7.00%) low severe
+  2 (2.00%) low mild
+  2 (2.00%) high severe
+slope  [64.970 ms 64.988 ms] R^2            [0.9999550 0.9999552]
+mean   [64.941 ms 64.975 ms] std. dev.      [63.345 µs 104.56 µs]
+median [64.965 ms 64.987 ms] med. abs. dev. [29.595 µs 53.914 µs]
+Benchmarking 100k_d10_flat/cull_sim/0.8
+Benchmarking 100k_d10_flat/cull_sim/0.8: Warming up for 10.000 s
+
+Warning: Unable to complete 100 samples in 240.0s. You may wish to increase target time to 324.1s, enable flat sampling, or reduce sample count to 60.
+Benchmarking 100k_d10_flat/cull_sim/0.8: Collecting 100 samples in estimated 324.09 s (5050 iterations)
+Benchmarking 100k_d10_flat/cull_sim/0.8: Analyzing
+100k_d10_flat/cull_sim/0.8
+                        time:   [65.438 ms 65.527 ms 65.689 ms]
+Found 4 outliers among 100 measurements (4.00%)
+  1 (1.00%) low severe
+  1 (1.00%) low mild
+  1 (1.00%) high mild
+  1 (1.00%) high severe
+slope  [65.438 ms 65.689 ms] R^2            [0.9950438 0.9945359]
+mean   [65.472 ms 65.563 ms] std. dev.      [66.966 µs 413.50 µs]
+median [65.474 ms 65.510 ms] med. abs. dev. [50.751 µs 84.953 µs]
+Benchmarking 100k_d10_flat/cull_all/0.8
+Benchmarking 100k_d10_flat/cull_all/0.8: Warming up for 10.000 s
+
+Warning: Unable to complete 100 samples in 240.0s. You may wish to increase target time to 361.8s, enable flat sampling, or reduce sample count to 50.
+Benchmarking 100k_d10_flat/cull_all/0.8: Collecting 100 samples in estimated 361.81 s (5050 iterations)
+Benchmarking 100k_d10_flat/cull_all/0.8: Analyzing
+100k_d10_flat/cull_all/0.8
+                        time:   [66.971 ms 67.063 ms 67.190 ms]
+Found 21 outliers among 100 measurements (21.00%)
+  2 (2.00%) high mild
+  19 (19.00%) high severe
+slope  [66.971 ms 67.190 ms] R^2            [0.9169017 0.9167026]
+mean   [68.196 ms 70.521 ms] std. dev.      [4.3806 ms 7.2369 ms]
+median [66.907 ms 66.948 ms] med. abs. dev. [64.740 µs 136.18 µs]
+Benchmarking 100k_d10_flat/disk
+Benchmarking 100k_d10_flat/disk: Warming up for 10.000 s
+Benchmarking 100k_d10_flat/disk: Collecting 100 samples in estimated 262.97 s (900 iterations)
+Benchmarking 100k_d10_flat/disk: Analyzing
+100k_d10_flat/disk      time:   [294.94 ms 294.99 ms 295.03 ms]
+mean   [294.94 ms 295.03 ms] std. dev.      [188.04 µs 236.44 µs]
+median [294.96 ms 295.07 ms] med. abs. dev. [155.73 µs 289.79 µs]
+
+Benchmarking 100k_d12_flat/lin
+Benchmarking 100k_d12_flat/lin: Warming up for 10.000 s
+Benchmarking 100k_d12_flat/lin: Collecting 100 samples in estimated 255.01 s (400 iterations)
+Benchmarking 100k_d12_flat/lin: Analyzing
+100k_d12_flat/lin       time:   [620.77 ms 621.50 ms 622.43 ms]
+Found 10 outliers among 100 measurements (10.00%)
+  6 (6.00%) high mild
+  4 (4.00%) high severe
+mean   [620.77 ms 622.43 ms] std. dev.      [2.1780 ms 6.3185 ms]
+median [619.84 ms 620.82 ms] med. abs. dev. [1.0025 ms 1.8622 ms]
+Benchmarking 100k_d12_flat/lin_par
+Benchmarking 100k_d12_flat/lin_par: Warming up for 10.000 s
+Benchmarking 100k_d12_flat/lin_par: Collecting 100 samples in estimated 241.55 s (1700 iterations)
+Benchmarking 100k_d12_flat/lin_par: Analyzing
+100k_d12_flat/lin_par   time:   [145.48 ms 145.95 ms 146.38 ms]
+Found 13 outliers among 100 measurements (13.00%)
+  13 (13.00%) low severe
+mean   [145.48 ms 146.38 ms] std. dev.      [1.6790 ms 2.7546 ms]
+median [146.75 ms 146.82 ms] med. abs. dev. [78.974 µs 131.06 µs]
+Benchmarking 100k_d12_flat/seq
+Benchmarking 100k_d12_flat/seq: Warming up for 10.000 s
+Benchmarking 100k_d12_flat/seq: Collecting 100 samples in estimated 266.76 s (600 iterations)
+Benchmarking 100k_d12_flat/seq: Analyzing
+100k_d12_flat/seq       time:   [444.41 ms 444.48 ms 444.57 ms]
+Found 5 outliers among 100 measurements (5.00%)
+  4 (4.00%) high mild
+  1 (1.00%) high severe
+mean   [444.41 ms 444.57 ms] std. dev.      [324.49 µs 499.67 µs]
+median [444.26 ms 444.39 ms] med. abs. dev. [137.44 µs 325.00 µs]
+Benchmarking 100k_d12_flat/par
+Benchmarking 100k_d12_flat/par: Warming up for 10.000 s
+Benchmarking 100k_d12_flat/par: Collecting 100 samples in estimated 243.96 s (2100 iterations)
+Benchmarking 100k_d12_flat/par: Analyzing
+100k_d12_flat/par       time:   [119.36 ms 119.70 ms 120.01 ms]
+Found 20 outliers among 100 measurements (20.00%)
+  18 (18.00%) low severe
+  2 (2.00%) high mild
+mean   [119.36 ms 120.01 ms] std. dev.      [1.3469 ms 1.8954 ms]
+median [120.43 ms 120.46 ms] med. abs. dev. [83.089 µs 155.48 µs]
+Benchmarking 100k_d12_flat/cull_pop/0.95
+Benchmarking 100k_d12_flat/cull_pop/0.95: Warming up for 10.000 s
+Benchmarking 100k_d12_flat/cull_pop/0.95: Collecting 100 samples in estimated 244.79 s (2400 iterations)
+Benchmarking 100k_d12_flat/cull_pop/0.95: Analyzing
+100k_d12_flat/cull_pop/0.95
+                        time:   [104.04 ms 105.26 ms 106.72 ms]
+Found 19 outliers among 100 measurements (19.00%)
+  1 (1.00%) high mild
+  18 (18.00%) high severe
+mean   [104.04 ms 106.72 ms] std. dev.      [4.1621 ms 8.9861 ms]
+median [102.81 ms 102.94 ms] med. abs. dev. [202.90 µs 391.72 µs]
+Benchmarking 100k_d12_flat/cull_sim/0.95
+Benchmarking 100k_d12_flat/cull_sim/0.95: Warming up for 10.000 s
+Benchmarking 100k_d12_flat/cull_sim/0.95: Collecting 100 samples in estimated 241.29 s (2400 iterations)
+Benchmarking 100k_d12_flat/cull_sim/0.95: Analyzing
+100k_d12_flat/cull_sim/0.95
+                        time:   [102.78 ms 102.82 ms 102.85 ms]
+Found 4 outliers among 100 measurements (4.00%)
+  1 (1.00%) low mild
+  2 (2.00%) high mild
+  1 (1.00%) high severe
+mean   [102.78 ms 102.85 ms] std. dev.      [119.72 µs 232.91 µs]
+median [102.77 ms 102.86 ms] med. abs. dev. [98.660 µs 157.50 µs]
+Benchmarking 100k_d12_flat/cull_all/0.95
+Benchmarking 100k_d12_flat/cull_all/0.95: Warming up for 10.000 s
+Benchmarking 100k_d12_flat/cull_all/0.95: Collecting 100 samples in estimated 241.38 s (2400 iterations)
+Benchmarking 100k_d12_flat/cull_all/0.95: Analyzing
+100k_d12_flat/cull_all/0.95
+                        time:   [102.34 ms 102.36 ms 102.38 ms]
+mean   [102.34 ms 102.38 ms] std. dev.      [105.84 µs 133.94 µs]
+median [102.33 ms 102.41 ms] med. abs. dev. [99.577 µs 163.87 µs]
+Benchmarking 100k_d12_flat/cull_pop/0.9
+Benchmarking 100k_d12_flat/cull_pop/0.9: Warming up for 10.000 s
+Benchmarking 100k_d12_flat/cull_pop/0.9: Collecting 100 samples in estimated 242.39 s (2300 iterations)
+Benchmarking 100k_d12_flat/cull_pop/0.9: Analyzing
+100k_d12_flat/cull_pop/0.9
+                        time:   [106.26 ms 106.29 ms 106.31 ms]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) low mild
+mean   [106.26 ms 106.31 ms] std. dev.      [94.592 µs 129.53 µs]
+median [106.27 ms 106.32 ms] med. abs. dev. [78.402 µs 135.24 µs]
+Benchmarking 100k_d12_flat/cull_sim/0.9
+Benchmarking 100k_d12_flat/cull_sim/0.9: Warming up for 10.000 s
+Benchmarking 100k_d12_flat/cull_sim/0.9: Collecting 100 samples in estimated 245.65 s (2400 iterations)
+Benchmarking 100k_d12_flat/cull_sim/0.9: Analyzing
+100k_d12_flat/cull_sim/0.9
+                        time:   [104.69 ms 104.71 ms 104.73 ms]
+mean   [104.69 ms 104.73 ms] std. dev.      [104.63 µs 135.25 µs]
+median [104.68 ms 104.74 ms] med. abs. dev. [88.929 µs 153.52 µs]
+Benchmarking 100k_d12_flat/cull_all/0.9
+Benchmarking 100k_d12_flat/cull_all/0.9: Warming up for 10.000 s
+Benchmarking 100k_d12_flat/cull_all/0.9: Collecting 100 samples in estimated 241.66 s (2300 iterations)
+Benchmarking 100k_d12_flat/cull_all/0.9: Analyzing
+100k_d12_flat/cull_all/0.9
+                        time:   [106.64 ms 106.66 ms 106.69 ms]
+Found 5 outliers among 100 measurements (5.00%)
+  1 (1.00%) low mild
+  4 (4.00%) high mild
+mean   [106.64 ms 106.69 ms] std. dev.      [110.91 µs 157.21 µs]
+median [106.64 ms 106.70 ms] med. abs. dev. [82.067 µs 149.20 µs]
+Benchmarking 100k_d12_flat/cull_pop/0.85
+Benchmarking 100k_d12_flat/cull_pop/0.85: Warming up for 10.000 s
+Benchmarking 100k_d12_flat/cull_pop/0.85: Collecting 100 samples in estimated 241.02 s (2100 iterations)
+Benchmarking 100k_d12_flat/cull_pop/0.85: Analyzing
+100k_d12_flat/cull_pop/0.85
+                        time:   [115.13 ms 115.16 ms 115.19 ms]
+Found 4 outliers among 100 measurements (4.00%)
+  4 (4.00%) high mild
+mean   [115.13 ms 115.19 ms] std. dev.      [121.42 µs 164.18 µs]
+median [115.09 ms 115.18 ms] med. abs. dev. [100.95 µs 167.45 µs]
+Benchmarking 100k_d12_flat/cull_sim/0.85
+Benchmarking 100k_d12_flat/cull_sim/0.85: Warming up for 10.000 s
+Benchmarking 100k_d12_flat/cull_sim/0.85: Collecting 100 samples in estimated 242.98 s (2200 iterations)
+Benchmarking 100k_d12_flat/cull_sim/0.85: Analyzing
+100k_d12_flat/cull_sim/0.85
+                        time:   [113.74 ms 114.96 ms 116.41 ms]
+Found 16 outliers among 100 measurements (16.00%)
+  16 (16.00%) high severe
+mean   [113.74 ms 116.41 ms] std. dev.      [3.9458 ms 9.0186 ms]
+median [112.68 ms 112.73 ms] med. abs. dev. [78.557 µs 149.62 µs]
+Benchmarking 100k_d12_flat/cull_all/0.85
+Benchmarking 100k_d12_flat/cull_all/0.85: Warming up for 10.000 s
+Benchmarking 100k_d12_flat/cull_all/0.85: Collecting 100 samples in estimated 249.78 s (2200 iterations)
+Benchmarking 100k_d12_flat/cull_all/0.85: Analyzing
+100k_d12_flat/cull_all/0.85
+                        time:   [115.53 ms 115.56 ms 115.59 ms]
+Found 9 outliers among 100 measurements (9.00%)
+  3 (3.00%) low mild
+  2 (2.00%) high mild
+  4 (4.00%) high severe
+mean   [115.53 ms 115.59 ms] std. dev.      [103.74 µs 179.40 µs]
+median [115.53 ms 115.56 ms] med. abs. dev. [54.278 µs 108.96 µs]
+Benchmarking 100k_d12_flat/cull_pop/0.8
+Benchmarking 100k_d12_flat/cull_pop/0.8: Warming up for 10.000 s
+Benchmarking 100k_d12_flat/cull_pop/0.8: Collecting 100 samples in estimated 246.69 s (2000 iterations)
+Benchmarking 100k_d12_flat/cull_pop/0.8: Analyzing
+100k_d12_flat/cull_pop/0.8
+                        time:   [124.15 ms 124.16 ms 124.18 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) low mild
+mean   [124.15 ms 124.18 ms] std. dev.      [67.948 µs 88.986 µs]
+median [124.15 ms 124.18 ms] med. abs. dev. [54.771 µs 99.118 µs]
+Benchmarking 100k_d12_flat/cull_sim/0.8
+Benchmarking 100k_d12_flat/cull_sim/0.8: Warming up for 10.000 s
+Benchmarking 100k_d12_flat/cull_sim/0.8: Collecting 100 samples in estimated 241.16 s (1900 iterations)
+Benchmarking 100k_d12_flat/cull_sim/0.8: Analyzing
+100k_d12_flat/cull_sim/0.8
+                        time:   [129.18 ms 129.19 ms 129.20 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) low mild
+mean   [129.18 ms 129.20 ms] std. dev.      [63.182 µs 83.057 µs]
+median [129.17 ms 129.20 ms] med. abs. dev. [46.827 µs 83.789 µs]
+Benchmarking 100k_d12_flat/cull_all/0.8
+Benchmarking 100k_d12_flat/cull_all/0.8: Warming up for 10.000 s
+Benchmarking 100k_d12_flat/cull_all/0.8: Collecting 100 samples in estimated 249.31 s (2000 iterations)
+Benchmarking 100k_d12_flat/cull_all/0.8: Analyzing
+100k_d12_flat/cull_all/0.8
+                        time:   [126.23 ms 126.32 ms 126.44 ms]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high severe
+mean   [126.23 ms 126.44 ms] std. dev.      [77.735 µs 924.25 µs]
+median [126.22 ms 126.26 ms] med. abs. dev. [64.974 µs 111.02 µs]
+Benchmarking 100k_d12_flat/disk
+Benchmarking 100k_d12_flat/disk: Warming up for 10.000 s
+Benchmarking 100k_d12_flat/disk: Collecting 100 samples in estimated 263.82 s (1000 iterations)
+Benchmarking 100k_d12_flat/disk: Analyzing
+100k_d12_flat/disk      time:   [264.30 ms 264.48 ms 264.65 ms]
+Found 22 outliers among 100 measurements (22.00%)
+  11 (11.00%) low severe
+  11 (11.00%) low mild
+mean   [264.30 ms 264.65 ms] std. dev.      [757.53 µs 988.12 µs]
+median [264.73 ms 264.88 ms] med. abs. dev. [292.86 µs 575.07 µs]
+
+Benchmarking 100k_d14_flat/lin
+Benchmarking 100k_d14_flat/lin: Warming up for 10.000 s
+Benchmarking 100k_d14_flat/lin: Collecting 100 samples in estimated 260.07 s (400 iterations)
+Benchmarking 100k_d14_flat/lin: Analyzing
+100k_d14_flat/lin       time:   [648.94 ms 651.28 ms 654.18 ms]
+Found 14 outliers among 100 measurements (14.00%)
+  2 (2.00%) high mild
+  12 (12.00%) high severe
+mean   [648.94 ms 654.18 ms] std. dev.      [6.5411 ms 18.806 ms]
+median [647.00 ms 647.64 ms] med. abs. dev. [328.98 µs 1.0460 ms]
+Benchmarking 100k_d14_flat/lin_par
+Benchmarking 100k_d14_flat/lin_par: Warming up for 10.000 s
+Benchmarking 100k_d14_flat/lin_par: Collecting 100 samples in estimated 250.95 s (1700 iterations)
+Benchmarking 100k_d14_flat/lin_par: Analyzing
+100k_d14_flat/lin_par   time:   [151.67 ms 152.16 ms 152.61 ms]
+Found 11 outliers among 100 measurements (11.00%)
+  11 (11.00%) low severe
+mean   [151.67 ms 152.61 ms] std. dev.      [1.6819 ms 2.9039 ms]
+median [152.99 ms 153.06 ms] med. abs. dev. [88.903 µs 205.58 µs]
+Benchmarking 100k_d14_flat/seq
+Benchmarking 100k_d14_flat/seq: Warming up for 10.000 s
+Benchmarking 100k_d14_flat/seq: Collecting 100 samples in estimated 286.26 s (400 iterations)
+Benchmarking 100k_d14_flat/seq: Analyzing
+100k_d14_flat/seq       time:   [724.49 ms 724.72 ms 725.03 ms]
+Found 9 outliers among 100 measurements (9.00%)
+  6 (6.00%) high mild
+  3 (3.00%) high severe
+mean   [724.49 ms 725.03 ms] std. dev.      [587.81 µs 2.2245 ms]
+median [724.30 ms 724.56 ms] med. abs. dev. [344.82 µs 616.53 µs]
+Benchmarking 100k_d14_flat/par
+Benchmarking 100k_d14_flat/par: Warming up for 10.000 s
+Benchmarking 100k_d14_flat/par: Collecting 100 samples in estimated 253.43 s (1700 iterations)
+Benchmarking 100k_d14_flat/par: Analyzing
+100k_d14_flat/par       time:   [154.15 ms 154.60 ms 155.01 ms]
+Found 14 outliers among 100 measurements (14.00%)
+  14 (14.00%) low severe
+mean   [154.15 ms 155.01 ms] std. dev.      [1.6519 ms 2.5843 ms]
+median [155.40 ms 155.48 ms] med. abs. dev. [112.93 µs 186.13 µs]
+Benchmarking 100k_d14_flat/cull_pop/0.95
+Benchmarking 100k_d14_flat/cull_pop/0.95: Warming up for 10.000 s
+Benchmarking 100k_d14_flat/cull_pop/0.95: Collecting 100 samples in estimated 244.40 s (1700 iterations)
+Benchmarking 100k_d14_flat/cull_pop/0.95: Analyzing
+100k_d14_flat/cull_pop/0.95
+                        time:   [144.26 ms 144.30 ms 144.33 ms]
+Found 4 outliers among 100 measurements (4.00%)
+  4 (4.00%) high mild
+mean   [144.26 ms 144.33 ms] std. dev.      [140.45 µs 197.57 µs]
+median [144.26 ms 144.33 ms] med. abs. dev. [106.10 µs 170.34 µs]
+Benchmarking 100k_d14_flat/cull_sim/0.95
+Benchmarking 100k_d14_flat/cull_sim/0.95: Warming up for 10.000 s
+Benchmarking 100k_d14_flat/cull_sim/0.95: Collecting 100 samples in estimated 250.71 s (1800 iterations)
+Benchmarking 100k_d14_flat/cull_sim/0.95: Analyzing
+100k_d14_flat/cull_sim/0.95
+                        time:   [141.58 ms 141.60 ms 141.62 ms]
+mean   [141.58 ms 141.62 ms] std. dev.      [83.855 µs 109.07 µs]
+median [141.58 ms 141.63 ms] med. abs. dev. [75.901 µs 121.49 µs]
+Benchmarking 100k_d14_flat/cull_all/0.95
+Benchmarking 100k_d14_flat/cull_all/0.95: Warming up for 10.000 s
+Benchmarking 100k_d14_flat/cull_all/0.95: Collecting 100 samples in estimated 242.74 s (1700 iterations)
+Benchmarking 100k_d14_flat/cull_all/0.95: Analyzing
+100k_d14_flat/cull_all/0.95
+                        time:   [144.83 ms 144.85 ms 144.87 ms]
+mean   [144.83 ms 144.87 ms] std. dev.      [87.556 µs 114.58 µs]
+median [144.82 ms 144.85 ms] med. abs. dev. [75.608 µs 135.98 µs]
+Benchmarking 100k_d14_flat/cull_pop/0.9
+Benchmarking 100k_d14_flat/cull_pop/0.9: Warming up for 10.000 s
+Benchmarking 100k_d14_flat/cull_pop/0.9: Collecting 100 samples in estimated 247.25 s (1600 iterations)
+Benchmarking 100k_d14_flat/cull_pop/0.9: Analyzing
+100k_d14_flat/cull_pop/0.9
+                        time:   [155.86 ms 157.05 ms 158.43 ms]
+Found 16 outliers among 100 measurements (16.00%)
+  16 (16.00%) high severe
+mean   [155.86 ms 158.43 ms] std. dev.      [4.2691 ms 8.4255 ms]
+median [154.68 ms 154.77 ms] med. abs. dev. [137.76 µs 264.79 µs]
+Benchmarking 100k_d14_flat/cull_sim/0.9
+Benchmarking 100k_d14_flat/cull_sim/0.9: Warming up for 10.000 s
+Benchmarking 100k_d14_flat/cull_sim/0.9: Collecting 100 samples in estimated 254.42 s (1700 iterations)
+Benchmarking 100k_d14_flat/cull_sim/0.9: Analyzing
+100k_d14_flat/cull_sim/0.9
+                        time:   [151.77 ms 151.80 ms 151.84 ms]
+Found 5 outliers among 100 measurements (5.00%)
+  2 (2.00%) high mild
+  3 (3.00%) high severe
+mean   [151.77 ms 151.84 ms] std. dev.      [132.65 µs 229.13 µs]
+median [151.73 ms 151.81 ms] med. abs. dev. [101.50 µs 163.45 µs]
+Benchmarking 100k_d14_flat/cull_all/0.9
+Benchmarking 100k_d14_flat/cull_all/0.9: Warming up for 10.000 s
+Benchmarking 100k_d14_flat/cull_all/0.9: Collecting 100 samples in estimated 245.44 s (1600 iterations)
+Benchmarking 100k_d14_flat/cull_all/0.9: Analyzing
+100k_d14_flat/cull_all/0.9
+                        time:   [155.12 ms 155.14 ms 155.16 ms]
+mean   [155.12 ms 155.16 ms] std. dev.      [89.322 µs 115.43 µs]
+median [155.11 ms 155.16 ms] med. abs. dev. [87.628 µs 136.60 µs]
+Benchmarking 100k_d14_flat/cull_pop/0.85
+Benchmarking 100k_d14_flat/cull_pop/0.85: Warming up for 10.000 s
+Benchmarking 100k_d14_flat/cull_pop/0.85: Collecting 100 samples in estimated 255.72 s (1600 iterations)
+Benchmarking 100k_d14_flat/cull_pop/0.85: Analyzing
+100k_d14_flat/cull_pop/0.85
+                        time:   [161.25 ms 161.27 ms 161.28 ms]
+mean   [161.25 ms 161.28 ms] std. dev.      [77.455 µs 96.547 µs]
+median [161.23 ms 161.28 ms] med. abs. dev. [68.726 µs 121.67 µs]
+Benchmarking 100k_d14_flat/cull_sim/0.85
+Benchmarking 100k_d14_flat/cull_sim/0.85: Warming up for 10.000 s
+Benchmarking 100k_d14_flat/cull_sim/0.85: Collecting 100 samples in estimated 254.00 s (1600 iterations)
+Benchmarking 100k_d14_flat/cull_sim/0.85: Analyzing
+100k_d14_flat/cull_sim/0.85
+                        time:   [162.46 ms 162.50 ms 162.54 ms]
+Found 4 outliers among 100 measurements (4.00%)
+  4 (4.00%) high mild
+mean   [162.46 ms 162.54 ms] std. dev.      [191.09 µs 253.50 µs]
+median [162.41 ms 162.54 ms] med. abs. dev. [153.45 µs 254.27 µs]
+Benchmarking 100k_d14_flat/cull_all/0.85
+Benchmarking 100k_d14_flat/cull_all/0.85: Warming up for 10.000 s
+Benchmarking 100k_d14_flat/cull_all/0.85: Collecting 100 samples in estimated 254.25 s (1600 iterations)
+Benchmarking 100k_d14_flat/cull_all/0.85: Analyzing
+100k_d14_flat/cull_all/0.85
+                        time:   [160.82 ms 160.86 ms 160.90 ms]
+Found 4 outliers among 100 measurements (4.00%)
+  4 (4.00%) high mild
+mean   [160.82 ms 160.90 ms] std. dev.      [160.22 µs 259.39 µs]
+median [160.78 ms 160.90 ms] med. abs. dev. [148.75 µs 228.55 µs]
+Benchmarking 100k_d14_flat/cull_pop/0.8
+Benchmarking 100k_d14_flat/cull_pop/0.8: Warming up for 10.000 s
+Benchmarking 100k_d14_flat/cull_pop/0.8: Collecting 100 samples in estimated 245.62 s (1500 iterations)
+Benchmarking 100k_d14_flat/cull_pop/0.8: Analyzing
+100k_d14_flat/cull_pop/0.8
+                        time:   [166.04 ms 167.21 ms 168.56 ms]
+Found 15 outliers among 100 measurements (15.00%)
+  15 (15.00%) high severe
+mean   [166.04 ms 168.56 ms] std. dev.      [4.1702 ms 8.3181 ms]
+median [164.96 ms 165.03 ms] med. abs. dev. [89.475 µs 157.10 µs]
+Benchmarking 100k_d14_flat/cull_sim/0.8
+Benchmarking 100k_d14_flat/cull_sim/0.8: Warming up for 10.000 s
+Benchmarking 100k_d14_flat/cull_sim/0.8: Collecting 100 samples in estimated 240.06 s (1500 iterations)
+Benchmarking 100k_d14_flat/cull_sim/0.8: Analyzing
+100k_d14_flat/cull_sim/0.8
+                        time:   [164.44 ms 164.46 ms 164.49 ms]
+mean   [164.44 ms 164.49 ms] std. dev.      [104.89 µs 131.68 µs]
+median [164.43 ms 164.49 ms] med. abs. dev. [100.15 µs 161.92 µs]
+Benchmarking 100k_d14_flat/cull_all/0.8
+Benchmarking 100k_d14_flat/cull_all/0.8: Warming up for 10.000 s
+Benchmarking 100k_d14_flat/cull_all/0.8: Collecting 100 samples in estimated 243.85 s (1500 iterations)
+Benchmarking 100k_d14_flat/cull_all/0.8: Analyzing
+100k_d14_flat/cull_all/0.8
+                        time:   [165.88 ms 165.90 ms 165.92 ms]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) low mild
+  1 (1.00%) high mild
+mean   [165.88 ms 165.92 ms] std. dev.      [84.720 µs 113.43 µs]
+median [165.88 ms 165.92 ms] med. abs. dev. [69.385 µs 118.76 µs]
+Benchmarking 100k_d14_flat/disk
+Benchmarking 100k_d14_flat/disk: Warming up for 10.000 s
+Benchmarking 100k_d14_flat/disk: Collecting 100 samples in estimated 256.79 s (1000 iterations)
+Benchmarking 100k_d14_flat/disk: Analyzing
+100k_d14_flat/disk      time:   [258.33 ms 258.41 ms 258.48 ms]
+mean   [258.33 ms 258.48 ms] std. dev.      [330.79 µs 428.76 µs]
+median [258.37 ms 258.57 ms] med. abs. dev. [258.04 µs 453.53 µs]
+
+Benchmarking 100k_d16_flat/lin
+Benchmarking 100k_d16_flat/lin: Warming up for 10.000 s
+Benchmarking 100k_d16_flat/lin: Collecting 100 samples in estimated 258.81 s (400 iterations)
+Benchmarking 100k_d16_flat/lin: Analyzing
+100k_d16_flat/lin       time:   [644.59 ms 645.09 ms 645.74 ms]
+Found 9 outliers among 100 measurements (9.00%)
+  6 (6.00%) high mild
+  3 (3.00%) high severe
+mean   [644.59 ms 645.74 ms] std. dev.      [641.05 µs 4.4039 ms]
+median [644.34 ms 644.58 ms] med. abs. dev. [371.41 µs 654.83 µs]
+Benchmarking 100k_d16_flat/lin_par
+Benchmarking 100k_d16_flat/lin_par: Warming up for 10.000 s
+Benchmarking 100k_d16_flat/lin_par: Collecting 100 samples in estimated 248.94 s (1700 iterations)
+Benchmarking 100k_d16_flat/lin_par: Analyzing
+100k_d16_flat/lin_par   time:   [150.81 ms 151.32 ms 151.78 ms]
+Found 11 outliers among 100 measurements (11.00%)
+  11 (11.00%) low severe
+mean   [150.81 ms 151.78 ms] std. dev.      [1.7605 ms 3.0120 ms]
+median [152.15 ms 152.20 ms] med. abs. dev. [78.285 µs 139.21 µs]
+Benchmarking 100k_d16_flat/seq
+Benchmarking 100k_d16_flat/seq: Warming up for 10.000 s
+Benchmarking 100k_d16_flat/seq: Collecting 100 samples in estimated 284.76 s (400 iterations)
+Benchmarking 100k_d16_flat/seq: Analyzing
+100k_d16_flat/seq       time:   [712.11 ms 712.29 ms 712.48 ms]
+Found 14 outliers among 100 measurements (14.00%)
+  10 (10.00%) high mild
+  4 (4.00%) high severe
+mean   [712.11 ms 712.48 ms] std. dev.      [735.51 µs 1.0984 ms]
+median [711.84 ms 712.18 ms] med. abs. dev. [366.71 µs 612.23 µs]
+Benchmarking 100k_d16_flat/par
+Benchmarking 100k_d16_flat/par: Warming up for 10.000 s
+Benchmarking 100k_d16_flat/par: Collecting 100 samples in estimated 254.78 s (1500 iterations)
+Benchmarking 100k_d16_flat/par: Analyzing
+100k_d16_flat/par       time:   [177.70 ms 179.17 ms 180.83 ms]
+Found 29 outliers among 100 measurements (29.00%)
+  15 (15.00%) low severe
+  14 (14.00%) high severe
+mean   [177.70 ms 180.83 ms] std. dev.      [5.6502 ms 10.050 ms]
+median [177.84 ms 177.94 ms] med. abs. dev. [173.03 µs 296.41 µs]
+Benchmarking 100k_d16_flat/cull_pop/0.95
+Benchmarking 100k_d16_flat/cull_pop/0.95: Warming up for 10.000 s
+Benchmarking 100k_d16_flat/cull_pop/0.95: Collecting 100 samples in estimated 242.35 s (1400 iterations)
+Benchmarking 100k_d16_flat/cull_pop/0.95: Analyzing
+100k_d16_flat/cull_pop/0.95
+                        time:   [173.97 ms 174.01 ms 174.05 ms]
+Found 4 outliers among 100 measurements (4.00%)
+  4 (4.00%) high mild
+mean   [173.97 ms 174.05 ms] std. dev.      [166.00 µs 234.07 µs]
+median [173.95 ms 174.04 ms] med. abs. dev. [124.85 µs 222.54 µs]
+Benchmarking 100k_d16_flat/cull_sim/0.95
+Benchmarking 100k_d16_flat/cull_sim/0.95: Warming up for 10.000 s
+Benchmarking 100k_d16_flat/cull_sim/0.95: Collecting 100 samples in estimated 253.77 s (1500 iterations)
+Benchmarking 100k_d16_flat/cull_sim/0.95: Analyzing
+100k_d16_flat/cull_sim/0.95
+                        time:   [173.72 ms 173.74 ms 173.76 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+mean   [173.72 ms 173.76 ms] std. dev.      [94.649 µs 126.37 µs]
+median [173.71 ms 173.77 ms] med. abs. dev. [87.579 µs 144.37 µs]
+Benchmarking 100k_d16_flat/cull_all/0.95
+Benchmarking 100k_d16_flat/cull_all/0.95: Warming up for 10.000 s
+Benchmarking 100k_d16_flat/cull_all/0.95: Collecting 100 samples in estimated 241.57 s (1400 iterations)
+Benchmarking 100k_d16_flat/cull_all/0.95: Analyzing
+100k_d16_flat/cull_all/0.95
+                        time:   [176.67 ms 176.71 ms 176.75 ms]
+Found 10 outliers among 100 measurements (10.00%)
+  9 (9.00%) high mild
+  1 (1.00%) high severe
+mean   [176.67 ms 176.75 ms] std. dev.      [169.59 µs 237.04 µs]
+median [176.63 ms 176.70 ms] med. abs. dev. [104.91 µs 179.26 µs]
+Benchmarking 100k_d16_flat/cull_pop/0.9
+Benchmarking 100k_d16_flat/cull_pop/0.9: Warming up for 10.000 s
+Benchmarking 100k_d16_flat/cull_pop/0.9: Collecting 100 samples in estimated 246.13 s (1400 iterations)
+Benchmarking 100k_d16_flat/cull_pop/0.9: Analyzing
+100k_d16_flat/cull_pop/0.9
+                        time:   [177.21 ms 177.24 ms 177.27 ms]
+mean   [177.21 ms 177.27 ms] std. dev.      [125.21 µs 162.57 µs]
+median [177.22 ms 177.28 ms] med. abs. dev. [100.47 µs 169.29 µs]
+Benchmarking 100k_d16_flat/cull_sim/0.9
+Benchmarking 100k_d16_flat/cull_sim/0.9: Warming up for 10.000 s
+Benchmarking 100k_d16_flat/cull_sim/0.9: Collecting 100 samples in estimated 240.00 s (1400 iterations)
+Benchmarking 100k_d16_flat/cull_sim/0.9: Analyzing
+100k_d16_flat/cull_sim/0.9
+                        time:   [175.78 ms 175.80 ms 175.82 ms]
+Found 3 outliers among 100 measurements (3.00%)
+  3 (3.00%) high mild
+mean   [175.78 ms 175.82 ms] std. dev.      [96.523 µs 138.31 µs]
+median [175.78 ms 175.82 ms] med. abs. dev. [82.186 µs 136.42 µs]
+Benchmarking 100k_d16_flat/cull_all/0.9
+Benchmarking 100k_d16_flat/cull_all/0.9: Warming up for 10.000 s
+Benchmarking 100k_d16_flat/cull_all/0.9: Collecting 100 samples in estimated 245.93 s (1400 iterations)
+Benchmarking 100k_d16_flat/cull_all/0.9: Analyzing
+100k_d16_flat/cull_all/0.9
+                        time:   [179.59 ms 179.61 ms 179.64 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) low mild
+mean   [179.59 ms 179.64 ms] std. dev.      [101.55 µs 134.34 µs]
+median [179.58 ms 179.63 ms] med. abs. dev. [80.045 µs 133.84 µs]
+Benchmarking 100k_d16_flat/cull_pop/0.85
+Benchmarking 100k_d16_flat/cull_pop/0.85: Warming up for 10.000 s
+Benchmarking 100k_d16_flat/cull_pop/0.85: Collecting 100 samples in estimated 247.85 s (1400 iterations)
+Benchmarking 100k_d16_flat/cull_pop/0.85: Analyzing
+100k_d16_flat/cull_pop/0.85
+                        time:   [179.74 ms 180.82 ms 182.07 ms]
+Found 17 outliers among 100 measurements (17.00%)
+  17 (17.00%) high severe
+mean   [179.74 ms 182.07 ms] std. dev.      [3.8962 ms 7.6520 ms]
+median [178.65 ms 178.76 ms] med. abs. dev. [168.59 µs 298.41 µs]
+Benchmarking 100k_d16_flat/cull_sim/0.85
+Benchmarking 100k_d16_flat/cull_sim/0.85: Warming up for 10.000 s
+Benchmarking 100k_d16_flat/cull_sim/0.85: Collecting 100 samples in estimated 244.33 s (1400 iterations)
+Benchmarking 100k_d16_flat/cull_sim/0.85: Analyzing
+100k_d16_flat/cull_sim/0.85
+                        time:   [179.29 ms 179.52 ms 179.92 ms]
+Found 3 outliers among 100 measurements (3.00%)
+  1 (1.00%) high mild
+  2 (2.00%) high severe
+mean   [179.29 ms 179.92 ms] std. dev.      [180.74 µs 3.1566 ms]
+median [179.22 ms 179.31 ms] med. abs. dev. [106.11 µs 217.66 µs]
+Benchmarking 100k_d16_flat/cull_all/0.85
+Benchmarking 100k_d16_flat/cull_all/0.85: Warming up for 10.000 s
+Benchmarking 100k_d16_flat/cull_all/0.85: Collecting 100 samples in estimated 247.20 s (1400 iterations)
+Benchmarking 100k_d16_flat/cull_all/0.85: Analyzing
+100k_d16_flat/cull_all/0.85
+                        time:   [180.13 ms 180.15 ms 180.17 ms]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) low mild
+  1 (1.00%) high mild
+mean   [180.13 ms 180.17 ms] std. dev.      [96.029 µs 127.61 µs]
+median [180.12 ms 180.17 ms] med. abs. dev. [76.325 µs 127.16 µs]
+Benchmarking 100k_d16_flat/cull_pop/0.8
+Benchmarking 100k_d16_flat/cull_pop/0.8: Warming up for 10.000 s
+Benchmarking 100k_d16_flat/cull_pop/0.8: Collecting 100 samples in estimated 250.68 s (1400 iterations)
+Benchmarking 100k_d16_flat/cull_pop/0.8: Analyzing
+100k_d16_flat/cull_pop/0.8
+                        time:   [180.01 ms 180.03 ms 180.05 ms]
+mean   [180.01 ms 180.05 ms] std. dev.      [91.716 µs 116.39 µs]
+median [179.99 ms 180.05 ms] med. abs. dev. [87.687 µs 139.16 µs]
+Benchmarking 100k_d16_flat/cull_sim/0.8
+Benchmarking 100k_d16_flat/cull_sim/0.8: Warming up for 10.000 s
+Benchmarking 100k_d16_flat/cull_sim/0.8: Collecting 100 samples in estimated 246.45 s (1400 iterations)
+Benchmarking 100k_d16_flat/cull_sim/0.8: Analyzing
+100k_d16_flat/cull_sim/0.8
+                        time:   [180.78 ms 180.82 ms 180.87 ms]
+mean   [180.78 ms 180.87 ms] std. dev.      [208.44 µs 262.17 µs]
+median [180.83 ms 180.94 ms] med. abs. dev. [153.35 µs 303.68 µs]
+Benchmarking 100k_d16_flat/cull_all/0.8
+Benchmarking 100k_d16_flat/cull_all/0.8: Warming up for 10.000 s
+Benchmarking 100k_d16_flat/cull_all/0.8: Collecting 100 samples in estimated 250.60 s (1400 iterations)
+Benchmarking 100k_d16_flat/cull_all/0.8: Analyzing
+100k_d16_flat/cull_all/0.8
+                        time:   [182.52 ms 182.61 ms 182.70 ms]
+mean   [182.52 ms 182.70 ms] std. dev.      [421.37 µs 471.73 µs]
+median [182.27 ms 182.92 ms] med. abs. dev. [281.67 µs 674.99 µs]
+Benchmarking 100k_d16_flat/disk
+Benchmarking 100k_d16_flat/disk: Warming up for 10.000 s
+Benchmarking 100k_d16_flat/disk: Collecting 100 samples in estimated 251.76 s (1000 iterations)
+Benchmarking 100k_d16_flat/disk: Analyzing
+100k_d16_flat/disk      time:   [252.94 ms 253.78 ms 254.92 ms]
+Found 8 outliers among 100 measurements (8.00%)
+  1 (1.00%) high mild
+  7 (7.00%) high severe
+mean   [252.94 ms 254.92 ms] std. dev.      [1.9147 ms 7.8929 ms]
+median [252.69 ms 252.78 ms] med. abs. dev. [153.76 µs 277.00 µs]
+
+Benchmarking 100k_d18_flat/lin
+Benchmarking 100k_d18_flat/lin: Warming up for 10.000 s
+Benchmarking 100k_d18_flat/lin: Collecting 100 samples in estimated 256.97 s (300 iterations)
+Benchmarking 100k_d18_flat/lin: Analyzing
+100k_d18_flat/lin       time:   [834.10 ms 835.24 ms 836.80 ms]
+Found 4 outliers among 100 measurements (4.00%)
+  1 (1.00%) high mild
+  3 (3.00%) high severe
+mean   [834.10 ms 836.80 ms] std. dev.      [1.8726 ms 10.753 ms]
+median [833.88 ms 834.50 ms] med. abs. dev. [1.4513 ms 2.7972 ms]
+Benchmarking 100k_d18_flat/lin_par
+Benchmarking 100k_d18_flat/lin_par: Warming up for 10.000 s
+Benchmarking 100k_d18_flat/lin_par: Collecting 100 samples in estimated 243.86 s (1300 iterations)
+Benchmarking 100k_d18_flat/lin_par: Analyzing
+100k_d18_flat/lin_par   time:   [189.79 ms 190.28 ms 190.73 ms]
+Found 30 outliers among 100 measurements (30.00%)
+  15 (15.00%) low severe
+  1 (1.00%) low mild
+  8 (8.00%) high mild
+  6 (6.00%) high severe
+mean   [189.79 ms 190.73 ms] std. dev.      [1.8915 ms 2.7970 ms]
+median [191.01 ms 191.11 ms] med. abs. dev. [146.88 µs 335.28 µs]
+Benchmarking 100k_d18_flat/seq
+Benchmarking 100k_d18_flat/seq: Warming up for 10.000 s
+Benchmarking 100k_d18_flat/seq: Collecting 100 samples in estimated 250.75 s (300 iterations)
+Benchmarking 100k_d18_flat/seq: Analyzing
+100k_d18_flat/seq       time:   [836.65 ms 836.97 ms 837.34 ms]
+Found 7 outliers among 100 measurements (7.00%)
+  3 (3.00%) high mild
+  4 (4.00%) high severe
+mean   [836.65 ms 837.34 ms] std. dev.      [1.1859 ms 2.2554 ms]
+median [836.15 ms 836.61 ms] med. abs. dev. [490.43 µs 1.0497 ms]
+Benchmarking 100k_d18_flat/par
+Benchmarking 100k_d18_flat/par: Warming up for 10.000 s
+Benchmarking 100k_d18_flat/par: Collecting 100 samples in estimated 247.58 s (1300 iterations)
+Benchmarking 100k_d18_flat/par: Analyzing
+100k_d18_flat/par       time:   [199.18 ms 199.96 ms 200.66 ms]
+Found 14 outliers among 100 measurements (14.00%)
+  14 (14.00%) low severe
+mean   [199.18 ms 200.66 ms] std. dev.      [2.8570 ms 4.4709 ms]
+median [201.37 ms 201.48 ms] med. abs. dev. [150.42 µs 250.22 µs]
+Benchmarking 100k_d18_flat/cull_pop/0.95
+Benchmarking 100k_d18_flat/cull_pop/0.95: Warming up for 10.000 s
+Benchmarking 100k_d18_flat/cull_pop/0.95: Collecting 100 samples in estimated 257.71 s (1300 iterations)
+Benchmarking 100k_d18_flat/cull_pop/0.95: Analyzing
+100k_d18_flat/cull_pop/0.95
+                        time:   [198.92 ms 198.95 ms 198.98 ms]
+mean   [198.92 ms 198.98 ms] std. dev.      [128.59 µs 164.03 µs]
+median [198.90 ms 198.98 ms] med. abs. dev. [115.74 µs 189.09 µs]
+Benchmarking 100k_d18_flat/cull_sim/0.95
+Benchmarking 100k_d18_flat/cull_sim/0.95: Warming up for 10.000 s
+Benchmarking 100k_d18_flat/cull_sim/0.95: Collecting 100 samples in estimated 251.87 s (1300 iterations)
+Benchmarking 100k_d18_flat/cull_sim/0.95: Analyzing
+100k_d18_flat/cull_sim/0.95
+                        time:   [198.53 ms 198.57 ms 198.60 ms]
+mean   [198.53 ms 198.60 ms] std. dev.      [157.29 µs 201.97 µs]
+median [198.53 ms 198.63 ms] med. abs. dev. [145.44 µs 223.71 µs]
+Benchmarking 100k_d18_flat/cull_all/0.95
+Benchmarking 100k_d18_flat/cull_all/0.95: Warming up for 10.000 s
+Benchmarking 100k_d18_flat/cull_all/0.95: Collecting 100 samples in estimated 252.58 s (1300 iterations)
+Benchmarking 100k_d18_flat/cull_all/0.95: Analyzing
+100k_d18_flat/cull_all/0.95
+                        time:   [198.91 ms 199.99 ms 201.24 ms]
+Found 15 outliers among 100 measurements (15.00%)
+  15 (15.00%) high severe
+mean   [198.91 ms 201.24 ms] std. dev.      [3.9417 ms 7.6142 ms]
+median [197.81 ms 197.93 ms] med. abs. dev. [174.11 µs 320.97 µs]
+Benchmarking 100k_d18_flat/cull_pop/0.9
+Benchmarking 100k_d18_flat/cull_pop/0.9: Warming up for 10.000 s
+Benchmarking 100k_d18_flat/cull_pop/0.9: Collecting 100 samples in estimated 252.41 s (1300 iterations)
+Benchmarking 100k_d18_flat/cull_pop/0.9: Analyzing
+100k_d18_flat/cull_pop/0.9
+                        time:   [194.94 ms 195.00 ms 195.06 ms]
+Found 6 outliers among 100 measurements (6.00%)
+  6 (6.00%) high mild
+mean   [194.94 ms 195.06 ms] std. dev.      [258.98 µs 358.12 µs]
+median [194.89 ms 195.00 ms] med. abs. dev. [182.07 µs 304.69 µs]
+Benchmarking 100k_d18_flat/cull_sim/0.9
+Benchmarking 100k_d18_flat/cull_sim/0.9: Warming up for 10.000 s
+Benchmarking 100k_d18_flat/cull_sim/0.9: Collecting 100 samples in estimated 246.66 s (1300 iterations)
+Benchmarking 100k_d18_flat/cull_sim/0.9: Analyzing
+100k_d18_flat/cull_sim/0.9
+                        time:   [193.36 ms 193.39 ms 193.42 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) low mild
+mean   [193.36 ms 193.42 ms] std. dev.      [130.65 µs 171.87 µs]
+median [193.37 ms 193.43 ms] med. abs. dev. [104.52 µs 180.46 µs]
+Benchmarking 100k_d18_flat/cull_all/0.9
+Benchmarking 100k_d18_flat/cull_all/0.9: Warming up for 10.000 s
+Benchmarking 100k_d18_flat/cull_all/0.9: Collecting 100 samples in estimated 247.82 s (1300 iterations)
+Benchmarking 100k_d18_flat/cull_all/0.9: Analyzing
+100k_d18_flat/cull_all/0.9
+                        time:   [194.09 ms 194.13 ms 194.16 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+mean   [194.09 ms 194.16 ms] std. dev.      [155.43 µs 206.93 µs]
+median [194.07 ms 194.19 ms] med. abs. dev. [146.83 µs 218.45 µs]
+Benchmarking 100k_d18_flat/cull_pop/0.85
+Benchmarking 100k_d18_flat/cull_pop/0.85: Warming up for 10.000 s
+Benchmarking 100k_d18_flat/cull_pop/0.85: Collecting 100 samples in estimated 251.93 s (1300 iterations)
+Benchmarking 100k_d18_flat/cull_pop/0.85: Analyzing
+100k_d18_flat/cull_pop/0.85
+                        time:   [195.65 ms 195.69 ms 195.72 ms]
+mean   [195.65 ms 195.72 ms] std. dev.      [147.21 µs 191.89 µs]
+median [195.64 ms 195.73 ms] med. abs. dev. [131.24 µs 205.23 µs]
+Benchmarking 100k_d18_flat/cull_sim/0.85
+Benchmarking 100k_d18_flat/cull_sim/0.85: Warming up for 10.000 s
+Benchmarking 100k_d18_flat/cull_sim/0.85: Collecting 100 samples in estimated 248.36 s (1300 iterations)
+Benchmarking 100k_d18_flat/cull_sim/0.85: Analyzing
+100k_d18_flat/cull_sim/0.85
+                        time:   [195.35 ms 195.39 ms 195.43 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+mean   [195.35 ms 195.43 ms] std. dev.      [177.99 µs 232.80 µs]
+median [195.33 ms 195.42 ms] med. abs. dev. [143.49 µs 251.41 µs]
+Benchmarking 100k_d18_flat/cull_all/0.85
+Benchmarking 100k_d18_flat/cull_all/0.85: Warming up for 10.000 s
+Benchmarking 100k_d18_flat/cull_all/0.85: Collecting 100 samples in estimated 250.00 s (1300 iterations)
+Benchmarking 100k_d18_flat/cull_all/0.85: Analyzing
+100k_d18_flat/cull_all/0.85
+                        time:   [194.99 ms 195.04 ms 195.10 ms]
+Found 4 outliers among 100 measurements (4.00%)
+  4 (4.00%) high severe
+mean   [194.99 ms 195.10 ms] std. dev.      [188.66 µs 384.59 µs]
+median [194.94 ms 195.05 ms] med. abs. dev. [138.33 µs 213.91 µs]
+Benchmarking 100k_d18_flat/cull_pop/0.8
+Benchmarking 100k_d18_flat/cull_pop/0.8: Warming up for 10.000 s
+Benchmarking 100k_d18_flat/cull_pop/0.8: Collecting 100 samples in estimated 252.44 s (1300 iterations)
+Benchmarking 100k_d18_flat/cull_pop/0.8: Analyzing
+100k_d18_flat/cull_pop/0.8
+                        time:   [197.22 ms 198.32 ms 199.58 ms]
+Found 15 outliers among 100 measurements (15.00%)
+  15 (15.00%) high severe
+mean   [197.22 ms 199.58 ms] std. dev.      [3.9541 ms 7.7428 ms]
+median [196.19 ms 196.39 ms] med. abs. dev. [338.37 µs 767.87 µs]
+Benchmarking 100k_d18_flat/cull_sim/0.8
+Benchmarking 100k_d18_flat/cull_sim/0.8: Warming up for 10.000 s
+Benchmarking 100k_d18_flat/cull_sim/0.8: Collecting 100 samples in estimated 249.31 s (1300 iterations)
+Benchmarking 100k_d18_flat/cull_sim/0.8: Analyzing
+100k_d18_flat/cull_sim/0.8
+                        time:   [195.76 ms 195.87 ms 196.05 ms]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) high mild
+  1 (1.00%) high severe
+mean   [195.76 ms 196.05 ms] std. dev.      [211.81 µs 1.3307 ms]
+median [195.75 ms 195.86 ms] med. abs. dev. [153.77 µs 269.29 µs]
+Benchmarking 100k_d18_flat/cull_all/0.8
+Benchmarking 100k_d18_flat/cull_all/0.8: Warming up for 10.000 s
+Benchmarking 100k_d18_flat/cull_all/0.8: Collecting 100 samples in estimated 250.84 s (1300 iterations)
+Benchmarking 100k_d18_flat/cull_all/0.8: Analyzing
+100k_d18_flat/cull_all/0.8
+                        time:   [195.24 ms 195.28 ms 195.31 ms]
+Found 5 outliers among 100 measurements (5.00%)
+  1 (1.00%) low mild
+  4 (4.00%) high mild
+mean   [195.24 ms 195.31 ms] std. dev.      [149.08 µs 205.89 µs]
+median [195.22 ms 195.28 ms] med. abs. dev. [111.69 µs 179.18 µs]
+Benchmarking 100k_d18_flat/disk
+Benchmarking 100k_d18_flat/disk: Warming up for 10.000 s
+Benchmarking 100k_d18_flat/disk: Collecting 100 samples in estimated 262.11 s (1000 iterations)
+Benchmarking 100k_d18_flat/disk: Analyzing
+100k_d18_flat/disk      time:   [263.96 ms 264.01 ms 264.06 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high severe
+mean   [263.96 ms 264.06 ms] std. dev.      [186.96 µs 384.41 µs]
+median [263.98 ms 264.06 ms] med. abs. dev. [147.90 µs 259.52 µs]
+
+Benchmarking 100k_d20_flat/lin
+Benchmarking 100k_d20_flat/lin: Warming up for 10.000 s
+Benchmarking 100k_d20_flat/lin: Collecting 100 samples in estimated 273.63 s (300 iterations)
+Benchmarking 100k_d20_flat/lin: Analyzing
+100k_d20_flat/lin       time:   [909.63 ms 911.07 ms 912.87 ms]
+Found 15 outliers among 100 measurements (15.00%)
+  3 (3.00%) high mild
+  12 (12.00%) high severe
+mean   [909.63 ms 912.87 ms] std. dev.      [2.8565 ms 12.019 ms]
+median [908.62 ms 909.02 ms] med. abs. dev. [632.02 µs 1.0927 ms]
+Benchmarking 100k_d20_flat/lin_par
+Benchmarking 100k_d20_flat/lin_par: Warming up for 10.000 s
+Benchmarking 100k_d20_flat/lin_par: Collecting 100 samples in estimated 243.51 s (1100 iterations)
+Benchmarking 100k_d20_flat/lin_par: Analyzing
+100k_d20_flat/lin_par   time:   [221.25 ms 221.63 ms 221.98 ms]
+Found 18 outliers among 100 measurements (18.00%)
+  16 (16.00%) low severe
+  2 (2.00%) high mild
+mean   [221.25 ms 221.98 ms] std. dev.      [1.4495 ms 2.1402 ms]
+median [222.36 ms 222.43 ms] med. abs. dev. [117.98 µs 214.06 µs]
+Benchmarking 100k_d20_flat/seq
+Benchmarking 100k_d20_flat/seq: Warming up for 10.000 s
+Benchmarking 100k_d20_flat/seq: Collecting 100 samples in estimated 259.58 s (300 iterations)
+Benchmarking 100k_d20_flat/seq: Analyzing
+100k_d20_flat/seq       time:   [866.57 ms 866.91 ms 867.30 ms]
+Found 10 outliers among 100 measurements (10.00%)
+  2 (2.00%) high mild
+  8 (8.00%) high severe
+mean   [866.57 ms 867.30 ms] std. dev.      [1.3845 ms 2.2578 ms]
+median [866.04 ms 866.40 ms] med. abs. dev. [487.49 µs 1.0043 ms]
+Benchmarking 100k_d20_flat/par
+Benchmarking 100k_d20_flat/par: Warming up for 10.000 s
+Benchmarking 100k_d20_flat/par: Collecting 100 samples in estimated 246.52 s (1200 iterations)
+Benchmarking 100k_d20_flat/par: Analyzing
+100k_d20_flat/par       time:   [215.77 ms 216.65 ms 217.43 ms]
+Found 13 outliers among 100 measurements (13.00%)
+  13 (13.00%) low severe
+mean   [215.77 ms 217.43 ms] std. dev.      [3.0876 ms 5.0689 ms]
+median [218.13 ms 218.25 ms] med. abs. dev. [161.33 µs 254.32 µs]
+Benchmarking 100k_d20_flat/cull_pop/0.95
+Benchmarking 100k_d20_flat/cull_pop/0.95: Warming up for 10.000 s
+Benchmarking 100k_d20_flat/cull_pop/0.95: Collecting 100 samples in estimated 260.63 s (1200 iterations)
+Benchmarking 100k_d20_flat/cull_pop/0.95: Analyzing
+100k_d20_flat/cull_pop/0.95
+                        time:   [218.31 ms 218.36 ms 218.41 ms]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) low mild
+  1 (1.00%) high mild
+mean   [218.31 ms 218.41 ms] std. dev.      [225.88 µs 300.98 µs]
+median [218.30 ms 218.42 ms] med. abs. dev. [161.41 µs 327.84 µs]
+Benchmarking 100k_d20_flat/cull_sim/0.95
+Benchmarking 100k_d20_flat/cull_sim/0.95: Warming up for 10.000 s
+Benchmarking 100k_d20_flat/cull_sim/0.95: Collecting 100 samples in estimated 250.08 s (1200 iterations)
+Benchmarking 100k_d20_flat/cull_sim/0.95: Analyzing
+100k_d20_flat/cull_sim/0.95
+                        time:   [212.62 ms 212.66 ms 212.71 ms]
+Found 3 outliers among 100 measurements (3.00%)
+  1 (1.00%) low mild
+  2 (2.00%) high mild
+mean   [212.62 ms 212.71 ms] std. dev.      [193.46 µs 261.46 µs]
+median [212.60 ms 212.70 ms] med. abs. dev. [143.11 µs 258.99 µs]
+Benchmarking 100k_d20_flat/cull_all/0.95
+Benchmarking 100k_d20_flat/cull_all/0.95: Warming up for 10.000 s
+Benchmarking 100k_d20_flat/cull_all/0.95: Collecting 100 samples in estimated 252.85 s (1200 iterations)
+Benchmarking 100k_d20_flat/cull_all/0.95: Analyzing
+100k_d20_flat/cull_all/0.95
+                        time:   [214.24 ms 214.28 ms 214.33 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) low mild
+mean   [214.24 ms 214.33 ms] std. dev.      [195.29 µs 255.11 µs]
+median [214.24 ms 214.33 ms] med. abs. dev. [170.40 µs 286.41 µs]
+Benchmarking 100k_d20_flat/cull_pop/0.9
+Benchmarking 100k_d20_flat/cull_pop/0.9: Warming up for 10.000 s
+Benchmarking 100k_d20_flat/cull_pop/0.9: Collecting 100 samples in estimated 254.57 s (1200 iterations)
+Benchmarking 100k_d20_flat/cull_pop/0.9: Analyzing
+100k_d20_flat/cull_pop/0.9
+                        time:   [214.06 ms 215.27 ms 216.67 ms]
+Found 21 outliers among 100 measurements (21.00%)
+  5 (5.00%) high mild
+  16 (16.00%) high severe
+mean   [214.06 ms 216.67 ms] std. dev.      [4.4938 ms 8.4389 ms]
+median [212.74 ms 212.87 ms] med. abs. dev. [187.51 µs 372.10 µs]
+Benchmarking 100k_d20_flat/cull_sim/0.9
+Benchmarking 100k_d20_flat/cull_sim/0.9: Warming up for 10.000 s
+Benchmarking 100k_d20_flat/cull_sim/0.9: Collecting 100 samples in estimated 246.71 s (1200 iterations)
+Benchmarking 100k_d20_flat/cull_sim/0.9: Analyzing
+100k_d20_flat/cull_sim/0.9
+                        time:   [209.45 ms 209.49 ms 209.52 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+mean   [209.45 ms 209.52 ms] std. dev.      [157.04 µs 209.66 µs]
+median [209.42 ms 209.53 ms] med. abs. dev. [155.75 µs 235.51 µs]
+Benchmarking 100k_d20_flat/cull_all/0.9
+Benchmarking 100k_d20_flat/cull_all/0.9: Warming up for 10.000 s
+Benchmarking 100k_d20_flat/cull_all/0.9: Collecting 100 samples in estimated 245.67 s (1200 iterations)
+Benchmarking 100k_d20_flat/cull_all/0.9: Analyzing
+100k_d20_flat/cull_all/0.9
+                        time:   [208.41 ms 208.43 ms 208.46 ms]
+mean   [208.41 ms 208.46 ms] std. dev.      [111.83 µs 145.91 µs]
+median [208.41 ms 208.46 ms] med. abs. dev. [89.640 µs 174.77 µs]
+Benchmarking 100k_d20_flat/cull_pop/0.85
+Benchmarking 100k_d20_flat/cull_pop/0.85: Warming up for 10.000 s
+Benchmarking 100k_d20_flat/cull_pop/0.85: Collecting 100 samples in estimated 251.40 s (1200 iterations)
+Benchmarking 100k_d20_flat/cull_pop/0.85: Analyzing
+100k_d20_flat/cull_pop/0.85
+                        time:   [209.94 ms 210.07 ms 210.21 ms]
+mean   [209.94 ms 210.21 ms] std. dev.      [616.19 µs 736.63 µs]
+median [209.64 ms 209.74 ms] med. abs. dev. [145.23 µs 405.50 µs]
+Benchmarking 100k_d20_flat/cull_sim/0.85
+Benchmarking 100k_d20_flat/cull_sim/0.85: Warming up for 10.000 s
+Benchmarking 100k_d20_flat/cull_sim/0.85: Collecting 100 samples in estimated 246.91 s (1200 iterations)
+Benchmarking 100k_d20_flat/cull_sim/0.85: Analyzing
+100k_d20_flat/cull_sim/0.85
+                        time:   [210.63 ms 211.25 ms 212.01 ms]
+Found 7 outliers among 100 measurements (7.00%)
+  1 (1.00%) high mild
+  6 (6.00%) high severe
+mean   [210.63 ms 212.01 ms] std. dev.      [1.6199 ms 5.0786 ms]
+median [210.11 ms 210.23 ms] med. abs. dev. [184.34 µs 411.65 µs]
+Benchmarking 100k_d20_flat/cull_all/0.85
+Benchmarking 100k_d20_flat/cull_all/0.85: Warming up for 10.000 s
+Benchmarking 100k_d20_flat/cull_all/0.85: Collecting 100 samples in estimated 248.55 s (1200 iterations)
+Benchmarking 100k_d20_flat/cull_all/0.85: Analyzing
+100k_d20_flat/cull_all/0.85
+                        time:   [209.33 ms 209.38 ms 209.43 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high severe
+mean   [209.33 ms 209.43 ms] std. dev.      [159.08 µs 327.02 µs]
+median [209.32 ms 209.41 ms] med. abs. dev. [140.80 µs 231.80 µs]
+Benchmarking 100k_d20_flat/cull_pop/0.8
+Benchmarking 100k_d20_flat/cull_pop/0.8: Warming up for 10.000 s
+Benchmarking 100k_d20_flat/cull_pop/0.8: Collecting 100 samples in estimated 251.87 s (1200 iterations)
+Benchmarking 100k_d20_flat/cull_pop/0.8: Analyzing
+100k_d20_flat/cull_pop/0.8
+                        time:   [212.49 ms 213.63 ms 214.95 ms]
+Found 16 outliers among 100 measurements (16.00%)
+  16 (16.00%) high severe
+mean   [212.49 ms 214.95 ms] std. dev.      [4.2422 ms 7.9937 ms]
+median [211.29 ms 211.37 ms] med. abs. dev. [165.52 µs 294.52 µs]
+Benchmarking 100k_d20_flat/cull_sim/0.8
+Benchmarking 100k_d20_flat/cull_sim/0.8: Warming up for 10.000 s
+Benchmarking 100k_d20_flat/cull_sim/0.8: Collecting 100 samples in estimated 245.03 s (1200 iterations)
+Benchmarking 100k_d20_flat/cull_sim/0.8: Analyzing
+100k_d20_flat/cull_sim/0.8
+                        time:   [208.78 ms 208.81 ms 208.85 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) low mild
+mean   [208.78 ms 208.85 ms] std. dev.      [163.74 µs 217.56 µs]
+median [208.76 ms 208.83 ms] med. abs. dev. [122.75 µs 236.42 µs]
+Benchmarking 100k_d20_flat/cull_all/0.8
+Benchmarking 100k_d20_flat/cull_all/0.8: Warming up for 10.000 s
+Benchmarking 100k_d20_flat/cull_all/0.8: Collecting 100 samples in estimated 244.37 s (1200 iterations)
+Benchmarking 100k_d20_flat/cull_all/0.8: Analyzing
+100k_d20_flat/cull_all/0.8
+                        time:   [207.03 ms 207.17 ms 207.31 ms]
+mean   [207.03 ms 207.31 ms] std. dev.      [673.35 µs 753.03 µs]
+median [206.65 ms 207.67 ms] med. abs. dev. [400.67 µs 1.0572 ms]
+Benchmarking 100k_d20_flat/disk
+Benchmarking 100k_d20_flat/disk: Warming up for 10.000 s
+Benchmarking 100k_d20_flat/disk: Collecting 100 samples in estimated 244.99 s (900 iterations)
+Benchmarking 100k_d20_flat/disk: Analyzing
+100k_d20_flat/disk      time:   [273.13 ms 273.25 ms 273.44 ms]
+Found 3 outliers among 100 measurements (3.00%)
+  3 (3.00%) high severe
+mean   [273.13 ms 273.44 ms] std. dev.      [264.63 µs 1.3185 ms]
+median [273.09 ms 273.24 ms] med. abs. dev. [228.29 µs 359.75 µs]
+
+Benchmarking 100k_d22_flat/lin
+Benchmarking 100k_d22_flat/lin: Warming up for 10.000 s
+Benchmarking 100k_d22_flat/lin: Collecting 100 samples in estimated 274.47 s (300 iterations)
+Benchmarking 100k_d22_flat/lin: Analyzing
+100k_d22_flat/lin       time:   [905.33 ms 905.43 ms 905.55 ms]
+Found 4 outliers among 100 measurements (4.00%)
+  4 (4.00%) high mild
+mean   [905.33 ms 905.55 ms] std. dev.      [451.69 µs 668.77 µs]
+median [905.21 ms 905.33 ms] med. abs. dev. [230.54 µs 590.95 µs]
+Benchmarking 100k_d22_flat/lin_par
+Benchmarking 100k_d22_flat/lin_par: Warming up for 10.000 s
+Benchmarking 100k_d22_flat/lin_par: Collecting 100 samples in estimated 260.39 s (1200 iterations)
+Benchmarking 100k_d22_flat/lin_par: Analyzing
+100k_d22_flat/lin_par   time:   [219.01 ms 219.35 ms 219.66 ms]
+Found 16 outliers among 100 measurements (16.00%)
+  16 (16.00%) low severe
+mean   [219.01 ms 219.66 ms] std. dev.      [1.3014 ms 1.9539 ms]
+median [219.97 ms 220.06 ms] med. abs. dev. [142.59 µs 234.31 µs]
+Benchmarking 100k_d22_flat/seq
+Benchmarking 100k_d22_flat/seq: Warming up for 10.000 s
+Benchmarking 100k_d22_flat/seq: Collecting 100 samples in estimated 324.28 s (300 iterations)
+Benchmarking 100k_d22_flat/seq: Analyzing
+100k_d22_flat/seq       time:   [1.0786 s 1.0790 s 1.0793 s]
+Found 14 outliers among 100 measurements (14.00%)
+  5 (5.00%) high mild
+  9 (9.00%) high severe
+mean   [1.0786 s 1.0793 s] std. dev.      [1.3373 ms 2.0428 ms]
+median [1.0781 s 1.0787 s] med. abs. dev. [600.44 µs 1.0671 ms]
+Benchmarking 100k_d22_flat/par
+Benchmarking 100k_d22_flat/par: Warming up for 10.000 s
+Benchmarking 100k_d22_flat/par: Collecting 100 samples in estimated 252.22 s (1200 iterations)
+Benchmarking 100k_d22_flat/par: Analyzing
+100k_d22_flat/par       time:   [221.40 ms 222.91 ms 224.54 ms]
+Found 26 outliers among 100 measurements (26.00%)
+  13 (13.00%) low severe
+  13 (13.00%) high severe
+mean   [221.40 ms 224.54 ms] std. dev.      [6.0678 ms 9.6551 ms]
+median [221.99 ms 222.21 ms] med. abs. dev. [290.68 µs 562.05 µs]
+Benchmarking 100k_d22_flat/cull_pop/0.95
+Benchmarking 100k_d22_flat/cull_pop/0.95: Warming up for 10.000 s
+Benchmarking 100k_d22_flat/cull_pop/0.95: Collecting 100 samples in estimated 261.59 s (1200 iterations)
+Benchmarking 100k_d22_flat/cull_pop/0.95: Analyzing
+100k_d22_flat/cull_pop/0.95
+                        time:   [220.32 ms 220.45 ms 220.62 ms]
+Found 7 outliers among 100 measurements (7.00%)
+  4 (4.00%) low severe
+  1 (1.00%) high mild
+  2 (2.00%) high severe
+mean   [220.32 ms 220.62 ms] std. dev.      [333.78 µs 1.1979 ms]
+median [220.35 ms 220.46 ms] med. abs. dev. [212.33 µs 349.51 µs]
+Benchmarking 100k_d22_flat/cull_sim/0.95
+Benchmarking 100k_d22_flat/cull_sim/0.95: Warming up for 10.000 s
+Benchmarking 100k_d22_flat/cull_sim/0.95: Collecting 100 samples in estimated 259.33 s (1200 iterations)
+Benchmarking 100k_d22_flat/cull_sim/0.95: Analyzing
+100k_d22_flat/cull_sim/0.95
+                        time:   [220.23 ms 220.28 ms 220.34 ms]
+Found 4 outliers among 100 measurements (4.00%)
+  1 (1.00%) low mild
+  1 (1.00%) high mild
+  2 (2.00%) high severe
+mean   [220.23 ms 220.34 ms] std. dev.      [188.40 µs 393.49 µs]
+median [220.18 ms 220.28 ms] med. abs. dev. [140.19 µs 251.31 µs]
+Benchmarking 100k_d22_flat/cull_all/0.95
+Benchmarking 100k_d22_flat/cull_all/0.95: Warming up for 10.000 s
+Benchmarking 100k_d22_flat/cull_all/0.95: Collecting 100 samples in estimated 259.73 s (1200 iterations)
+Benchmarking 100k_d22_flat/cull_all/0.95: Analyzing
+100k_d22_flat/cull_all/0.95
+                        time:   [220.63 ms 220.69 ms 220.75 ms]
+Found 5 outliers among 100 measurements (5.00%)
+  5 (5.00%) low mild
+mean   [220.63 ms 220.75 ms] std. dev.      [253.60 µs 345.08 µs]
+median [220.67 ms 220.79 ms] med. abs. dev. [180.98 µs 318.28 µs]
+Benchmarking 100k_d22_flat/cull_pop/0.9
+Benchmarking 100k_d22_flat/cull_pop/0.9: Warming up for 10.000 s
+Benchmarking 100k_d22_flat/cull_pop/0.9: Collecting 100 samples in estimated 240.65 s (1100 iterations)
+Benchmarking 100k_d22_flat/cull_pop/0.9: Analyzing
+100k_d22_flat/cull_pop/0.9
+                        time:   [220.41 ms 220.46 ms 220.50 ms]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) low mild
+mean   [220.41 ms 220.50 ms] std. dev.      [191.96 µs 262.96 µs]
+median [220.44 ms 220.51 ms] med. abs. dev. [145.27 µs 257.00 µs]
+Benchmarking 100k_d22_flat/cull_sim/0.9
+Benchmarking 100k_d22_flat/cull_sim/0.9: Warming up for 10.000 s
+Benchmarking 100k_d22_flat/cull_sim/0.9: Collecting 100 samples in estimated 259.11 s (1200 iterations)
+Benchmarking 100k_d22_flat/cull_sim/0.9: Analyzing
+100k_d22_flat/cull_sim/0.9
+                        time:   [220.30 ms 220.37 ms 220.46 ms]
+Found 4 outliers among 100 measurements (4.00%)
+  4 (4.00%) high severe
+mean   [220.30 ms 220.46 ms] std. dev.      [257.06 µs 557.48 µs]
+median [220.25 ms 220.35 ms] med. abs. dev. [144.30 µs 272.49 µs]
+Benchmarking 100k_d22_flat/cull_all/0.9
+Benchmarking 100k_d22_flat/cull_all/0.9: Warming up for 10.000 s
+Benchmarking 100k_d22_flat/cull_all/0.9: Collecting 100 samples in estimated 260.07 s (1200 iterations)
+Benchmarking 100k_d22_flat/cull_all/0.9: Analyzing
+100k_d22_flat/cull_all/0.9
+                        time:   [220.92 ms 222.17 ms 223.63 ms]
+Found 15 outliers among 100 measurements (15.00%)
+  15 (15.00%) high severe
+mean   [220.92 ms 223.63 ms] std. dev.      [4.6845 ms 8.7635 ms]
+median [219.70 ms 219.79 ms] med. abs. dev. [159.47 µs 324.49 µs]
+Benchmarking 100k_d22_flat/cull_pop/0.85
+Benchmarking 100k_d22_flat/cull_pop/0.85: Warming up for 10.000 s
+Benchmarking 100k_d22_flat/cull_pop/0.85: Collecting 100 samples in estimated 240.68 s (1100 iterations)
+Benchmarking 100k_d22_flat/cull_pop/0.85: Analyzing
+100k_d22_flat/cull_pop/0.85
+                        time:   [220.61 ms 220.65 ms 220.70 ms]
+mean   [220.61 ms 220.70 ms] std. dev.      [189.22 µs 247.05 µs]
+median [220.58 ms 220.69 ms] med. abs. dev. [177.70 µs 278.89 µs]
+Benchmarking 100k_d22_flat/cull_sim/0.85
+Benchmarking 100k_d22_flat/cull_sim/0.85: Warming up for 10.000 s
+Benchmarking 100k_d22_flat/cull_sim/0.85: Collecting 100 samples in estimated 240.31 s (1100 iterations)
+Benchmarking 100k_d22_flat/cull_sim/0.85: Analyzing
+100k_d22_flat/cull_sim/0.85
+                        time:   [222.53 ms 222.58 ms 222.62 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+mean   [222.53 ms 222.62 ms] std. dev.      [205.79 µs 271.72 µs]
+median [222.53 ms 222.64 ms] med. abs. dev. [175.61 µs 305.21 µs]
+Benchmarking 100k_d22_flat/cull_all/0.85
+Benchmarking 100k_d22_flat/cull_all/0.85: Warming up for 10.000 s
+Benchmarking 100k_d22_flat/cull_all/0.85: Collecting 100 samples in estimated 240.29 s (1100 iterations)
+Benchmarking 100k_d22_flat/cull_all/0.85: Analyzing
+100k_d22_flat/cull_all/0.85
+                        time:   [222.59 ms 222.65 ms 222.72 ms]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) low mild
+mean   [222.59 ms 222.72 ms] std. dev.      [289.14 µs 374.11 µs]
+median [222.56 ms 222.74 ms] med. abs. dev. [251.67 µs 420.48 µs]
+Benchmarking 100k_d22_flat/cull_pop/0.8
+Benchmarking 100k_d22_flat/cull_pop/0.8: Warming up for 10.000 s
+Benchmarking 100k_d22_flat/cull_pop/0.8: Collecting 100 samples in estimated 241.17 s (1100 iterations)
+Benchmarking 100k_d22_flat/cull_pop/0.8: Analyzing
+100k_d22_flat/cull_pop/0.8
+                        time:   [221.15 ms 221.19 ms 221.23 ms]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) low mild
+  1 (1.00%) high mild
+mean   [221.15 ms 221.23 ms] std. dev.      [154.95 µs 202.88 µs]
+median [221.15 ms 221.25 ms] med. abs. dev. [141.66 µs 221.06 µs]
+Benchmarking 100k_d22_flat/cull_sim/0.8
+Benchmarking 100k_d22_flat/cull_sim/0.8: Warming up for 10.000 s
+Benchmarking 100k_d22_flat/cull_sim/0.8: Collecting 100 samples in estimated 257.28 s (1200 iterations)
+Benchmarking 100k_d22_flat/cull_sim/0.8: Analyzing
+100k_d22_flat/cull_sim/0.8
+                        time:   [217.88 ms 217.92 ms 217.95 ms]
+mean   [217.88 ms 217.95 ms] std. dev.      [162.09 µs 211.21 µs]
+median [217.88 ms 217.96 ms] med. abs. dev. [137.04 µs 221.00 µs]
+Benchmarking 100k_d22_flat/cull_all/0.8
+Benchmarking 100k_d22_flat/cull_all/0.8: Warming up for 10.000 s
+Benchmarking 100k_d22_flat/cull_all/0.8: Collecting 100 samples in estimated 259.74 s (1200 iterations)
+Benchmarking 100k_d22_flat/cull_all/0.8: Analyzing
+100k_d22_flat/cull_all/0.8
+                        time:   [219.61 ms 219.65 ms 219.70 ms]
+Found 3 outliers among 100 measurements (3.00%)
+  2 (2.00%) low mild
+  1 (1.00%) high mild
+mean   [219.61 ms 219.70 ms] std. dev.      [196.75 µs 264.60 µs]
+median [219.62 ms 219.70 ms] med. abs. dev. [162.03 µs 267.67 µs]
+Benchmarking 100k_d22_flat/disk
+Benchmarking 100k_d22_flat/disk: Warming up for 10.000 s
+Benchmarking 100k_d22_flat/disk: Collecting 100 samples in estimated 240.14 s (900 iterations)
+Benchmarking 100k_d22_flat/disk: Analyzing
+100k_d22_flat/disk      time:   [270.56 ms 273.12 ms 276.10 ms]
+Found 16 outliers among 100 measurements (16.00%)
+  16 (16.00%) high severe
+mean   [270.56 ms 276.10 ms] std. dev.      [9.2170 ms 18.099 ms]
+median [268.03 ms 268.16 ms] med. abs. dev. [189.58 µs 316.07 µs]
+
+Benchmarking 100k_d24_flat/lin
+Benchmarking 100k_d24_flat/lin: Warming up for 10.000 s
+Benchmarking 100k_d24_flat/lin: Collecting 100 samples in estimated 267.39 s (300 iterations)
+Benchmarking 100k_d24_flat/lin: Analyzing
+100k_d24_flat/lin       time:   [888.22 ms 888.45 ms 888.71 ms]
+Found 5 outliers among 100 measurements (5.00%)
+  1 (1.00%) high mild
+  4 (4.00%) high severe
+mean   [888.22 ms 888.71 ms] std. dev.      [718.32 µs 1.7009 ms]
+median [888.06 ms 888.38 ms] med. abs. dev. [480.23 µs 759.65 µs]
+Benchmarking 100k_d24_flat/lin_par
+Benchmarking 100k_d24_flat/lin_par: Warming up for 10.000 s
+Benchmarking 100k_d24_flat/lin_par: Collecting 100 samples in estimated 255.88 s (1100 iterations)
+Benchmarking 100k_d24_flat/lin_par: Analyzing
+100k_d24_flat/lin_par   time:   [233.74 ms 234.14 ms 234.51 ms]
+Found 14 outliers among 100 measurements (14.00%)
+  7 (7.00%) low severe
+  7 (7.00%) low mild
+mean   [233.74 ms 234.51 ms] std. dev.      [1.5804 ms 2.2829 ms]
+median [234.24 ms 234.57 ms] med. abs. dev. [400.35 µs 1.9216 ms]
+Benchmarking 100k_d24_flat/seq
+Benchmarking 100k_d24_flat/seq: Warming up for 10.000 s
+Benchmarking 100k_d24_flat/seq: Collecting 100 samples in estimated 294.01 s (300 iterations)
+Benchmarking 100k_d24_flat/seq: Analyzing
+100k_d24_flat/seq       time:   [981.33 ms 981.54 ms 981.76 ms]
+Found 9 outliers among 100 measurements (9.00%)
+  3 (3.00%) high mild
+  6 (6.00%) high severe
+mean   [981.33 ms 981.76 ms] std. dev.      [798.90 µs 1.3461 ms]
+median [981.09 ms 981.39 ms] med. abs. dev. [488.23 µs 785.03 µs]
+Benchmarking 100k_d24_flat/par
+Benchmarking 100k_d24_flat/par: Warming up for 10.000 s
+Benchmarking 100k_d24_flat/par: Collecting 100 samples in estimated 240.05 s (1000 iterations)
+Benchmarking 100k_d24_flat/par: Analyzing
+100k_d24_flat/par       time:   [250.81 ms 251.72 ms 252.55 ms]
+Found 15 outliers among 100 measurements (15.00%)
+  13 (13.00%) low severe
+  2 (2.00%) high severe
+mean   [250.81 ms 252.55 ms] std. dev.      [3.3678 ms 5.3387 ms]
+median [253.08 ms 253.37 ms] med. abs. dev. [495.67 µs 854.97 µs]
+Benchmarking 100k_d24_flat/cull_pop/0.95
+Benchmarking 100k_d24_flat/cull_pop/0.95: Warming up for 10.000 s
+Benchmarking 100k_d24_flat/cull_pop/0.95: Collecting 100 samples in estimated 246.88 s (1000 iterations)
+Benchmarking 100k_d24_flat/cull_pop/0.95: Analyzing
+100k_d24_flat/cull_pop/0.95
+                        time:   [247.55 ms 247.62 ms 247.69 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) low mild
+mean   [247.55 ms 247.69 ms] std. dev.      [302.60 µs 412.42 µs]
+median [247.54 ms 247.68 ms] med. abs. dev. [247.55 µs 422.06 µs]
+Benchmarking 100k_d24_flat/cull_sim/0.95
+Benchmarking 100k_d24_flat/cull_sim/0.95: Warming up for 10.000 s
+Benchmarking 100k_d24_flat/cull_sim/0.95: Collecting 100 samples in estimated 243.40 s (1000 iterations)
+Benchmarking 100k_d24_flat/cull_sim/0.95: Analyzing
+100k_d24_flat/cull_sim/0.95
+                        time:   [249.14 ms 249.60 ms 250.19 ms]
+Found 3 outliers among 100 measurements (3.00%)
+  3 (3.00%) high severe
+mean   [249.14 ms 250.19 ms] std. dev.      [821.36 µs 4.0550 ms]
+median [248.93 ms 249.53 ms] med. abs. dev. [677.45 µs 1.0735 ms]
+Benchmarking 100k_d24_flat/cull_all/0.95
+Benchmarking 100k_d24_flat/cull_all/0.95: Warming up for 10.000 s
+Benchmarking 100k_d24_flat/cull_all/0.95: Collecting 100 samples in estimated 264.41 s (1000 iterations)
+Benchmarking 100k_d24_flat/cull_all/0.95: Analyzing
+100k_d24_flat/cull_all/0.95
+                        time:   [244.68 ms 245.41 ms 246.35 ms]
+Found 5 outliers among 100 measurements (5.00%)
+  1 (1.00%) high mild
+  4 (4.00%) high severe
+mean   [244.68 ms 246.35 ms] std. dev.      [659.16 µs 6.4305 ms]
+median [244.57 ms 244.72 ms] med. abs. dev. [251.12 µs 416.22 µs]
+Benchmarking 100k_d24_flat/cull_pop/0.9
+Benchmarking 100k_d24_flat/cull_pop/0.9: Warming up for 10.000 s
+Benchmarking 100k_d24_flat/cull_pop/0.9: Collecting 100 samples in estimated 259.00 s (1100 iterations)
+Benchmarking 100k_d24_flat/cull_pop/0.9: Analyzing
+100k_d24_flat/cull_pop/0.9
+                        time:   [236.27 ms 236.33 ms 236.38 ms]
+mean   [236.27 ms 236.38 ms] std. dev.      [239.05 µs 300.23 µs]
+median [236.22 ms 236.38 ms] med. abs. dev. [221.64 µs 376.31 µs]
+Benchmarking 100k_d24_flat/cull_sim/0.9
+Benchmarking 100k_d24_flat/cull_sim/0.9: Warming up for 10.000 s
+Benchmarking 100k_d24_flat/cull_sim/0.9: Collecting 100 samples in estimated 259.46 s (1100 iterations)
+Benchmarking 100k_d24_flat/cull_sim/0.9: Analyzing
+100k_d24_flat/cull_sim/0.9
+                        time:   [238.63 ms 238.69 ms 238.74 ms]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) low mild
+  1 (1.00%) high mild
+mean   [238.63 ms 238.74 ms] std. dev.      [241.27 µs 320.75 µs]
+median [238.62 ms 238.75 ms] med. abs. dev. [205.90 µs 351.59 µs]
+Benchmarking 100k_d24_flat/cull_all/0.9
+Benchmarking 100k_d24_flat/cull_all/0.9: Warming up for 10.000 s
+Benchmarking 100k_d24_flat/cull_all/0.9: Collecting 100 samples in estimated 254.45 s (1100 iterations)
+Benchmarking 100k_d24_flat/cull_all/0.9: Analyzing
+100k_d24_flat/cull_all/0.9
+                        time:   [234.42 ms 234.71 ms 235.15 ms]
+Found 3 outliers among 100 measurements (3.00%)
+  1 (1.00%) high mild
+  2 (2.00%) high severe
+mean   [234.42 ms 235.15 ms] std. dev.      [206.17 µs 3.0891 ms]
+median [234.39 ms 234.49 ms] med. abs. dev. [172.34 µs 272.69 µs]
+Benchmarking 100k_d24_flat/cull_pop/0.85
+Benchmarking 100k_d24_flat/cull_pop/0.85: Warming up for 10.000 s
+Benchmarking 100k_d24_flat/cull_pop/0.85: Collecting 100 samples in estimated 262.96 s (1100 iterations)
+Benchmarking 100k_d24_flat/cull_pop/0.85: Analyzing
+100k_d24_flat/cull_pop/0.85
+                        time:   [240.32 ms 240.40 ms 240.49 ms]
+mean   [240.32 ms 240.49 ms] std. dev.      [374.20 µs 464.50 µs]
+median [240.30 ms 240.55 ms] med. abs. dev. [363.96 µs 572.38 µs]
+Benchmarking 100k_d24_flat/cull_sim/0.85
+Benchmarking 100k_d24_flat/cull_sim/0.85: Warming up for 10.000 s
+Benchmarking 100k_d24_flat/cull_sim/0.85: Collecting 100 samples in estimated 258.89 s (1100 iterations)
+Benchmarking 100k_d24_flat/cull_sim/0.85: Analyzing
+100k_d24_flat/cull_sim/0.85
+                        time:   [239.55 ms 239.59 ms 239.64 ms]
+mean   [239.55 ms 239.64 ms] std. dev.      [209.46 µs 269.36 µs]
+median [239.53 ms 239.65 ms] med. abs. dev. [184.58 µs 300.58 µs]
+Benchmarking 100k_d24_flat/cull_all/0.85
+Benchmarking 100k_d24_flat/cull_all/0.85: Warming up for 10.000 s
+Benchmarking 100k_d24_flat/cull_all/0.85: Collecting 100 samples in estimated 260.80 s (1100 iterations)
+Benchmarking 100k_d24_flat/cull_all/0.85: Analyzing
+100k_d24_flat/cull_all/0.85
+                        time:   [241.02 ms 242.36 ms 243.87 ms]
+Found 14 outliers among 100 measurements (14.00%)
+  2 (2.00%) high mild
+  12 (12.00%) high severe
+mean   [241.02 ms 243.87 ms] std. dev.      [5.0311 ms 9.1356 ms]
+median [239.45 ms 240.29 ms] med. abs. dev. [964.98 µs 1.7005 ms]
+Benchmarking 100k_d24_flat/cull_pop/0.8
+Benchmarking 100k_d24_flat/cull_pop/0.8: Warming up for 10.000 s
+Benchmarking 100k_d24_flat/cull_pop/0.8: Collecting 100 samples in estimated 261.19 s (1100 iterations)
+Benchmarking 100k_d24_flat/cull_pop/0.8: Analyzing
+100k_d24_flat/cull_pop/0.8
+                        time:   [238.18 ms 238.24 ms 238.30 ms]
+mean   [238.18 ms 238.30 ms] std. dev.      [275.31 µs 351.29 µs]
+median [238.10 ms 238.28 ms] med. abs. dev. [231.69 µs 389.56 µs]
+Benchmarking 100k_d24_flat/cull_sim/0.8
+Benchmarking 100k_d24_flat/cull_sim/0.8: Warming up for 10.000 s
+Benchmarking 100k_d24_flat/cull_sim/0.8: Collecting 100 samples in estimated 259.56 s (1100 iterations)
+Benchmarking 100k_d24_flat/cull_sim/0.8: Analyzing
+100k_d24_flat/cull_sim/0.8
+                        time:   [240.21 ms 240.25 ms 240.30 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) low mild
+mean   [240.21 ms 240.30 ms] std. dev.      [196.47 µs 257.20 µs]
+median [240.20 ms 240.31 ms] med. abs. dev. [175.49 µs 280.30 µs]
+Benchmarking 100k_d24_flat/cull_all/0.8
+Benchmarking 100k_d24_flat/cull_all/0.8: Warming up for 10.000 s
+Benchmarking 100k_d24_flat/cull_all/0.8: Collecting 100 samples in estimated 261.05 s (1100 iterations)
+Benchmarking 100k_d24_flat/cull_all/0.8: Analyzing
+100k_d24_flat/cull_all/0.8
+                        time:   [239.87 ms 240.00 ms 240.13 ms]
+mean   [239.87 ms 240.13 ms] std. dev.      [588.01 µs 726.07 µs]
+median [239.67 ms 239.99 ms] med. abs. dev. [435.26 µs 877.75 µs]
+Benchmarking 100k_d24_flat/disk
+Benchmarking 100k_d24_flat/disk: Warming up for 10.000 s
+Benchmarking 100k_d24_flat/disk: Collecting 100 samples in estimated 263.94 s (900 iterations)
+Benchmarking 100k_d24_flat/disk: Analyzing
+100k_d24_flat/disk      time:   [294.85 ms 294.90 ms 294.95 ms]
+mean   [294.85 ms 294.95 ms] std. dev.      [214.83 µs 282.89 µs]
+median [294.84 ms 294.98 ms] med. abs. dev. [196.06 µs 300.11 µs]
+
+Benchmarking 100k_d26_flat/lin
+Benchmarking 100k_d26_flat/lin: Warming up for 10.000 s
+Benchmarking 100k_d26_flat/lin: Collecting 100 samples in estimated 278.74 s (300 iterations)
+Benchmarking 100k_d26_flat/lin: Analyzing
+100k_d26_flat/lin       time:   [926.53 ms 926.61 ms 926.69 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+mean   [926.53 ms 926.69 ms] std. dev.      [340.11 µs 470.28 µs]
+median [926.42 ms 926.59 ms] med. abs. dev. [279.55 µs 500.08 µs]
+Benchmarking 100k_d26_flat/lin_par
+Benchmarking 100k_d26_flat/lin_par: Warming up for 10.000 s
+Benchmarking 100k_d26_flat/lin_par: Collecting 100 samples in estimated 247.44 s (1100 iterations)
+Benchmarking 100k_d26_flat/lin_par: Analyzing
+100k_d26_flat/lin_par   time:   [227.53 ms 229.05 ms 230.77 ms]
+Found 31 outliers among 100 measurements (31.00%)
+  16 (16.00%) low severe
+  2 (2.00%) high mild
+  13 (13.00%) high severe
+mean   [227.53 ms 230.77 ms] std. dev.      [5.8097 ms 10.326 ms]
+median [226.93 ms 227.25 ms] med. abs. dev. [477.00 µs 817.36 µs]
+Benchmarking 100k_d26_flat/seq
+Benchmarking 100k_d26_flat/seq: Warming up for 10.000 s
+Benchmarking 100k_d26_flat/seq: Collecting 100 samples in estimated 313.91 s (300 iterations)
+Benchmarking 100k_d26_flat/seq: Analyzing
+100k_d26_flat/seq       time:   [1.0434 s 1.0441 s 1.0449 s]
+Found 11 outliers among 100 measurements (11.00%)
+  1 (1.00%) high mild
+  10 (10.00%) high severe
+mean   [1.0434 s 1.0449 s] std. dev.      [1.7581 ms 5.6439 ms]
+median [1.0428 s 1.0432 s] med. abs. dev. [811.74 µs 1.3178 ms]
+Benchmarking 100k_d26_flat/par
+Benchmarking 100k_d26_flat/par: Warming up for 10.000 s
+Benchmarking 100k_d26_flat/par: Collecting 100 samples in estimated 251.31 s (1100 iterations)
+Benchmarking 100k_d26_flat/par: Analyzing
+100k_d26_flat/par       time:   [240.42 ms 241.33 ms 242.14 ms]
+Found 12 outliers among 100 measurements (12.00%)
+  12 (12.00%) low severe
+mean   [240.42 ms 242.14 ms] std. dev.      [3.1523 ms 5.3416 ms]
+median [242.40 ms 243.07 ms] med. abs. dev. [591.43 µs 1.2292 ms]
+Benchmarking 100k_d26_flat/cull_pop/0.95
+Benchmarking 100k_d26_flat/cull_pop/0.95: Warming up for 10.000 s
+Benchmarking 100k_d26_flat/cull_pop/0.95: Collecting 100 samples in estimated 260.34 s (1100 iterations)
+Benchmarking 100k_d26_flat/cull_pop/0.95: Analyzing
+100k_d26_flat/cull_pop/0.95
+                        time:   [237.99 ms 238.03 ms 238.07 ms]
+mean   [237.99 ms 238.07 ms] std. dev.      [171.76 µs 216.59 µs]
+median [237.99 ms 238.09 ms] med. abs. dev. [155.91 µs 255.78 µs]
+Benchmarking 100k_d26_flat/cull_sim/0.95
+Benchmarking 100k_d26_flat/cull_sim/0.95: Warming up for 10.000 s
+Benchmarking 100k_d26_flat/cull_sim/0.95: Collecting 100 samples in estimated 254.78 s (1100 iterations)
+Benchmarking 100k_d26_flat/cull_sim/0.95: Analyzing
+100k_d26_flat/cull_sim/0.95
+                        time:   [236.06 ms 236.10 ms 236.14 ms]
+Found 4 outliers among 100 measurements (4.00%)
+  2 (2.00%) low mild
+  2 (2.00%) high mild
+mean   [236.06 ms 236.14 ms] std. dev.      [171.30 µs 239.09 µs]
+median [236.08 ms 236.15 ms] med. abs. dev. [129.82 µs 222.25 µs]
+Benchmarking 100k_d26_flat/cull_all/0.95
+Benchmarking 100k_d26_flat/cull_all/0.95: Warming up for 10.000 s
+Benchmarking 100k_d26_flat/cull_all/0.95: Collecting 100 samples in estimated 255.38 s (1100 iterations)
+Benchmarking 100k_d26_flat/cull_all/0.95: Analyzing
+100k_d26_flat/cull_all/0.95
+                        time:   [236.04 ms 236.16 ms 236.27 ms]
+mean   [236.04 ms 236.27 ms] std. dev.      [543.75 µs 625.41 µs]
+median [235.83 ms 236.53 ms] med. abs. dev. [476.59 µs 920.97 µs]
+Benchmarking 100k_d26_flat/cull_pop/0.9
+Benchmarking 100k_d26_flat/cull_pop/0.9: Warming up for 10.000 s
+Benchmarking 100k_d26_flat/cull_pop/0.9: Collecting 100 samples in estimated 257.11 s (1100 iterations)
+Benchmarking 100k_d26_flat/cull_pop/0.9: Analyzing
+100k_d26_flat/cull_pop/0.9
+                        time:   [234.64 ms 234.92 ms 235.37 ms]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high severe
+mean   [234.64 ms 235.37 ms] std. dev.      [234.08 µs 3.2476 ms]
+median [234.61 ms 234.74 ms] med. abs. dev. [185.65 µs 333.00 µs]
+Benchmarking 100k_d26_flat/cull_sim/0.9
+Benchmarking 100k_d26_flat/cull_sim/0.9: Warming up for 10.000 s
+Benchmarking 100k_d26_flat/cull_sim/0.9: Collecting 100 samples in estimated 255.73 s (1100 iterations)
+Benchmarking 100k_d26_flat/cull_sim/0.9: Analyzing
+100k_d26_flat/cull_sim/0.9
+                        time:   [238.31 ms 239.78 ms 241.45 ms]
+Found 19 outliers among 100 measurements (19.00%)
+  1 (1.00%) low mild
+  18 (18.00%) high severe
+mean   [238.31 ms 241.45 ms] std. dev.      [5.3675 ms 10.097 ms]
+median [236.81 ms 236.89 ms] med. abs. dev. [141.06 µs 251.65 µs]
+Benchmarking 100k_d26_flat/cull_all/0.9
+Benchmarking 100k_d26_flat/cull_all/0.9: Warming up for 10.000 s
+Benchmarking 100k_d26_flat/cull_all/0.9: Collecting 100 samples in estimated 258.20 s (1100 iterations)
+Benchmarking 100k_d26_flat/cull_all/0.9: Analyzing
+100k_d26_flat/cull_all/0.9
+                        time:   [237.22 ms 237.26 ms 237.30 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) low mild
+mean   [237.22 ms 237.30 ms] std. dev.      [180.44 µs 244.67 µs]
+median [237.23 ms 237.31 ms] med. abs. dev. [149.40 µs 255.68 µs]
+Benchmarking 100k_d26_flat/cull_pop/0.85
+Benchmarking 100k_d26_flat/cull_pop/0.85: Warming up for 10.000 s
+Benchmarking 100k_d26_flat/cull_pop/0.85: Collecting 100 samples in estimated 259.43 s (1100 iterations)
+Benchmarking 100k_d26_flat/cull_pop/0.85: Analyzing
+100k_d26_flat/cull_pop/0.85
+                        time:   [237.07 ms 237.11 ms 237.15 ms]
+Found 3 outliers among 100 measurements (3.00%)
+  3 (3.00%) high mild
+mean   [237.07 ms 237.15 ms] std. dev.      [161.65 µs 228.34 µs]
+median [237.07 ms 237.12 ms] med. abs. dev. [124.72 µs 229.12 µs]
+Benchmarking 100k_d26_flat/cull_sim/0.85
+Benchmarking 100k_d26_flat/cull_sim/0.85: Warming up for 10.000 s
+Benchmarking 100k_d26_flat/cull_sim/0.85: Collecting 100 samples in estimated 257.33 s (1100 iterations)
+Benchmarking 100k_d26_flat/cull_sim/0.85: Analyzing
+100k_d26_flat/cull_sim/0.85
+                        time:   [237.85 ms 237.89 ms 237.93 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+mean   [237.85 ms 237.93 ms] std. dev.      [154.65 µs 205.02 µs]
+median [237.85 ms 237.92 ms] med. abs. dev. [134.86 µs 213.22 µs]
+Benchmarking 100k_d26_flat/cull_all/0.85
+Benchmarking 100k_d26_flat/cull_all/0.85: Warming up for 10.000 s
+Benchmarking 100k_d26_flat/cull_all/0.85: Collecting 100 samples in estimated 257.22 s (1100 iterations)
+Benchmarking 100k_d26_flat/cull_all/0.85: Analyzing
+100k_d26_flat/cull_all/0.85
+                        time:   [236.88 ms 236.93 ms 236.99 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+mean   [236.88 ms 236.99 ms] std. dev.      [234.25 µs 335.15 µs]
+median [236.85 ms 236.96 ms] med. abs. dev. [176.64 µs 323.28 µs]
+Benchmarking 100k_d26_flat/cull_pop/0.8
+Benchmarking 100k_d26_flat/cull_pop/0.8: Warming up for 10.000 s
+Benchmarking 100k_d26_flat/cull_pop/0.8: Collecting 100 samples in estimated 260.33 s (1100 iterations)
+Benchmarking 100k_d26_flat/cull_pop/0.8: Analyzing
+100k_d26_flat/cull_pop/0.8
+                        time:   [236.82 ms 236.94 ms 237.08 ms]
+Found 4 outliers among 100 measurements (4.00%)
+  1 (1.00%) high mild
+  3 (3.00%) high severe
+mean   [236.82 ms 237.08 ms] std. dev.      [378.74 µs 890.08 µs]
+median [236.71 ms 236.85 ms] med. abs. dev. [217.15 µs 446.85 µs]
+Benchmarking 100k_d26_flat/cull_sim/0.8
+Benchmarking 100k_d26_flat/cull_sim/0.8: Warming up for 10.000 s
+Benchmarking 100k_d26_flat/cull_sim/0.8: Collecting 100 samples in estimated 254.39 s (1100 iterations)
+Benchmarking 100k_d26_flat/cull_sim/0.8: Analyzing
+100k_d26_flat/cull_sim/0.8
+                        time:   [236.89 ms 238.33 ms 240.00 ms]
+Found 17 outliers among 100 measurements (17.00%)
+  2 (2.00%) high mild
+  15 (15.00%) high severe
+mean   [236.89 ms 240.00 ms] std. dev.      [5.3901 ms 9.9994 ms]
+median [235.36 ms 235.62 ms] med. abs. dev. [314.66 µs 549.66 µs]
+Benchmarking 100k_d26_flat/cull_all/0.8
+Benchmarking 100k_d26_flat/cull_all/0.8: Warming up for 10.000 s
+Benchmarking 100k_d26_flat/cull_all/0.8: Collecting 100 samples in estimated 258.22 s (1100 iterations)
+Benchmarking 100k_d26_flat/cull_all/0.8: Analyzing
+100k_d26_flat/cull_all/0.8
+                        time:   [237.84 ms 237.92 ms 238.01 ms]
+Found 8 outliers among 100 measurements (8.00%)
+  8 (8.00%) high mild
+mean   [237.84 ms 238.01 ms] std. dev.      [348.28 µs 460.99 µs]
+median [237.74 ms 237.83 ms] med. abs. dev. [188.57 µs 356.86 µs]
+Benchmarking 100k_d26_flat/disk
+Benchmarking 100k_d26_flat/disk: Warming up for 10.000 s
+Benchmarking 100k_d26_flat/disk: Collecting 100 samples in estimated 253.15 s (900 iterations)
+Benchmarking 100k_d26_flat/disk: Analyzing
+100k_d26_flat/disk      time:   [282.43 ms 282.47 ms 282.50 ms]
+mean   [282.43 ms 282.50 ms] std. dev.      [152.85 µs 189.05 µs]
+median [282.41 ms 282.52 ms] med. abs. dev. [146.33 µs 243.26 µs]
+
+Benchmarking 100k_d28_flat/lin
+Benchmarking 100k_d28_flat/lin: Warming up for 10.000 s
+Benchmarking 100k_d28_flat/lin: Collecting 100 samples in estimated 289.68 s (300 iterations)
+Benchmarking 100k_d28_flat/lin: Analyzing
+100k_d28_flat/lin       time:   [962.06 ms 962.33 ms 962.61 ms]
+Found 9 outliers among 100 measurements (9.00%)
+  9 (9.00%) high mild
+mean   [962.06 ms 962.61 ms] std. dev.      [1.1724 ms 1.6305 ms]
+median [961.79 ms 962.31 ms] med. abs. dev. [759.18 µs 1.3515 ms]
+Benchmarking 100k_d28_flat/lin_par
+Benchmarking 100k_d28_flat/lin_par: Warming up for 10.000 s
+Benchmarking 100k_d28_flat/lin_par: Collecting 100 samples in estimated 247.75 s (1100 iterations)
+Benchmarking 100k_d28_flat/lin_par: Analyzing
+100k_d28_flat/lin_par   time:   [225.80 ms 226.16 ms 226.50 ms]
+Found 18 outliers among 100 measurements (18.00%)
+  17 (17.00%) low severe
+  1 (1.00%) high mild
+mean   [225.80 ms 226.50 ms] std. dev.      [1.4232 ms 2.0841 ms]
+median [226.89 ms 226.96 ms] med. abs. dev. [101.57 µs 183.19 µs]
+Benchmarking 100k_d28_flat/seq
+Benchmarking 100k_d28_flat/seq: Warming up for 10.000 s
+Benchmarking 100k_d28_flat/seq: Collecting 100 samples in estimated 322.11 s (300 iterations)
+Benchmarking 100k_d28_flat/seq: Analyzing
+100k_d28_flat/seq       time:   [1.0773 s 1.0774 s 1.0775 s]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+mean   [1.0773 s 1.0775 s] std. dev.      [470.89 µs 650.45 µs]
+median [1.0770 s 1.0773 s] med. abs. dev. [229.91 µs 640.79 µs]
+Benchmarking 100k_d28_flat/par
+Benchmarking 100k_d28_flat/par: Warming up for 10.000 s
+Benchmarking 100k_d28_flat/par: Collecting 100 samples in estimated 258.65 s (1100 iterations)
+Benchmarking 100k_d28_flat/par: Analyzing
+100k_d28_flat/par       time:   [246.42 ms 248.29 ms 250.36 ms]
+Found 28 outliers among 100 measurements (28.00%)
+  12 (12.00%) low severe
+  2 (2.00%) high mild
+  14 (14.00%) high severe
+mean   [246.42 ms 250.36 ms] std. dev.      [7.2897 ms 12.366 ms]
+median [246.25 ms 246.59 ms] med. abs. dev. [460.93 µs 903.96 µs]
+Benchmarking 100k_d28_flat/cull_pop/0.95
+Benchmarking 100k_d28_flat/cull_pop/0.95: Warming up for 10.000 s
+Benchmarking 100k_d28_flat/cull_pop/0.95: Collecting 100 samples in estimated 244.78 s (1000 iterations)
+Benchmarking 100k_d28_flat/cull_pop/0.95: Analyzing
+100k_d28_flat/cull_pop/0.95
+                        time:   [246.00 ms 246.07 ms 246.14 ms]
+mean   [246.00 ms 246.14 ms] std. dev.      [329.41 µs 403.27 µs]
+median [245.93 ms 246.17 ms] med. abs. dev. [317.28 µs 536.75 µs]
+Benchmarking 100k_d28_flat/cull_sim/0.95
+Benchmarking 100k_d28_flat/cull_sim/0.95: Warming up for 10.000 s
+Benchmarking 100k_d28_flat/cull_sim/0.95: Collecting 100 samples in estimated 263.66 s (1100 iterations)
+Benchmarking 100k_d28_flat/cull_sim/0.95: Analyzing
+100k_d28_flat/cull_sim/0.95
+                        time:   [242.70 ms 242.74 ms 242.78 ms]
+mean   [242.70 ms 242.78 ms] std. dev.      [178.72 µs 233.05 µs]
+median [242.65 ms 242.77 ms] med. abs. dev. [151.69 µs 268.54 µs]
+Benchmarking 100k_d28_flat/cull_all/0.95
+Benchmarking 100k_d28_flat/cull_all/0.95: Warming up for 10.000 s
+Benchmarking 100k_d28_flat/cull_all/0.95: Collecting 100 samples in estimated 242.28 s (1000 iterations)
+Benchmarking 100k_d28_flat/cull_all/0.95: Analyzing
+100k_d28_flat/cull_all/0.95
+                        time:   [244.96 ms 245.00 ms 245.04 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+mean   [244.96 ms 245.04 ms] std. dev.      [174.34 µs 253.64 µs]
+median [244.93 ms 245.07 ms] med. abs. dev. [165.98 µs 253.44 µs]
+Benchmarking 100k_d28_flat/cull_pop/0.9
+Benchmarking 100k_d28_flat/cull_pop/0.9: Warming up for 10.000 s
+Benchmarking 100k_d28_flat/cull_pop/0.9: Collecting 100 samples in estimated 245.21 s (1000 iterations)
+Benchmarking 100k_d28_flat/cull_pop/0.9: Analyzing
+100k_d28_flat/cull_pop/0.9
+                        time:   [247.57 ms 247.75 ms 247.97 ms]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high severe
+mean   [247.57 ms 247.97 ms] std. dev.      [519.30 µs 1.5286 ms]
+median [247.35 ms 247.76 ms] med. abs. dev. [418.46 µs 793.43 µs]
+Benchmarking 100k_d28_flat/cull_sim/0.9
+Benchmarking 100k_d28_flat/cull_sim/0.9: Warming up for 10.000 s
+Benchmarking 100k_d28_flat/cull_sim/0.9: Collecting 100 samples in estimated 263.90 s (1100 iterations)
+Benchmarking 100k_d28_flat/cull_sim/0.9: Analyzing
+100k_d28_flat/cull_sim/0.9
+                        time:   [242.90 ms 242.94 ms 242.99 ms]
+Found 3 outliers among 100 measurements (3.00%)
+  2 (2.00%) high mild
+  1 (1.00%) high severe
+mean   [242.90 ms 242.99 ms] std. dev.      [172.69 µs 259.66 µs]
+median [242.86 ms 242.95 ms] med. abs. dev. [130.52 µs 222.93 µs]
+Benchmarking 100k_d28_flat/cull_all/0.9
+Benchmarking 100k_d28_flat/cull_all/0.9: Warming up for 10.000 s
+Benchmarking 100k_d28_flat/cull_all/0.9: Collecting 100 samples in estimated 242.06 s (1000 iterations)
+Benchmarking 100k_d28_flat/cull_all/0.9: Analyzing
+100k_d28_flat/cull_all/0.9
+                        time:   [244.01 ms 244.10 ms 244.19 ms]
+mean   [244.01 ms 244.19 ms] std. dev.      [418.87 µs 517.82 µs]
+median [243.83 ms 244.01 ms] med. abs. dev. [234.11 µs 567.92 µs]
+Benchmarking 100k_d28_flat/cull_pop/0.85
+Benchmarking 100k_d28_flat/cull_pop/0.85: Warming up for 10.000 s
+Benchmarking 100k_d28_flat/cull_pop/0.85: Collecting 100 samples in estimated 245.84 s (1000 iterations)
+Benchmarking 100k_d28_flat/cull_pop/0.85: Analyzing
+100k_d28_flat/cull_pop/0.85
+                        time:   [248.80 ms 250.36 ms 252.11 ms]
+Found 17 outliers among 100 measurements (17.00%)
+  17 (17.00%) high severe
+mean   [248.80 ms 252.11 ms] std. dev.      [5.9331 ms 10.543 ms]
+median [247.05 ms 247.20 ms] med. abs. dev. [216.57 µs 405.60 µs]
+Benchmarking 100k_d28_flat/cull_sim/0.85
+Benchmarking 100k_d28_flat/cull_sim/0.85: Warming up for 10.000 s
+Benchmarking 100k_d28_flat/cull_sim/0.85: Collecting 100 samples in estimated 240.17 s (1000 iterations)
+Benchmarking 100k_d28_flat/cull_sim/0.85: Analyzing
+100k_d28_flat/cull_sim/0.85
+                        time:   [243.78 ms 243.83 ms 243.87 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+mean   [243.78 ms 243.87 ms] std. dev.      [205.25 µs 276.32 µs]
+median [243.75 ms 243.85 ms] med. abs. dev. [179.25 µs 294.10 µs]
+Benchmarking 100k_d28_flat/cull_all/0.85
+Benchmarking 100k_d28_flat/cull_all/0.85: Warming up for 10.000 s
+Benchmarking 100k_d28_flat/cull_all/0.85: Collecting 100 samples in estimated 241.87 s (1000 iterations)
+Benchmarking 100k_d28_flat/cull_all/0.85: Analyzing
+100k_d28_flat/cull_all/0.85
+                        time:   [244.70 ms 244.75 ms 244.80 ms]
+mean   [244.70 ms 244.80 ms] std. dev.      [224.14 µs 287.57 µs]
+median [244.69 ms 244.81 ms] med. abs. dev. [196.28 µs 328.11 µs]
+Benchmarking 100k_d28_flat/cull_pop/0.8
+Benchmarking 100k_d28_flat/cull_pop/0.8: Warming up for 10.000 s
+Benchmarking 100k_d28_flat/cull_pop/0.8: Collecting 100 samples in estimated 245.49 s (1000 iterations)
+Benchmarking 100k_d28_flat/cull_pop/0.8: Analyzing
+100k_d28_flat/cull_pop/0.8
+                        time:   [246.11 ms 246.15 ms 246.19 ms]
+mean   [246.11 ms 246.19 ms] std. dev.      [179.80 µs 231.87 µs]
+median [246.07 ms 246.15 ms] med. abs. dev. [139.24 µs 250.48 µs]
+Benchmarking 100k_d28_flat/cull_sim/0.8
+Benchmarking 100k_d28_flat/cull_sim/0.8: Warming up for 10.000 s
+Benchmarking 100k_d28_flat/cull_sim/0.8: Collecting 100 samples in estimated 241.44 s (1000 iterations)
+Benchmarking 100k_d28_flat/cull_sim/0.8: Analyzing
+100k_d28_flat/cull_sim/0.8
+                        time:   [245.31 ms 245.38 ms 245.45 ms]
+Found 7 outliers among 100 measurements (7.00%)
+  7 (7.00%) high mild
+mean   [245.31 ms 245.45 ms] std. dev.      [292.99 µs 410.88 µs]
+median [245.22 ms 245.36 ms] med. abs. dev. [198.29 µs 343.38 µs]
+Benchmarking 100k_d28_flat/cull_all/0.8
+Benchmarking 100k_d28_flat/cull_all/0.8: Warming up for 10.000 s
+Benchmarking 100k_d28_flat/cull_all/0.8: Collecting 100 samples in estimated 241.82 s (1000 iterations)
+Benchmarking 100k_d28_flat/cull_all/0.8: Analyzing
+100k_d28_flat/cull_all/0.8
+                        time:   [244.21 ms 244.29 ms 244.40 ms]
+Found 5 outliers among 100 measurements (5.00%)
+  2 (2.00%) high mild
+  3 (3.00%) high severe
+mean   [244.21 ms 244.40 ms] std. dev.      [260.39 µs 685.36 µs]
+median [244.17 ms 244.26 ms] med. abs. dev. [181.54 µs 331.09 µs]
+Benchmarking 100k_d28_flat/disk
+Benchmarking 100k_d28_flat/disk: Warming up for 10.000 s
+Benchmarking 100k_d28_flat/disk: Collecting 100 samples in estimated 260.24 s (900 iterations)
+Benchmarking 100k_d28_flat/disk: Analyzing
+100k_d28_flat/disk      time:   [289.69 ms 289.72 ms 289.74 ms]
+mean   [289.69 ms 289.74 ms] std. dev.      [114.61 µs 151.00 µs]
+median [289.69 ms 289.74 ms] med. abs. dev. [103.44 µs 167.40 µs]
+
+Benchmarking 100k_d30_flat/lin
+Benchmarking 100k_d30_flat/lin: Warming up for 10.000 s
+Benchmarking 100k_d30_flat/lin: Collecting 100 samples in estimated 299.51 s (300 iterations)
+Benchmarking 100k_d30_flat/lin: Analyzing
+100k_d30_flat/lin       time:   [995.77 ms 996.70 ms 997.69 ms]
+Found 5 outliers among 100 measurements (5.00%)
+  5 (5.00%) high mild
+mean   [995.77 ms 997.69 ms] std. dev.      [3.9773 ms 5.7377 ms]
+median [993.82 ms 994.68 ms] med. abs. dev. [1.2198 ms 2.7220 ms]
+Benchmarking 100k_d30_flat/lin_par
+Benchmarking 100k_d30_flat/lin_par: Warming up for 10.000 s
+Benchmarking 100k_d30_flat/lin_par: Collecting 100 samples in estimated 258.69 s (1100 iterations)
+Benchmarking 100k_d30_flat/lin_par: Analyzing
+100k_d30_flat/lin_par   time:   [237.44 ms 237.93 ms 238.37 ms]
+Found 14 outliers among 100 measurements (14.00%)
+  14 (14.00%) low severe
+mean   [237.44 ms 238.37 ms] std. dev.      [1.8167 ms 2.8230 ms]
+median [238.77 ms 238.90 ms] med. abs. dev. [223.75 µs 387.58 µs]
+Benchmarking 100k_d30_flat/seq
+Benchmarking 100k_d30_flat/seq: Warming up for 10.000 s
+Benchmarking 100k_d30_flat/seq: Collecting 100 samples in estimated 240.87 s (200 iterations)
+Benchmarking 100k_d30_flat/seq: Analyzing
+100k_d30_flat/seq       time:   [1.2071 s 1.2072 s 1.2073 s]
+Found 4 outliers among 100 measurements (4.00%)
+  4 (4.00%) high mild
+mean   [1.2071 s 1.2073 s] std. dev.      [410.88 µs 591.96 µs]
+median [1.2069 s 1.2071 s] med. abs. dev. [327.08 µs 580.20 µs]
+Benchmarking 100k_d30_flat/par
+Benchmarking 100k_d30_flat/par: Warming up for 10.000 s
+Benchmarking 100k_d30_flat/par: Collecting 100 samples in estimated 245.44 s (900 iterations)
+Benchmarking 100k_d30_flat/par: Analyzing
+100k_d30_flat/par       time:   [284.21 ms 285.10 ms 285.88 ms]
+Found 11 outliers among 100 measurements (11.00%)
+  11 (11.00%) low severe
+mean   [284.21 ms 285.88 ms] std. dev.      [3.0859 ms 5.2342 ms]
+median [286.30 ms 286.52 ms] med. abs. dev. [406.08 µs 790.60 µs]
+Benchmarking 100k_d30_flat/cull_pop/0.95
+Benchmarking 100k_d30_flat/cull_pop/0.95: Warming up for 10.000 s
+Benchmarking 100k_d30_flat/cull_pop/0.95: Collecting 100 samples in estimated 249.20 s (900 iterations)
+Benchmarking 100k_d30_flat/cull_pop/0.95: Analyzing
+100k_d30_flat/cull_pop/0.95
+                        time:   [277.98 ms 278.03 ms 278.07 ms]
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) low severe
+  1 (1.00%) low mild
+mean   [277.98 ms 278.07 ms] std. dev.      [169.52 µs 327.94 µs]
+median [277.98 ms 278.09 ms] med. abs. dev. [153.06 µs 231.25 µs]
+Benchmarking 100k_d30_flat/cull_sim/0.95
+Benchmarking 100k_d30_flat/cull_sim/0.95: Warming up for 10.000 s
+Benchmarking 100k_d30_flat/cull_sim/0.95: Collecting 100 samples in estimated 247.62 s (900 iterations)
+Benchmarking 100k_d30_flat/cull_sim/0.95: Analyzing
+100k_d30_flat/cull_sim/0.95
+                        time:   [278.82 ms 278.99 ms 279.24 ms]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high severe
+mean   [278.82 ms 279.24 ms] std. dev.      [315.43 µs 1.8683 ms]
+median [278.76 ms 278.92 ms] med. abs. dev. [272.73 µs 445.25 µs]
+Benchmarking 100k_d30_flat/cull_all/0.95
+Benchmarking 100k_d30_flat/cull_all/0.95: Warming up for 10.000 s
+Benchmarking 100k_d30_flat/cull_all/0.95: Collecting 100 samples in estimated 248.54 s (900 iterations)
+Benchmarking 100k_d30_flat/cull_all/0.95: Analyzing
+100k_d30_flat/cull_all/0.95
+                        time:   [280.72 ms 282.35 ms 284.19 ms]
+Found 20 outliers among 100 measurements (20.00%)
+  3 (3.00%) low mild
+  17 (17.00%) high severe
+mean   [280.72 ms 284.19 ms] std. dev.      [6.1578 ms 11.050 ms]
+median [279.11 ms 279.30 ms] med. abs. dev. [325.92 µs 820.97 µs]
+Benchmarking 100k_d30_flat/cull_pop/0.9
+Benchmarking 100k_d30_flat/cull_pop/0.9: Warming up for 10.000 s
+Benchmarking 100k_d30_flat/cull_pop/0.9: Collecting 100 samples in estimated 262.03 s (1000 iterations)
+Benchmarking 100k_d30_flat/cull_pop/0.9: Analyzing
+100k_d30_flat/cull_pop/0.9
+                        time:   [262.16 ms 262.21 ms 262.26 ms]
+mean   [262.16 ms 262.26 ms] std. dev.      [223.09 µs 292.42 µs]
+median [262.17 ms 262.29 ms] med. abs. dev. [180.49 µs 319.06 µs]
+Benchmarking 100k_d30_flat/cull_sim/0.9
+Benchmarking 100k_d30_flat/cull_sim/0.9: Warming up for 10.000 s
+Benchmarking 100k_d30_flat/cull_sim/0.9: Collecting 100 samples in estimated 258.71 s (1000 iterations)
+Benchmarking 100k_d30_flat/cull_sim/0.9: Analyzing
+100k_d30_flat/cull_sim/0.9
+                        time:   [261.48 ms 261.55 ms 261.62 ms]
+Found 8 outliers among 100 measurements (8.00%)
+  8 (8.00%) high mild
+mean   [261.48 ms 261.62 ms] std. dev.      [279.64 µs 400.94 µs]
+median [261.42 ms 261.55 ms] med. abs. dev. [195.38 µs 320.25 µs]
+Benchmarking 100k_d30_flat/cull_all/0.9
+Benchmarking 100k_d30_flat/cull_all/0.9: Warming up for 10.000 s
+Benchmarking 100k_d30_flat/cull_all/0.9: Collecting 100 samples in estimated 259.69 s (1000 iterations)
+Benchmarking 100k_d30_flat/cull_all/0.9: Analyzing
+100k_d30_flat/cull_all/0.9
+                        time:   [262.08 ms 262.21 ms 262.37 ms]
+Found 6 outliers among 100 measurements (6.00%)
+  1 (1.00%) high mild
+  5 (5.00%) high severe
+mean   [262.08 ms 262.37 ms] std. dev.      [329.78 µs 1.0046 ms]
+median [262.00 ms 262.12 ms] med. abs. dev. [189.91 µs 315.75 µs]
+Benchmarking 100k_d30_flat/cull_pop/0.85
+Benchmarking 100k_d30_flat/cull_pop/0.85: Warming up for 10.000 s
+Benchmarking 100k_d30_flat/cull_pop/0.85: Collecting 100 samples in estimated 264.07 s (1000 iterations)
+Benchmarking 100k_d30_flat/cull_pop/0.85: Analyzing
+100k_d30_flat/cull_pop/0.85
+                        time:   [264.94 ms 265.04 ms 265.14 ms]
+Found 11 outliers among 100 measurements (11.00%)
+  9 (9.00%) low severe
+  2 (2.00%) low mild
+mean   [264.94 ms 265.14 ms] std. dev.      [401.43 µs 636.52 µs]
+median [265.12 ms 265.25 ms] med. abs. dev. [182.98 µs 321.96 µs]
+Benchmarking 100k_d30_flat/cull_sim/0.85
+Benchmarking 100k_d30_flat/cull_sim/0.85: Warming up for 10.000 s
+Benchmarking 100k_d30_flat/cull_sim/0.85: Collecting 100 samples in estimated 256.69 s (1000 iterations)
+Benchmarking 100k_d30_flat/cull_sim/0.85: Analyzing
+100k_d30_flat/cull_sim/0.85
+                        time:   [259.64 ms 259.76 ms 259.92 ms]
+Found 6 outliers among 100 measurements (6.00%)
+  2 (2.00%) high mild
+  4 (4.00%) high severe
+mean   [259.64 ms 259.92 ms] std. dev.      [295.34 µs 1.0343 ms]
+median [259.57 ms 259.69 ms] med. abs. dev. [154.95 µs 257.07 µs]
+Benchmarking 100k_d30_flat/cull_all/0.85
+Benchmarking 100k_d30_flat/cull_all/0.85: Warming up for 10.000 s
+Benchmarking 100k_d30_flat/cull_all/0.85: Collecting 100 samples in estimated 256.22 s (1000 iterations)
+Benchmarking 100k_d30_flat/cull_all/0.85: Analyzing
+100k_d30_flat/cull_all/0.85
+                        time:   [259.01 ms 259.07 ms 259.14 ms]
+Found 8 outliers among 100 measurements (8.00%)
+  7 (7.00%) high mild
+  1 (1.00%) high severe
+mean   [259.01 ms 259.14 ms] std. dev.      [274.16 µs 413.27 µs]
+median [258.96 ms 259.07 ms] med. abs. dev. [193.02 µs 307.64 µs]
+Benchmarking 100k_d30_flat/cull_pop/0.8
+Benchmarking 100k_d30_flat/cull_pop/0.8: Warming up for 10.000 s
+Benchmarking 100k_d30_flat/cull_pop/0.8: Collecting 100 samples in estimated 261.40 s (1000 iterations)
+Benchmarking 100k_d30_flat/cull_pop/0.8: Analyzing
+100k_d30_flat/cull_pop/0.8
+                        time:   [264.67 ms 266.43 ms 268.42 ms]
+Found 22 outliers among 100 measurements (22.00%)
+  1 (1.00%) high mild
+  21 (21.00%) high severe
+mean   [264.67 ms 268.42 ms] std. dev.      [6.8077 ms 11.817 ms]
+median [262.50 ms 262.64 ms] med. abs. dev. [221.90 µs 407.36 µs]
+Benchmarking 100k_d30_flat/cull_sim/0.8
+Benchmarking 100k_d30_flat/cull_sim/0.8: Warming up for 10.000 s
+Benchmarking 100k_d30_flat/cull_sim/0.8: Collecting 100 samples in estimated 255.90 s (1000 iterations)
+Benchmarking 100k_d30_flat/cull_sim/0.8: Analyzing
+100k_d30_flat/cull_sim/0.8
+                        time:   [258.35 ms 258.39 ms 258.44 ms]
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+mean   [258.35 ms 258.44 ms] std. dev.      [188.56 µs 265.52 µs]
+median [258.32 ms 258.42 ms] med. abs. dev. [167.76 µs 290.75 µs]
+Benchmarking 100k_d30_flat/cull_all/0.8
+Benchmarking 100k_d30_flat/cull_all/0.8: Warming up for 10.000 s
+Benchmarking 100k_d30_flat/cull_all/0.8: Collecting 100 samples in estimated 256.21 s (1000 iterations)
+Benchmarking 100k_d30_flat/cull_all/0.8: Analyzing
+100k_d30_flat/cull_all/0.8
+                        time:   [258.58 ms 258.62 ms 258.66 ms]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) low mild
+mean   [258.58 ms 258.66 ms] std. dev.      [171.72 µs 222.75 µs]
+median [258.55 ms 258.65 ms] med. abs. dev. [147.37 µs 247.22 µs]
+Benchmarking 100k_d30_flat/disk
+Benchmarking 100k_d30_flat/disk: Warming up for 10.000 s
+Benchmarking 100k_d30_flat/disk: Collecting 100 samples in estimated 253.08 s (800 iterations)
+Benchmarking 100k_d30_flat/disk: Analyzing
+100k_d30_flat/disk      time:   [317.38 ms 317.46 ms 317.53 ms]
+mean   [317.38 ms 317.53 ms] std. dev.      [335.39 µs 434.57 µs]
+median [317.44 ms 317.60 ms] med. abs. dev. [229.94 µs 451.33 µs]
+
+
+running 15 tests
+test metric::euclidean::tests::euclidean_2d ... ignored
+test on_disk::tests::nearest_neighbour ... ignored
+test on_disk::tests::sisap_colors_par ... ignored
+test on_disk::tests::sisap_nasa_par ... ignored
+test parallel::tests::nearest_neighbour ... ignored
+test parallel::tests::nearest_neighbour_cull_popcnt ... ignored
+test parallel::tests::nearest_neighbour_cull_similarity ... ignored
+test parallel::tests::sisap_colors_par ... ignored
+test parallel::tests::sisap_colors_par_cull_popcnt ... ignored
+test parallel::tests::sisap_colors_par_cull_similarity ... ignored
+test parallel::tests::sisap_nasa_par ... ignored
+test parallel::tests::sisap_nasa_par_cull_popcnt ... ignored
+test parallel::tests::sisap_nasa_par_cull_similarity ... ignored
+test sequential::tests::sisap_colors ... ignored
+test sequential::tests::sisap_nasa ... ignored
+
+test result: ok. 0 passed; 0 failed; 15 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
