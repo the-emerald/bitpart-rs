@@ -83,11 +83,14 @@ def plot_block_size():
     yeh = [x[3] for x in points]
     yerr = [yel, yeh]
 
+    none_line = [[x for x in match if re.match(r"block_size/None", x[0])][0][1]] * len(x)
+
     fig, ax = plt.subplots()
     plt.xlabel("Block size")
     plt.ylabel("Time taken (ms)")
     plt.xticks(x)
     ax.errorbar(x, y, yerr=yerr, label='Parallel', capsize=10)
+    ax.errorbar(x, none_line, label='Control', capsize=10)
     ax.legend()
     ax.grid()
     ax.set_xscale('log', base=2)
