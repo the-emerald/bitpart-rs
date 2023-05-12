@@ -47,7 +47,7 @@ enum Command {
         #[arg(short, long)]
         std_dev: f64,
     },
-    /// TODO: Flat distribution
+    /// Flat distribution
     Flat {
         /// Lower bound
         #[arg(short, long, allow_negative_numbers = true)]

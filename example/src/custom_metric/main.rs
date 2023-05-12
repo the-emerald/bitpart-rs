@@ -32,6 +32,8 @@ fn main() -> Result<()> {
 pub struct Point(pub Vec<f64>);
 
 impl Metric for Point {
+    // This will help you inspect the assembly generated if necessary.
+    // Re-enable inlining if attempting to measure performance.
     #[inline(never)]
     fn distance(&self, rhs: &Self) -> f64 {
         assert_eq!(self.0.len(), rhs.0.len());
