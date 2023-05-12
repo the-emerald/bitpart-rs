@@ -499,7 +499,7 @@ where
     }
 }
 
-/// Errors that can be encountered during the construction of [`Parallel`].
+/// Errors that can be encountered while using [`Parallel`].
 #[derive(Debug, Error)]
 pub enum ParallelError {
     /// There are no exclusion zones in the data structure.
