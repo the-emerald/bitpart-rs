@@ -1,18 +1,18 @@
+use anyhow::{anyhow, Context, Result};
 use bitpart::metric::Metric;
 use sisap_data::parser::parse;
 use std::fs;
 
-fn main() {
-    let points = parse(
-        &fs::read_to_string("data/100k_d10_flat.ascii")
-            .expect("dataset not found. perhaps you forgot to generate them?"),
-    )
-    .unwrap()
-    .1
-     .1
-    .into_iter()
-    .map(Point)
-    .collect::<Vec<_>>();
+fn main() -> Result<()> {
+    let data = fs::read_to_string("data/100k_d10_flat.ascii")
+        .context("dataset not found. perhaps you forgot to generate them?")?;
+    let points = parse(&data)
+        .map_err(|e| anyhow!(e.to_string()))?
+        .1
+         .1
+        .into_iter()
+        .map(Point)
+        .collect::<Vec<_>>();
 
     let query = &points[0];
     let threshold = 1.9188728695060282;
@@ -25,6 +25,7 @@ fn main() {
             .filter(|d| d.1 <= threshold)
             .collect::<Vec<_>>();
     }
+    Ok(())
 }
 
 #[derive(Clone, Debug)]

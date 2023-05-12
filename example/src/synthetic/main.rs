@@ -1,23 +1,22 @@
-use std::fs;
-
+use anyhow::{anyhow, Context, Result};
 use bitpart::{
     metric::{Euclidean, Metric},
     BitPart, Builder,
 };
 use sisap_data::parser::parse;
+use std::fs;
 
-fn main() {
-    let points = parse(
-        &fs::read_to_string("data/output.ascii")
-            .expect("dataset not found. perhaps you forgot to generate them?"),
-    )
-    .unwrap()
-    .1
-     .1
-    .into_iter()
-    .map(|v| v.try_into().unwrap())
-    .map(Euclidean::new)
-    .collect::<Vec<Euclidean<[f64; 20]>>>();
+fn main() -> Result<()> {
+    let data = fs::read_to_string("data/output.ascii")
+        .context("dataset not found. perhaps you forgot to generate them?")?;
+    let points = parse(&data)
+        .map_err(|e| anyhow!(e.to_string()))?
+        .1
+         .1
+        .into_iter()
+        .map(|v| v.try_into().unwrap())
+        .map(Euclidean::new)
+        .collect::<Vec<Euclidean<[f64; 20]>>>();
     println!("read ok");
 
     let bitpart = Builder::new(points.clone(), 40).build_parallel(Some(512));
@@ -46,7 +45,7 @@ fn main() {
     ]);
     let threshold = 3.0;
 
-    let res = bitpart.range_search(query.clone(), threshold).unwrap();
+    let res = bitpart.range_search(query.clone(), threshold)?;
     println!("{} points returned", res.len());
 
     print!("CHECK: all returned points within threshold... ");
@@ -71,4 +70,6 @@ fn main() {
     } else {
         println!("ok")
     }
+
+    Ok(())
 }

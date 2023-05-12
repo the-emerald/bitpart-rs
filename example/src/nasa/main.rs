@@ -1,14 +1,15 @@
-use std::fs;
-
+use anyhow::{anyhow, Result};
 use bitpart::{
     metric::{Euclidean, Metric},
     BitPart, Builder,
 };
 use sisap_data::nasa::{parse_nasa, Nasa};
+use std::fs;
 
-fn main() {
-    let nasa = parse_nasa(&fs::read_to_string("./sisap-data/src/nasa.ascii").unwrap())
-        .unwrap()
+fn main() -> Result<()> {
+    let data = fs::read_to_string("./sisap-data/src/nasa.ascii")?;
+    let nasa = parse_nasa(&data)
+        .map_err(|e| anyhow!(e.to_string()))?
         .into_iter()
         .map(Euclidean::new)
         .collect::<Vec<_>>();
@@ -23,7 +24,7 @@ fn main() {
     ]));
     let threshold = 1.0;
 
-    let res = bitpart.range_search(query.clone(), threshold).unwrap();
+    let res = bitpart.range_search(query.clone(), threshold)?;
     println!("{} points returned", res.len());
 
     print!("CHECK: all returned points within threshold... ");
@@ -48,4 +49,6 @@ fn main() {
     } else {
         println!("ok")
     }
+
+    Ok(())
 }

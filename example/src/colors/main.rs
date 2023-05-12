@@ -1,14 +1,16 @@
 use std::fs;
 
+use anyhow::{anyhow, Result};
 use bitpart::{
     metric::{Euclidean, Metric},
     BitPart, Builder,
 };
 use sisap_data::colors::{parse_colors, Colors};
 
-fn main() {
-    let colors = parse_colors(&fs::read_to_string("./sisap-data/src/colors.ascii").unwrap())
-        .unwrap()
+fn main() -> Result<()> {
+    let data: String = fs::read_to_string("./sisap-data/src/colors.ascii")?;
+    let colors = parse_colors(&data)
+        .map_err(|e| anyhow!(e.to_string()))?
         .into_iter()
         .map(Euclidean::new)
         .collect::<Vec<_>>();
@@ -19,7 +21,7 @@ fn main() {
     let query = Euclidean::new(Colors(QUERY));
     let threshold = 0.5;
 
-    let res = bitpart.range_search(query.clone(), threshold).unwrap();
+    let res = bitpart.range_search(query.clone(), threshold)?;
     println!("{} points returned", res.len());
 
     print!("CHECK: all returned points within threshold... ");
@@ -44,6 +46,8 @@ fn main() {
     } else {
         println!("ok")
     }
+
+    Ok(())
 }
 
 const QUERY: [f64; 112] = [
