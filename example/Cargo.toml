@@ -23,5 +23,5 @@ name = "synthetic"
 path = "src/synthetic/main.rs"
 
 [[bin]]
-name = "bruteforce"
-path = "src/bruteforce/main.rs"
+name = "custom_metric"
+path = "src/custom_metric/main.rs"
