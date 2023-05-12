@@ -37,7 +37,7 @@ impl<'a> IntoIterator for &'a Nasa {
 }
 
 /// Convenience function to parse `nasa.ascii` and wrap points in [`Nasa`].
-pub fn parse_nasa(input: &str) -> Result<Vec<Nasa>, crate::Error> {
+pub fn parse_nasa(input: &str) -> Result<Vec<Nasa>, nom::error::Error<&str>> {
     let (_, (_, v)) = parse_array(input).finish()?;
 
     Ok(v.into_iter().map(Nasa).collect())

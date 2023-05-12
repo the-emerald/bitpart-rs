@@ -37,7 +37,7 @@ impl<'a> IntoIterator for &'a Colors {
 }
 
 /// Convenience function to parse `colors.ascii` and wrap points in [`Colors`].
-pub fn parse_colors(input: &str) -> Result<Vec<Colors>, crate::Error> {
+pub fn parse_colors(input: &str) -> Result<Vec<Colors>, nom::error::Error<&str>> {
     let (_, (_, v)) = parse_array(input).finish()?;
 
     Ok(v.into_iter().map(Colors).collect())
