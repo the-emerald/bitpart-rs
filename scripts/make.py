@@ -212,9 +212,9 @@ def plot_lin():
     ax.legend()
     ax.grid()
     fig.savefig("lin_par.png", dpi=300)
-    return y_par, y_par_err
+    return y, y_err, y_par, y_par_err
 
-lin_par, lin_par_err = plot_lin()
+lin, lin_err, lin_par, lin_par_err = plot_lin()
 
 def plot_seq():
     pat = r"100k_d(\d+)_flat/((?:seq)|(?:par))"
@@ -246,9 +246,9 @@ def plot_seq():
     ax.legend()
     ax.grid()
     fig.savefig("seq_par.png", dpi=300)
-    return y_par, y_par_err
+    return y, y_err, y_par, y_par_err
 
-par, par_err = plot_seq()
+seq, seq_err, par, par_err = plot_seq()
 
 def plot_pars():
     pat = r"100k_d(\d+)_flat/disk"
@@ -281,3 +281,32 @@ def plot_pars():
     fig.savefig("pars.png", dpi=300)
 
 plot_pars()
+
+def plot_seqs():
+    pat = r"100k_d(\d+)_flat/disk"
+    points = [x for x in match if re.match(pat, x[0])]
+    for i in range(len(points)):
+        m = re.match(pat, points[i][0]).groups()
+        # dim, seq_par
+        points[i] = [int(m[0])] + points[i][1:]
+
+    x = [10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
+
+    y = [x[1] for x in points]
+    y_el = [x[2] for x in points]
+    y_eh = [x[3] for x in points]
+    y_err = [y_el, y_eh]
+
+    fig, ax = plt.subplots()
+    plt.xlabel("Dimensions")
+    plt.ylabel("Time taken (ms)")
+    plt.xticks(x)
+
+    ax.errorbar(x, lin, yerr=lin_err, label='Linear', capsize=5)
+    ax.errorbar(x, seq, yerr=seq_err, label='Sequential', capsize=5)
+
+    ax.legend()
+    ax.grid()
+    fig.savefig("seqs.png", dpi=300)
+
+plot_seqs()
