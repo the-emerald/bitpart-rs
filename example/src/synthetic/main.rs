@@ -7,14 +7,17 @@ use bitpart::{
 use sisap_data::parser::parse;
 
 fn main() {
-    let points = parse(&fs::read_to_string("data/output.ascii").unwrap())
-        .unwrap()
-        .1
-         .1
-        .into_iter()
-        .map(|v| v.try_into().unwrap())
-        .map(Euclidean::new)
-        .collect::<Vec<Euclidean<[f64; 20]>>>();
+    let points = parse(
+        &fs::read_to_string("data/output.ascii")
+            .expect("dataset not found. perhaps you forgot to generate them?"),
+    )
+    .unwrap()
+    .1
+     .1
+    .into_iter()
+    .map(|v| v.try_into().unwrap())
+    .map(Euclidean::new)
+    .collect::<Vec<Euclidean<[f64; 20]>>>();
     println!("read ok");
 
     let bitpart = Builder::new(points.clone(), 40).build_parallel(Some(512));
