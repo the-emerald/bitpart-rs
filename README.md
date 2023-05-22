@@ -10,7 +10,7 @@ cargo criterion --all-features
 ```
 
 ## Examples
-To run examples:
+Generate test data first, and then pick a binary to run:
 ```
 cargo run --release -p example --bin [name_of_example]
 ```
